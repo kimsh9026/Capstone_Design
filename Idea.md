@@ -1,10 +1,8 @@
 # Capstone Design Idea
-<<<<<<< HEAD
-   > One idea per one day
-=======    
-### 1일 1 Idea 필수 
+> One idea per one day    
+### One Idea per One Day
 ----
->>>>>>> dbd3f2f80c663a9b375141dd7442b4e4cfc3db3b
+
 ### 1. PC방, 당구장, 볼링장 등 여가 시설 빈 자리 조회 서비스
 <li> 빈 자리 조회 기능
 <li> 빈 자리 예측 기능 (몇분 후 사용 종료 등)
