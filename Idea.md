@@ -1,6 +1,5 @@
 # Capstone Design Idea
-> One idea per one day    
-### One Idea per One Day
+> One idea per one day
 ----
 
 ### 1. PC방, 당구장, 볼링장 등 여가 시설 빈 자리 조회 서비스
