@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'ChatRoom.dart' ;
+
 
 void main() => runApp(FeedPage()) ;
 
@@ -51,12 +53,12 @@ class ListUpState extends State<ListUp> {
           searchingBlock(),
           Expanded(
             child : new Center(
-              child: new ListBlock(<ChatRooms>[]
-                ..add (new ChatRooms('Title', '2월 13일', '15:00'))
-                ..add (new ChatRooms('같이 죽도시장 가실 분', '2월 12일', '15:00'))
-                ..add (new ChatRooms('호미곶 갈사람', '2월 16일', '12:00'))
-                ..add (new ChatRooms('포항호텔 파티 모집', '2월 19일', '21:00'))
-                ..add (new ChatRooms('커몬~', '2월 13일', '15:00'))
+              child: new ListBlock(<ChatRoom>[]
+                ..add (new ChatRoom('Title', '2월 13일', '15:00'))
+                ..add (new ChatRoom('같이 죽도시장 가실 분', '2월 12일', '15:00'))
+                ..add (new ChatRoom('호미곶 갈사람', '2월 16일', '12:00'))
+                ..add (new ChatRoom('포항호텔 파티 모집', '2월 19일', '21:00'))
+                ..add (new ChatRoom('커몬~', '2월 13일', '15:00'))
               ),
             ),
           ),
