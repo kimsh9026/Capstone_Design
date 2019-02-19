@@ -1,5 +1,6 @@
 import 'ChatRoom.dart' ;
 import 'package:flutter/material.dart';
+import 'ProfilePage.dart' ;
 
 class RoomCard extends StatefulWidget{
   final ChatRoom chatroom ;
@@ -29,7 +30,7 @@ class RoomCardState extends State<RoomCard> {
           shape: BoxShape.circle,
           image: new DecorationImage(
             fit: BoxFit.cover,
-            image: AssetImage('images/logo image.png'),
+            image: AssetImage('Images/logo image.png'),
           ),
         ),
       ),
@@ -56,7 +57,7 @@ class RoomCardState extends State<RoomCard> {
     var crossFade = new AnimatedCrossFade(
       firstChild: placeholder,
       secondChild: roomAvatar,
-      crossFadeState: 1 == 1
+      crossFadeState: 1 == 2
           ? CrossFadeState.showFirst
           : CrossFadeState.showSecond,
       duration: new Duration(milliseconds: 1000),
@@ -112,15 +113,15 @@ class RoomCardState extends State<RoomCard> {
   @override
   Widget build(BuildContext context) {
     return new InkWell(
-      onTap: () => showDogDetailPage(),
+      onTap: () => showRoomDetailPage(),
       child: new Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 8.0),
         child: new Container(
           height: 115.0,
           child: new Stack(
             children: <Widget>[
               roomCard,
-              new Positioned(top: 7.5, child: roomImage),
+              new Positioned(top: 15.5, child: roomImage),
             ],
           ),
         ),
@@ -128,10 +129,9 @@ class RoomCardState extends State<RoomCard> {
     );
   }
 
-  showDogDetailPage() {
+  showRoomDetailPage() {
     Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-      return ; //여기 원래 뭐가 있었는데 기억이 안나네요
-      //무튼 여기서 return 해주는 page로 이제 넘어가는 거죠~~
+      return  Profile(chatRoom);
     }));
   }
 
