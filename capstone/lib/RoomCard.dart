@@ -1,6 +1,8 @@
 import 'ChatRoom.dart' ;
 import 'package:flutter/material.dart';
-import 'ProfilePage.dart' ;
+//import 'ProfilePage.dart' ;
+import 'DetailPage.dart' ;
+
 
 class RoomCard extends StatefulWidget{
   final ChatRoom chatroom ;
@@ -10,6 +12,7 @@ class RoomCard extends StatefulWidget{
   @override
   RoomCardState createState() => new RoomCardState(chatroom);
 }
+
 
 class RoomCardState extends State<RoomCard> {
 
@@ -69,6 +72,7 @@ class RoomCardState extends State<RoomCard> {
   Widget get roomCard {
     return new Positioned(
       child: new Container(
+      //  tag: roomCard,
         width: 350,
         height: 115.0,
         child: new Card(
@@ -129,10 +133,20 @@ class RoomCardState extends State<RoomCard> {
     );
   }
 
+
+
   showRoomDetailPage() {
-    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-      return  Profile(chatRoom);
-    }));
+//    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
+//      return DetailPage(chatRoom);
+//    }));
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context){
+      return DetailPage(chatRoom) ;
+    }
+  );
+
   }
 
 }

@@ -25,6 +25,7 @@ class ListUpState extends State<ListUp> {
   Widget searchingBlock(){
     return TextField(
       decoration: InputDecoration(
+        contentPadding: EdgeInsets.all(15),
         border: InputBorder.none,
         hintText: 'Search',
         suffixIcon: Icon(Icons.search),
@@ -38,6 +39,9 @@ class ListUpState extends State<ListUp> {
     return Scaffold(
       backgroundColor: Color.fromRGBO(218, 218, 218, 0.9),
       appBar: AppBar(
+        toolbarOpacity: 1,
+        elevation: 1,
+        bottomOpacity: 1,
         title: Text(
           '동행 모집',
           textAlign: TextAlign.center,
@@ -51,6 +55,7 @@ class ListUpState extends State<ListUp> {
       body: Column(
         children: <Widget>[
           searchingBlock(),
+          new Divider(color: Colors.black45, indent: 0.0, height: 0,),
           Expanded(
             child : new Center(
               child: new ListBlock(<ChatRoom>[]
