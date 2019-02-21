@@ -10,14 +10,15 @@ class RoomCard extends StatefulWidget{
   RoomCard(this.chatroom) ;
 
   @override
-  RoomCardState createState() => new RoomCardState(chatroom);
+  RoomCardState createState() => new RoomCardState(chatroom, this);
 }
 
 
 class RoomCardState extends State<RoomCard> {
 
   ChatRoom chatRoom ;
-  RoomCardState(this.chatRoom) ;
+  RoomCard roomCardForDetail ;
+  RoomCardState(this.chatRoom, this.roomCardForDetail) ;
 
   void initState(){
     super.initState() ;
@@ -70,8 +71,7 @@ class RoomCardState extends State<RoomCard> {
   }
 
   Widget get roomCard {
-    return new Positioned(
-      child: new Container(
+    return new Container(
       //  tag: roomCard,
         width: 350,
         height: 115.0,
@@ -81,33 +81,38 @@ class RoomCardState extends State<RoomCard> {
             padding: const EdgeInsets.only(
               top: 8.0,
               bottom: 8.0,
-              left: 64.0,
+              left: 15.0,
             ),
-            child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            child: new Row(
               children: <Widget>[
-                new Text(widget.chatroom.roomName,
-                  style: TextStyle(
-                      fontSize: 18.0,
-                      height: 1.3
-                  ),
-                ),
-                new Text('${widget.chatroom.date} ${widget.chatroom.time}', //String 안에서 변수를 사용할 때는 이런식으로 써요
-                  style: TextStyle(
-                    fontSize: 13.0,
-                  ),
-                ),
-                new Row(
+                roomImage,
+                new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    new Icon(
-                      Icons.people,
+                    new Text(widget.chatroom.roomName,
+                      style: TextStyle(
+                          fontSize: 18.0,
+                          height: 1.3
+                      ),
                     ),
-                    new Text(': ${widget.chatroom.currentPeopleNumbers} / ${widget.chatroom.fullPeopleNumbers}')
+                    new Text('${widget.chatroom.date} ${widget.chatroom.time}', //String 안에서 변수를 사용할 때는 이런식으로 써요
+                      style: TextStyle(
+                        fontSize: 13.0,
+                      ),
+                    ),
+                    new Row(
+                      children: <Widget>[
+                        new Icon(
+                          Icons.people,
+                        ),
+                        new Text(': ${widget.chatroom.currentPeopleNumbers} / ${widget.chatroom.fullPeopleNumbers}')
+                      ],
+                    )
                   ],
-                )
-              ],
-            ),
+                ),
+              ]
+
           ),
         ),
       ),
@@ -122,10 +127,10 @@ class RoomCardState extends State<RoomCard> {
         padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 8.0),
         child: new Container(
           height: 115.0,
-          child: new Stack(
+          child: new Row(
             children: <Widget>[
               roomCard,
-              new Positioned(top: 15.5, child: roomImage),
+              //new Positioned(top: 15, left: 20, child: roomImage),
             ],
           ),
         ),
@@ -140,10 +145,10 @@ class RoomCardState extends State<RoomCard> {
 //      return DetailPage(chatRoom);
 //    }));
 
-  showDialog(
+  return showDialog(
     context: context,
     builder: (BuildContext context){
-      return DetailPage(chatRoom) ;
+      return DetailPage(chatRoom, roomCard) ;
     }
   );
 
