@@ -84,11 +84,11 @@ class ListUpState extends State<ListUp> {
           ),
         ],
       ),
-//      floatingActionButton: FloatingActionButton(
-//        onPressed: roomList.createNewRoom,
-//        tooltip: 'create',
-//        child: Icon(Icons.add_comment),
-//      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: roomList.createNewRoom,
+        tooltip: 'create',
+        child: Icon(Icons.add_comment),
+      ),
 //      new Center(
 //        child:  new ListBlock(<ChatRooms>[]
 //          ..add (new ChatRooms('Title', '2월 13일', '15:00'))

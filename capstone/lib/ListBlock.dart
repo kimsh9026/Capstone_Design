@@ -18,7 +18,51 @@ class ListBlock extends StatelessWidget {
   }
 
   Widget createNewRoom(){
+    return new Container(
+      //  tag: roomCard,
+      width: 350,
+      height: 115.0,
+      child: new Card(
+        color: Colors.white,
+        child: new Padding(
+          padding: const EdgeInsets.only(
+            top: 8.0,
+            bottom: 8.0,
+            left: 15.0,
+          ),
+          child: new Row(
+              children: <Widget>[
+                new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    new Text('Name',
+                      style: TextStyle(
+                          fontSize: 18.0,
+                          height: 1.3
+                      ),
+                    ),
+                    new Text('Date', //String 안에서 변수를 사용할 때는 이런식으로 써요
+                      style: TextStyle(
+                        fontSize: 13.0,
+                      ),
+                    ),
+                    new Row(
+                      children: <Widget>[
+                        new Icon(
+                          Icons.people,
+                        ),
+                        new Text('Number of People')
+                      ],
+                    )
+                  ],
+                ),
+              ]
 
+          ),
+        ),
+      ),
+    );
   }
 
   @override
