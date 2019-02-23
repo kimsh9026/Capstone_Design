@@ -17,6 +17,10 @@ class ListBlock extends StatelessWidget {
     );
   }
 
+  Widget createNewRoom(){
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return _buildList(context);
