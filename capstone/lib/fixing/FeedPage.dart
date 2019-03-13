@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:capstone/ChatRoom.dart' ;
-import 'package:capstone/ListBlock.dart' ;
+import 'package:capstone/fixing/ChatRoom.dart' ;
+import 'package:capstone/fixing/ListBlock.dart' ;
 
-//void main() => runApp(FeedPage()) ;
+
+/*
+* FeedPage 호출시
+-> AppBar 텍스트 변경
+-> AppBar에 Search Icon 생성
+-> List 생성
+
+* AppBar 관리 어떻게 할까?
+-> 새로운 Scaffold를 생성해서 대체?
+-> 텍스트 변경, Icon만 삽입하고 Center 내용만 교체?
+-> 일반적으로는 전체가 다 바뀌는 것 같은데..
+
+* room이 tap 됐을 때 동작 처리
+* Add button tap 됐을 때 동작 처리
+ */
+
+
+
 
 class FeedPage extends StatelessWidget {
   @override
@@ -23,6 +40,9 @@ class ListUp extends StatefulWidget {
 
 class ListUpState extends State<ListUp> {
 
+  //데이터 처리 필요
+  //데이터 받아서 roomList에 넣기
+  
   ListBlock roomList = new ListBlock(<ChatRoom>[]
     ..add (new ChatRoom('Title', '2월 13일', '15:00'))
     ..add (new ChatRoom('같이 죽도시장 가실 분', '2월 12일', '15:00'))

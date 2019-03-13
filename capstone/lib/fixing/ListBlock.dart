@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:capstone/ChatRoom.dart' ;
-import 'package:capstone/RoomCard.dart' ;
-import 'package:capstone/DetailPage.dart' ;
+import 'package:capstone/fixing/ChatRoom.dart' ;
+import 'package:capstone/fixing/RoomCard.dart' ;
+import 'package:capstone/fixing/DetailPage.dart' ;
 
 class ListBlock extends StatelessWidget {
   final List<ChatRoom> chatRooms;
