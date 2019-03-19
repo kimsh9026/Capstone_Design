@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:capstone/fixing/ChatRoom.dart' ;
-import 'package:capstone/fixing/BottomNavigation.dart' ;
+//import 'package:capstone/test/ChatRoom.dart' ;
+import 'package:capstone/test/BottomNavigation.dart' ;
 
 class ProfilePage extends StatelessWidget {
 
@@ -37,7 +37,7 @@ class ProfilePage extends StatelessWidget {
           width: double.infinity,
           height: double.infinity,
           child: Center(child: Text(
-            'Testing..',
+            'Profile..',
             style: TextStyle(
               fontSize: 32.0,
               color: Colors.white,
@@ -46,7 +46,7 @@ class ProfilePage extends StatelessWidget {
           )),
         ),
       ),
-      bottomNavigationBar: botNavBar,
+//      bottomNavigationBar: botNavBar,
     );
   }
 }

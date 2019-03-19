@@ -3,8 +3,8 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:capstone/fixing/BlocProvider.dart' ;
-import 'package:capstone/fixing/FeedPage.dart' ;
+import 'package:capstone/test/BlocProvider.dart' ;
+import 'package:capstone/test/FeedPage.dart' ;
 
 class NavigationIconView {
   NavigationIconView({
@@ -101,38 +101,25 @@ class _BottomNavigationState extends State<BottomNavigation>
     print("bottom NavigationBuild") ;
     print("current index : $_currentIndex") ;
 
-    BlocProvider.of(context).centerBloc.bottomBarPressed.listen((int index){
-      print(index) ;
-      index == null ? animate(0) : animate(index) ;
-    }) ;
+    return BottomNavigationBar(
+        items: _navigationViews
+            .map<BottomNavigationBarItem>((NavigationIconView navigationView) => navigationView.item)
+            .toList(),
+        currentIndex: _currentIndex,
+        type: _type,
+        onTap: (int index) {
+          BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(index) ;
+          setState((){
+            animate(index) ;
+          }) ;
+        },
+      );
+//set State
 
-//    return StreamBuilder(
-//      stream: BlocProvider.of(context).centerBloc.bottomBarPressed,
-//      builder: (context, snapshot){
-// //       print(snapshot.data) ;
-//        snapshot.data == null ? animate(0) : animate(snapshot.data) ;
-      if(botNavBar != null)
-        return botNavBar ;
-      else{
-        botNavBar = BottomNavigationBar(
-          items: _navigationViews
-              .map<BottomNavigationBarItem>((NavigationIconView navigationView) => navigationView.item)
-              .toList(),
-          currentIndex: _currentIndex,
-          type: _type,
-          onTap: (int index) {
-            BlocProvider.of(context).centerBloc.setBottomBarPressed(index) ;
-          },
-        );
-        return botNavBar ;
-      }
-
-//      }
-//    ) ;
   }
 
   void animate(int index){
-//    _navigationViews[_currentIndex].controller.reverse();
+    _navigationViews[_currentIndex].controller.reverse();
     _currentIndex = index;
     _navigationViews[_currentIndex].controller.forward();
   }

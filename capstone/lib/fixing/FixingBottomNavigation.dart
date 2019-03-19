@@ -85,7 +85,7 @@ class _BottomNavigationState extends State<BottomNavigation>
     with TickerProviderStateMixin
 {
   int _currentIndex = 0;
-  BottomNavigationBarType _type = BottomNavigationBarType.shifting;
+  BottomNavigationBarType _type = BottomNavigationBarType.fixed;
   List<NavigationIconView> _navigationViews;
 
   @override
@@ -106,14 +106,14 @@ class _BottomNavigationState extends State<BottomNavigation>
 //        vsync: this,
 //      ),
       NavigationIconView(
-        activeIcon: const Icon(Icons.cloud),
-        icon: const Icon(Icons.cloud_queue),
+        activeIcon: const Icon(Icons.cloud_queue),
+        icon: const Icon(Icons.cloud),
         title: 'Cloud',
         color: Colors.teal,
         vsync: this,
       ),
       NavigationIconView(
-        activeIcon: const Icon(Icons.favorite),
+        activeIcon: const Icon(Icons.favorite, color: Colors.deepOrangeAccent),
         icon: const Icon(Icons.favorite_border),
         title: 'FeedPage',
         color: Colors.indigo,
@@ -171,7 +171,7 @@ class _BottomNavigationState extends State<BottomNavigation>
           _navigationViews[_currentIndex].controller.forward();
           //navigation bar가 tap 된 경우 blocProvider
           BlocProvider.of(context).centerBloc.setBottomBarPressed(
-              _navigationViews[_currentIndex]._title
+              index
           ) ;
         });
       },
@@ -185,27 +185,7 @@ class _BottomNavigationState extends State<BottomNavigation>
 
      */
 
-    StreamBuilder(
-        stream : BlocProvider.of(context).centerBloc.bottomBarPressed,
-        builder: (context,snapshot) {
-          if (!snapshot.hasData || snapshot.data == 'Alarm') {
-            _titleText = Text('Alarm') ;
-          }
-          else if (snapshot.data == 'Cloud'){
-            _titleText = Text('Cloud') ;
 
-          }
-          else if (snapshot.data == 'FeedPage'){
-            _titleText = Text('FeedPage') ;
-
-          }
-          else{
-            _titleText = Text('Yeah') ;
-
-          }
-        }
-
-    );
 
     return StreamBuilder(
       stream : BlocProvider.of(context).centerBloc.bottomBarPressed,
@@ -243,7 +223,7 @@ class _BottomNavigationState extends State<BottomNavigation>
 
                   builder: (context, snapshot){
 
-                    if (!snapshot.hasData || snapshot.data != 'FeedPage') {
+                    if (!snapshot.hasData || snapshot.data != '3') {
                       return Container(
                         color: Colors.blue,
                         width: double.infinity,
@@ -258,8 +238,8 @@ class _BottomNavigationState extends State<BottomNavigation>
                         )),
                       );
                     }
-                    else if(snapshot.data == 'FeedPage')
-                      return FeedPage() ;
+                    else if(snapshot.data == '3');
+           //           return FeedPage() ;
 
                   },
                 )

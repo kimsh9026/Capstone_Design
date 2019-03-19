@@ -6,22 +6,22 @@ class CenterBloc extends Object{
 
   BuildContext _context ;
 
-  final _bottomBarPressed = StreamController<String>.broadcast() ;
+  final _bottomBarPressed = StreamController<int>.broadcast() ;
 
-  Stream<String> get bottomBarPressed => _bottomBarPressed.stream ;
+  Stream<int> get bottomBarPressed => _bottomBarPressed.stream ;
 
-  Function(String) get setBottomBarPressed => _bottomBarPressed.sink.add ;
+  Function(int) get setBottomBarPressed => _bottomBarPressed.sink.add ;
 
   CenterBloc(){
-    bottomBarPressed.listen((String page) {
-      print("barPage : $page") ;
+    bottomBarPressed.listen((int page) {
+      print("Pressed : $page") ;
       if(_context != null){
         Navigator.pushReplacement(
           _context,
           PageRouteBuilder(
             pageBuilder: (_context1, animation1, animation2) {
-              if(page == 'FeedPage')
-              return FeedPage();
+              if(page == '0');
+              //return FeedPage();
             },
 //            transitionsBuilder: (_context, animation, _, child) {
 //              return new SlideTransition(
