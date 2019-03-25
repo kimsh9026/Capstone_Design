@@ -1,8 +1,10 @@
-import 'ChatRoom.dart' ;
+import 'package:capstone/ChatRoom.dart';
 import 'package:flutter/material.dart';
 //import 'ProfilePage.dart' ;
-import 'DetailPage.dart' ;
-
+import 'package:capstone/DetailPage.dart';
+/*
+* 이미지 UI 그리는 부분 수정 필요
+ */
 
 class RoomCard extends StatefulWidget{
   final ChatRoom chatroom ;
@@ -25,19 +27,25 @@ class RoomCardState extends State<RoomCard> {
   }
 
   Widget get roomImage {
+
+
     var roomAvatar = new Hero(
       tag: chatRoom,
-      child: new Container(
-        width: 70.0,
-        height: 70.0,
-        decoration: new BoxDecoration(
-          shape: BoxShape.circle,
-          image: new DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage('Images/logo image.png'),
+//      child: new CircleAvatar(
+//        radius: 30,
+////        backgroundImage: AssetImage('Images/sample.png'),
+        child: new Container(
+          width: 60.0,
+          height: 60.0,
+          decoration: new BoxDecoration(
+            shape: BoxShape.circle,
+            image: new DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage('Images/sample.png'),
+            ),
           ),
         ),
-      ),
+//      )
     );
 
     var placeholder = new Container(
@@ -73,39 +81,77 @@ class RoomCardState extends State<RoomCard> {
   Widget get roomCard {
     return new Container(
       //  tag: roomCard,
-        width: 350,
-        height: 115.0,
-        child: new Card(
-          color: Colors.white,
-          child: new Padding(
-            padding: const EdgeInsets.only(
-              top: 8.0,
-              bottom: 8.0,
-              left: 15.0,
-            ),
-            child: new Row(
+      width: 390,
+      height: 125.0,
+      child: new Card(
+        elevation: 3,
+        color: Colors.white,
+        child: new Padding(
+          padding: const EdgeInsets.only(
+            top: 8.0,
+            bottom: 8.0,
+            left: 20.0,
+          ),
+          child: new Row(
               children: <Widget>[
                 roomImage,
+                new Padding(
+                  padding: const EdgeInsets.only(
+                    left: 20.0,
+                  )),
                 new Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+
+                    //Title
                     new Text(widget.chatroom.roomName,
-                      style: TextStyle(
-                          fontSize: 18.0,
-                          height: 1.3
+
+                      style: Theme.of(context).textTheme.headline,
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.only(
+                        top: 5,
                       ),
                     ),
-                    new Text('${widget.chatroom.date} ${widget.chatroom.time}', //String 안에서 변수를 사용할 때는 이런식으로 써요
-                      style: TextStyle(
-                        fontSize: 13.0,
-                      ),
-                    ),
+                    //day and time
                     new Row(
                       children: <Widget>[
-                        new Icon(
-                          Icons.people,
+                        new Icon(Icons.calendar_today, size: 12),
+                        new Text(' ${widget.chatroom.date}', //String 안에서 변수를 사용할 때는 이런식으로 써요
+                          style: Theme.of(context).textTheme.body1
                         ),
+                        new Padding(
+                          padding: const EdgeInsets.only(
+                            left: 10,
+                          ),
+                        ),
+                        new Icon(Icons.access_time, size: 12),
+                        new Text('${widget.chatroom.time}', //String 안에서 변수를 사용할 때는 이런식으로 써요
+                          style: Theme.of(context).textTheme.body1
+                        ),
+                      ]
+                    ),
+
+                    //Location
+                    new Row(
+                      children: <Widget>[
+                        new Icon(Icons.location_on, size: 12),
+                        new Text('경상북도 포항시 북구 흥해읍', //String 안에서 변수를 사용할 때는 이런식으로 써요
+                          style: Theme.of(context).textTheme.body1
+                        ),
+                      ],
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.only(
+                        top: 7,
+                      ),
+                    ),
+
+                    //People counts
+                    new Row(
+                      children: <Widget>[
+                        new Icon(Icons.people, size: 15),
                         new Text(': ${widget.chatroom.currentPeopleNumbers} / ${widget.chatroom.fullPeopleNumbers}')
                       ],
                     )
@@ -124,15 +170,10 @@ class RoomCardState extends State<RoomCard> {
     return new InkWell(
       onTap: () => showRoomDetailPage(),
       child: new Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0),
         child: new Container(
-          height: 115.0,
-          child: new Row(
-            children: <Widget>[
-              roomCard,
-              //new Positioned(top: 15, left: 20, child: roomImage),
-            ],
-          ),
+          height: 125.0,
+          child: roomCard,
         ),
       ),
     );
@@ -145,12 +186,12 @@ class RoomCardState extends State<RoomCard> {
 //      return DetailPage(chatRoom);
 //    }));
 
-  return showDialog(
-    context: context,
-    builder: (BuildContext context){
-      return DetailPage(chatRoom, roomCard) ;
-    }
-  );
+    return showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return DetailPage(chatRoom, roomCard) ;
+        }
+    );
 
   }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:capstone/ChatRoom.dart' ;
-import 'package:capstone/RoomCard.dart' ;
+import 'package:capstone/ChatRoom.dart';
+import 'package:capstone/RoomCard.dart';
 class DetailPage extends StatelessWidget {
 
   final ChatRoom room ;

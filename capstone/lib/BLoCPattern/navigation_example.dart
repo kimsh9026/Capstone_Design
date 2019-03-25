@@ -224,8 +224,8 @@ class _BottomNavigationDemoState extends State<BottomNavigationDemo>
                 )),
               );
             }
-            else if(snapshot.data == 'FeedPage')
-              return FeedPage() ;
+            else if(snapshot.data == 'FeedPage');
+         //     return FeedPage() ;
 
           },
         )

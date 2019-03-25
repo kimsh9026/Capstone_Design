@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:capstone/ChatRoom.dart' ;
-import 'package:capstone/RoomCard.dart' ;
-import 'package:capstone/DetailPage.dart' ;
+import 'package:capstone/ChatRoom.dart';
+import 'package:capstone/RoomCard.dart';
+//import 'package:capstone/test/DetailPage.dart' ;
 
 class ListBlock extends StatelessWidget {
   final List<ChatRoom> chatRooms;
@@ -10,22 +10,34 @@ class ListBlock extends StatelessWidget {
 
   ListView _buildList(context) {
     return new ListView.builder(
+      shrinkWrap: true,
+      padding: const EdgeInsets.only(
+        top: 8.0,
+        bottom: 8.0,
+      ),
       itemCount: chatRooms.length,
-      itemBuilder: (context, int) {
+      itemBuilder: (context, int,
+          {
+            shrinkWrap: true,
+            padding: const EdgeInsets.only(
+              top: 30.0,
+              bottom: 30.0,
+            ),
+          }) {
         return new RoomCard(chatRooms[int]);
       },
     );
   }
 
   Widget detailRoomView(int number) {
- //   return DetailPage(chatRooms[number], new RoomCard(chatRooms[number]).) ;
+    //   return DetailPage(chatRooms[number], new RoomCard(chatRooms[number]).) ;
   }
 
   Widget createNewRoom(){
     return new Container(
       //  tag: roomCard,
-      width: 350,
-      height: 115.0,
+      width: 500,
+//      height: 130.0,
       child: new Card(
         color: Colors.white,
         child: new Padding(

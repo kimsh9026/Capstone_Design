@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'AuthBloc.dart' ;
-import 'RoomBloc.dart' ;
-import 'BottomBarBloc.dart' ;
+import 'package:capstone/AuthBloc.dart';
+import 'package:capstone/RoomBloc.dart';
+import 'package:capstone/BottomBarBloc.dart';
 
 
 

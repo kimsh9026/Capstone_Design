@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 //import 'package:capstone/test/ChatRoom.dart' ;
-import 'package:capstone/test/BottomNavigation.dart' ;
+import 'package:capstone/BottomNavigation.dart';
 
-class ChatRoomPage extends StatelessWidget {
+class MatchingPage extends StatelessWidget {
 
   BottomNavigation botNavBar ;
 
-  ChatRoomPage(this.botNavBar) ;
+  MatchingPage(this.botNavBar) ;
 
   @override
   Widget build(BuildContext context) {
-    print("ChatRoomPage Build") ;
+    print("MatchingPage Build") ;
     return Scaffold(
       appBar: AppBar(
-        title: Text('ChatRoomPage Page'),
+        title: Text('Matching Page'),
         actions:
         <Widget>[
           PopupMenuButton<BottomNavigationBarType>(
@@ -37,7 +37,7 @@ class ChatRoomPage extends StatelessWidget {
           width: double.infinity,
           height: double.infinity,
           child: Center(child: Text(
-            'ChatRoomPage..',
+            'Matching..',
             style: TextStyle(
               fontSize: 32.0,
               color: Colors.white,

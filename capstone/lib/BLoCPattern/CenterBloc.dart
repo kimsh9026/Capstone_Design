@@ -20,8 +20,8 @@ class CenterBloc extends Object{
           _context,
           PageRouteBuilder(
             pageBuilder: (_context1, animation1, animation2) {
-              if(page == 'FeedPage')
-              return FeedPage();
+              if(page == 'FeedPage');
+  //            return FeedPage();
             },
 //            transitionsBuilder: (_context, animation, _, child) {
 //              return new SlideTransition(
