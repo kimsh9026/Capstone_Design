@@ -147,36 +147,45 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
   }
 }
 
+class ExpansionBlock extends StatefulWidget{
 
-class ProfilePage extends StatelessWidget {
+  @override
+  _ExpansionBlockState createState() => _ExpansionBlockState() ;
+}
 
-  Widget searchingBlock(){
-    return TextField(
-      textAlign: TextAlign.center,
-      decoration: InputDecoration(
-        border: InputBorder.none,
-        hintText: '제목, 내용 또는 키워드를 입력해주세요',
-        hintStyle: TextStyle(
-          fontSize: 15,
-        ),
-        suffixIcon: Icon(Icons.search,color: Colors.blue),
-        fillColor: Colors.black,
+class _ExpansionBlockState extends State<ExpansionBlock> {
+  bool isExpanded = true;
+
+  Widget expansionBlock(context){
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        minHeight: 30,
       ),
-    );
-  }
-
-  Widget expansionBlock(context, child){
-    bool isExpanded = true;
-    return InkWell(
-      onTap : () {
-        isExpanded = !isExpanded;
-        print("InkWell tapped");
-      },
-      child: AnimatedContainer(
-        duration: Duration(seconds: 1),
-//        curve: Curves.fastOutSlowIn,
-        child: child,
-        margin: isExpanded ? EdgeInsets.only(bottom: 200) : EdgeInsets.only(bottom: 30),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex:2,
+            child: Container(),
+          ),
+          Expanded(
+              flex: 1,
+              child: InkWell(
+                  onTap: () {
+                    print("tapped");
+                    isExpanded = !isExpanded ;
+                    },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Text('상세설명적용'),
+                      ExpandIcon(
+                        isExpanded: isExpanded,
+                      )
+                    ],
+                  )
+              )
+          )
+        ],
       ),
     ) ;
   }
@@ -191,7 +200,7 @@ class ProfilePage extends StatelessWidget {
             Expanded(
               flex:1,
               child: Text(
-                  string,
+                string,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
@@ -208,6 +217,68 @@ class ProfilePage extends StatelessWidget {
             )
           ],
         )
+    );
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    Container expansionChild = Container(
+      color: Colors.limeAccent,
+      width: 500,
+      height: 200,
+      child: Form(
+        child: Column(
+          children: <Widget>[
+            Expanded(
+                flex: 1,
+                child: expansionDateTime(context,'날짜',CustomDatePicker())
+            ),
+            Expanded(
+              flex: 1,
+              child: expansionDateTime(context,'시간',CustomTimePicker()),
+            ),
+            Expanded(
+              flex: 4,
+              child: expansionDateTime(context,'목적',CustomTimePicker()),
+            ),
+          ],
+        ),
+      ),
+    ) ;
+
+    return AnimatedCrossFade(
+      firstChild: expansionBlock(context),
+      secondChild: Column(
+        children: <Widget>[
+          expansionChild,
+          expansionBlock(context),
+        ],
+      ),
+      firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
+      secondCurve: const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
+      sizeCurve: Curves.fastOutSlowIn,
+      crossFadeState: isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+      duration: Duration(milliseconds: 200),
+    ) ;
+  }
+}
+
+
+class ProfilePage extends StatelessWidget {
+
+  Widget searchingBlock(){
+    return TextField(
+      textAlign: TextAlign.center,
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        hintText: '제목, 내용 또는 키워드를 입력해주세요',
+        hintStyle: TextStyle(
+          fontSize: 15,
+        ),
+        suffixIcon: Icon(Icons.search,color: Colors.blue),
+        fillColor: Colors.black,
+      ),
     );
   }
 
@@ -238,32 +309,33 @@ class ProfilePage extends StatelessWidget {
       body: Column(
         children: <Widget>[
           searchingBlock(),
-          new Container(
-            color: Colors.limeAccent,
-            width: 500,
-            height: 200,
-            child: Form(
-              child: expansionBlock(
-                context,
-                Column(
-                  children: <Widget>[
-                    Expanded(
-                        flex: 1,
-                        child: expansionDateTime(context,'날짜',CustomDatePicker())
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: expansionDateTime(context,'시간',CustomTimePicker()),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: expansionDateTime(context,'목적',CustomTimePicker()),
-                    )
-                  ],
-                ),
-              )
-            ),
-          ),
+//          new Container(
+//            color: Colors.limeAccent,
+//            width: 500,
+//            height: 200,
+//            child: Form(
+//              child: expansionBlock(
+//                context,
+//                Column(
+//                  children: <Widget>[
+//                    Expanded(
+//                        flex: 1,
+//                        child: expansionDateTime(context,'날짜',CustomDatePicker())
+//                    ),
+//                    Expanded(
+//                      flex: 1,
+//                      child: expansionDateTime(context,'시간',CustomTimePicker()),
+//                    ),
+//                    Expanded(
+//                      flex: 4,
+//                      child: expansionDateTime(context,'목적',CustomTimePicker()),
+//                    ),
+//                  ],
+//                ),
+//              )
+//            ),
+//          ),
+          ExpansionBlock(),
           Expanded(
               child: Container(
                 color: Colors.blue,
