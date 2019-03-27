@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:capstone/AuthBloc.dart';
 import 'package:capstone/RoomBloc.dart';
 import 'package:capstone/BottomBarBloc.dart';
-
+import 'package:capstone/ExpansionPanelBloc.dart' ;
 
 
 class BlocProvider extends InheritedWidget {
@@ -10,6 +10,7 @@ class BlocProvider extends InheritedWidget {
     authBloc: AuthBloc(),
     roomBloc: RoomBloc(),
     bottomBarBloc: BottomBarBloc(),
+    expansionPanelBloc: ExpansionPanelBloc(),
   );
 
   BlocProvider({Key key, Widget child}) : super(key: key, child: child);
@@ -27,10 +28,12 @@ class _BlocState {
   final AuthBloc authBloc;
   final RoomBloc roomBloc;
   final BottomBarBloc bottomBarBloc;
+  final ExpansionPanelBloc expansionPanelBloc;
 
   _BlocState({
     this.authBloc,
     this.roomBloc,
     this.bottomBarBloc,
+    this.expansionPanelBloc,
   });
 }

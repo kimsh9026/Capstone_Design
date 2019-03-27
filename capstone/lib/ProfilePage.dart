@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 //import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+import 'package:capstone/BlocProvider.dart' ;
 
 const double _kPickerSheetHeight = 216.0;
 const double _kPickerItemHeight = 32.0;
@@ -154,42 +155,8 @@ class ExpansionBlock extends StatefulWidget{
 }
 
 class _ExpansionBlockState extends State<ExpansionBlock> {
-  bool isExpanded = true;
-
-  Widget expansionBlock(context){
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        minHeight: 30,
-      ),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            flex:2,
-            child: Container(),
-          ),
-          Expanded(
-              flex: 1,
-              child: InkWell(
-                  onTap: () {
-                    print("tapped");
-                    isExpanded = !isExpanded ;
-                    },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Text('상세설명적용'),
-                      ExpandIcon(
-                        isExpanded: isExpanded,
-                      )
-                    ],
-                  )
-              )
-          )
-        ],
-      ),
-    ) ;
-  }
-
+  bool isExpanded = false;
+  ConstrainedBox expansionBox ;
   Widget expansionDateTime(context, String string, child){
     return Container(
         width: double.infinity,
@@ -220,6 +187,41 @@ class _ExpansionBlockState extends State<ExpansionBlock> {
     );
   }
 
+  Widget expansionBlock(context){
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        minHeight: 30,
+      ),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex:2,
+            child: Container(),
+          ),
+          Expanded(
+              flex: 1,
+              child: InkWell(
+                  onTap: () {
+                    print("tapped");
+                    BlocProvider.of(context).expansionPanelBloc.setExpansionBarPressed(true) ;
+                    isExpanded = !isExpanded ;
+                    build(context) ;
+                    },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Text('상세설명적용'),
+                      ExpandIcon(
+                        isExpanded: isExpanded,
+                      )
+                    ],
+                  )
+              )
+          )
+        ],
+      ),
+    ) ;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -247,20 +249,25 @@ class _ExpansionBlockState extends State<ExpansionBlock> {
       ),
     ) ;
 
-    return AnimatedCrossFade(
-      firstChild: expansionBlock(context),
-      secondChild: Column(
-        children: <Widget>[
-          expansionChild,
-          expansionBlock(context),
-        ],
-      ),
-      firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
-      secondCurve: const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
-      sizeCurve: Curves.fastOutSlowIn,
-      crossFadeState: isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-      duration: Duration(milliseconds: 200),
-    ) ;
+    return StreamBuilder(
+        stream: BlocProvider.of(context).expansionPanelBloc.expansionBarPressed,
+        builder: (context, snapshot){
+          return AnimatedCrossFade(
+            firstChild: expansionBlock(context),
+            secondChild: Column(
+              children: <Widget>[
+                expansionChild,
+                expansionBlock(context),
+              ],
+            ),
+            firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
+            secondCurve: const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
+            sizeCurve: Curves.fastOutSlowIn,
+            crossFadeState: isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+            duration: Duration(milliseconds: 200),
+          );
+        }
+    );
   }
 }
 
