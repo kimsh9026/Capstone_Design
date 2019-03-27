@@ -5,6 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:capstone/BlocProvider.dart' ;
 
+/*
+* Picker 접혔을 때 눌리지 않도록 처리 필요
+ */
+
 const double _kPickerSheetHeight = 216.0;
 const double _kPickerItemHeight = 32.0;
 
@@ -113,6 +117,7 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
 
   Widget _buildTimePicker(BuildContext context) {
     return GestureDetector(
+
         onTap: () {
           showCupertinoModalPopup<void>(
             context: context,
@@ -153,14 +158,12 @@ class ExpansionBlock extends StatefulWidget{
   @override
   _ExpansionBlockState createState() => _ExpansionBlockState() ;
 }
-
 class _ExpansionBlockState extends State<ExpansionBlock> {
   bool isExpanded = false;
-  ConstrainedBox expansionBox ;
+
   Widget expansionDateTime(context, String string, child){
     return Container(
         width: double.infinity,
-        color: Colors.white,
         padding: EdgeInsets.only(left: 10),
         child: Row(
           children: <Widget>[
@@ -179,24 +182,32 @@ class _ExpansionBlockState extends State<ExpansionBlock> {
               child: Container(),
             ),
             Expanded(
-              flex: 6,
+              flex: 2,
               child: child,
+            ),
+            Expanded(
+              flex: 4,
+              child: Container(),
             )
           ],
         )
     );
   }
 
-  Widget expansionBlock(context){
+  Widget expansionHeader(context,txt){
+
     return ConstrainedBox(
       constraints: BoxConstraints(
-        minHeight: 30,
+        minHeight: 20,
       ),
       child: Row(
         children: <Widget>[
           Expanded(
             flex:2,
-            child: Container(),
+            child: Container(
+              width: double.infinity,
+              color: Colors.black,
+            ),
           ),
           Expanded(
               flex: 1,
@@ -205,12 +216,11 @@ class _ExpansionBlockState extends State<ExpansionBlock> {
                     print("tapped");
                     BlocProvider.of(context).expansionPanelBloc.setExpansionBarPressed(true) ;
                     isExpanded = !isExpanded ;
-                    build(context) ;
                     },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      Text('상세설명적용'),
+                      txt,
                       ExpandIcon(
                         isExpanded: isExpanded,
                       )
@@ -223,11 +233,9 @@ class _ExpansionBlockState extends State<ExpansionBlock> {
     ) ;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    Container expansionChild = Container(
-      color: Colors.limeAccent,
-      width: 500,
+  Widget expansionChild(){
+    return Container(
+      width: 400,
       height: 200,
       child: Form(
         child: Column(
@@ -248,16 +256,20 @@ class _ExpansionBlockState extends State<ExpansionBlock> {
         ),
       ),
     ) ;
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     return StreamBuilder(
         stream: BlocProvider.of(context).expansionPanelBloc.expansionBarPressed,
         builder: (context, snapshot){
           return AnimatedCrossFade(
-            firstChild: expansionBlock(context),
+            firstChild: expansionHeader(context,Text('상세 옵션')),
             secondChild: Column(
               children: <Widget>[
-                expansionChild,
-                expansionBlock(context),
+                expansionChild(),
+                expansionHeader(context,Text('적용')),
               ],
             ),
             firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
@@ -270,7 +282,6 @@ class _ExpansionBlockState extends State<ExpansionBlock> {
     );
   }
 }
-
 
 class ProfilePage extends StatelessWidget {
 
@@ -316,32 +327,6 @@ class ProfilePage extends StatelessWidget {
       body: Column(
         children: <Widget>[
           searchingBlock(),
-//          new Container(
-//            color: Colors.limeAccent,
-//            width: 500,
-//            height: 200,
-//            child: Form(
-//              child: expansionBlock(
-//                context,
-//                Column(
-//                  children: <Widget>[
-//                    Expanded(
-//                        flex: 1,
-//                        child: expansionDateTime(context,'날짜',CustomDatePicker())
-//                    ),
-//                    Expanded(
-//                      flex: 1,
-//                      child: expansionDateTime(context,'시간',CustomTimePicker()),
-//                    ),
-//                    Expanded(
-//                      flex: 4,
-//                      child: expansionDateTime(context,'목적',CustomTimePicker()),
-//                    ),
-//                  ],
-//                ),
-//              )
-//            ),
-//          ),
           ExpansionBlock(),
           Expanded(
               child: Container(
