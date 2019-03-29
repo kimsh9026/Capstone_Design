@@ -13,7 +13,6 @@ class _ExpansionBlockState extends State<ExpansionBlock> {
 
   Widget expansionDateTime(context, String string, child){
     return Container(
-        color: Colors.yellow,
         width: double.infinity,
         padding: EdgeInsets.only(left: 10),
         child: Row(
@@ -47,49 +46,46 @@ class _ExpansionBlockState extends State<ExpansionBlock> {
 
   Widget expansionHeader(context,txt){
 
-    return Container(
-      color: Color.fromRGBO(247, 252, 254, 0.8),
-      height: 40,
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          minHeight: 10,
-        ),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              flex:2,
-              child: Container(
-                width: double.infinity,
-              ),
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        minHeight: 20,
+      ),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex:2,
+            child: Container(
+              width: double.infinity,
+              color: Colors.black,
             ),
-            Expanded(
-                flex: 1,
-                child: InkWell(
-                    onTap: () {
-                      print("tapped");
-                      BlocProvider.of(context).expansionPanelBloc.setExpansionBarPressed(true) ;
-                      isExpanded = !isExpanded ;
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        txt,
-                        ExpandIcon(
-                          isExpanded: isExpanded,
-                        )
-                      ],
-                    )
-                )
-            )
-          ],
-        ),
-      )
-    );
+          ),
+          Expanded(
+              flex: 1,
+              child: InkWell(
+                  onTap: () {
+                    print("tapped");
+                    BlocProvider.of(context).expansionPanelBloc.setExpansionBarPressed(true) ;
+                    isExpanded = !isExpanded ;
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      txt,
+                      ExpandIcon(
+                        isExpanded: isExpanded,
+                      )
+                    ],
+                  )
+              )
+          )
+        ],
+      ),
+    ) ;
   }
 
   Widget expansionChild(){
     return Container(
-      width: double.infinity,
+      width: 400,
       height: 200,
       child: Form(
         child: Column(

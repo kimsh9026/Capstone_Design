@@ -3,7 +3,6 @@ import 'package:capstone/ChatRoom.dart';
 import 'package:capstone/ListBlock.dart';
 import 'package:capstone/BottomNavigation.dart';
 import 'package:capstone/PopupSearchButton.dart';
-import 'package:capstone/ExpansionPanel.dart' ;
 
 /*
 * Scaffold return 으로 변경필요!
@@ -32,33 +31,29 @@ class FeedPage extends StatelessWidget {
   );
 
   Widget searchingBlock(){
-    return Container(
-      color: Colors.white,
-      child: TextField(
-        textAlign: TextAlign.center,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: '제목, 내용 또는 키워드를 입력해주세요',
-          hintStyle: TextStyle(
-            fontSize: 15,
-          ),
-          suffixIcon: Icon(Icons.search,color: Colors.blue),
-          fillColor: Colors.black,
-        ),
-      )
+    return TextField(
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.all(15),
+        border: InputBorder.none,
+        hintText: 'Search',
+        suffixIcon: Icon(Icons.search),
+        fillColor: Colors.black,
+      ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
+    List<String> list = ['1','2','3','4'] ;
     print("FeedPage build") ;
     return Scaffold(
       backgroundColor: Color.fromRGBO(215, 238, 247, 0.9),
       appBar: AppBar(
         toolbarOpacity: 1,
-        elevation: 0.1,
+        elevation: 0,
         bottomOpacity: 1,
         title: Text(
-          '동행 찾기',
+          '게시판',
           textAlign: TextAlign.center,
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -73,8 +68,7 @@ class FeedPage extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          searchingBlock(),
-          ExpansionBlock(),
+//          searchingBlock(),
           new Divider(color: Colors.black45, indent: 0.0, height: 0,),
           Expanded(
             child : new Center(
