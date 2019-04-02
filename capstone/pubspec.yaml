@@ -13,8 +13,13 @@ environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"
 
 dependencies:
+
+  cloud_firestore:
+
   flutter:
     sdk: flutter
+  firebase_core: ^0.3.1+1  # add dependency for Firebase Core
+  firebase_analytics: ^2.1.0  # add dependency for Google Analytics for Firebase
   flutter_bloc : ^0.7.0
   intl: ^0.15.8
 
