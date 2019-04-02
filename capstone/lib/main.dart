@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
 //          primaryColor: Color.fromRGBO(61, 174, 218, 0),
           textTheme: TextTheme(
             headline: TextStyle(
+
                 fontWeight: FontWeight.w400,
                 fontSize: 17.0,
 //                height: 0
