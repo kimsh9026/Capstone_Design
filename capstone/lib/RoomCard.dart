@@ -2,25 +2,27 @@ import 'package:capstone/ChatRoom.dart';
 import 'package:flutter/material.dart';
 //import 'ProfilePage.dart' ;
 import 'package:capstone/DetailPage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' ;
 /*
 * 이미지 UI 그리는 부분 수정 필요
  */
 
 class RoomCard extends StatefulWidget{
-  final ChatRoom chatroom ;
 
-  RoomCard(this.chatroom) ;
+  final DocumentSnapshot document ;
+
+  RoomCard(BuildContext context, this.document) ;
 
   @override
-  RoomCardState createState() => new RoomCardState(chatroom, this);
+  RoomCardState createState() => new RoomCardState();
 }
 
 
 class RoomCardState extends State<RoomCard> {
 
-  ChatRoom chatRoom ;
-  RoomCard roomCardForDetail ;
-  RoomCardState(this.chatRoom, this.roomCardForDetail) ;
+//  ChatRoom chatRoom ;
+//  RoomCard roomCardForDetail ;
+//  RoomCardState() ;
 
   void initState(){
     super.initState() ;
@@ -28,9 +30,8 @@ class RoomCardState extends State<RoomCard> {
 
   Widget get roomImage {
 
-
     var roomAvatar = new Hero(
-      tag: chatRoom,
+      tag: widget.document,
 //      child: new CircleAvatar(
 //        radius: 30,
 ////        backgroundImage: AssetImage('Images/sample.png'),
@@ -105,8 +106,8 @@ class RoomCardState extends State<RoomCard> {
                   children: <Widget>[
 
                     //Title
-                    new Text(widget.chatroom.roomName,
-
+                    new Text(
+                      widget.document['name'],
                       style: Theme.of(context).textTheme.headline,
                     ),
                     new Padding(
@@ -118,7 +119,7 @@ class RoomCardState extends State<RoomCard> {
                     new Row(
                       children: <Widget>[
                         new Icon(Icons.calendar_today, size: 12),
-                        new Text(' ${widget.chatroom.date}', //String 안에서 변수를 사용할 때는 이런식으로 써요
+                        new Text(' ${widget.document['dateNtime']}', //String 안에서 변수를 사용할 때는 이런식으로 써요
                           style: Theme.of(context).textTheme.body1
                         ),
                         new Padding(
@@ -127,7 +128,7 @@ class RoomCardState extends State<RoomCard> {
                           ),
                         ),
                         new Icon(Icons.access_time, size: 12),
-                        new Text('${widget.chatroom.time}', //String 안에서 변수를 사용할 때는 이런식으로 써요
+                        new Text('${widget.document['dateNtime']}', //String 안에서 변수를 사용할 때는 이런식으로 써요
                           style: Theme.of(context).textTheme.body1
                         ),
                       ]
@@ -152,7 +153,7 @@ class RoomCardState extends State<RoomCard> {
                     new Row(
                       children: <Widget>[
                         new Icon(Icons.people, size: 15),
-                        new Text(': ${widget.chatroom.currentPeopleNumbers} / ${widget.chatroom.fullPeopleNumbers}')
+                        new Text(': ${widget.document['currentnumber']} / ${widget.document['totalnumber']}')
                       ],
                     )
                   ],
@@ -189,7 +190,7 @@ class RoomCardState extends State<RoomCard> {
     return showDialog(
         context: context,
         builder: (BuildContext context){
-          return DetailPage(chatRoom, roomCard) ;
+          return DetailPage(roomCard) ;
         }
     );
 

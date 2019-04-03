@@ -1,31 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:capstone/ChatRoom.dart';
 import 'package:capstone/RoomCard.dart';
+import 'package:capstone/BlocProvider.dart' ;
 //import 'package:capstone/test/DetailPage.dart' ;
 
 class ListBlock extends StatelessWidget {
-  final List<ChatRoom> chatRooms;
 
-  ListBlock(this.chatRooms);
+  ListBlock();
 
-  ListView _buildList(context) {
-    return new ListView.builder(
-      shrinkWrap: true,
-      padding: const EdgeInsets.only(
-        top: 8.0,
-        bottom: 8.0,
-      ),
-      itemCount: chatRooms.length,
-      itemBuilder: (context, int,
-          {
-            shrinkWrap: true,
-            padding: const EdgeInsets.only(
-              top: 30.0,
-              bottom: 30.0,
-            ),
-          }) {
-        return new RoomCard(chatRooms[int]);
-      },
+  Widget _buildList(context) {
+    return StreamBuilder(
+      stream: BlocProvider.of(context).roomBloc.roomInfo,
+      builder: (context, snapshot) {
+        if(!snapshot.hasData) return const Text('Loading..') ;
+        return ListView.builder(
+          shrinkWrap: true,
+          padding: const EdgeInsets.only(
+            top: 8.0,
+            bottom: 8.0,
+          ),
+          itemCount: snapshot.data.documents.length,
+          itemBuilder: (context, int,
+              {
+                shrinkWrap: true,
+                padding: const EdgeInsets.only(
+                  top: 30.0,
+                  bottom: 30.0,
+                ),
+              }) {
+            print('has Data!') ;
+            return new RoomCard(context, snapshot.data.documents[int]);
+          },
+        );
+      }
     );
   }
 

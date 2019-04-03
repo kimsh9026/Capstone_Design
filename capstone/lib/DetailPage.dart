@@ -3,10 +3,9 @@ import 'package:capstone/ChatRoom.dart';
 import 'package:capstone/RoomCard.dart';
 class DetailPage extends StatelessWidget {
 
-  final ChatRoom room ;
   final Container roomCard ;
 
-  DetailPage(this.room, this.roomCard) ;
+  DetailPage(this.roomCard) ;
 
   @override
   Widget build(BuildContext context) {
