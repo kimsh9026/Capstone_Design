@@ -20,10 +20,6 @@ class RoomCard extends StatefulWidget{
 
 class RoomCardState extends State<RoomCard> {
 
-//  ChatRoom chatRoom ;
-//  RoomCard roomCardForDetail ;
-//  RoomCardState() ;
-
   void initState(){
     super.initState() ;
   }
@@ -80,6 +76,7 @@ class RoomCardState extends State<RoomCard> {
   }
 
   Widget get roomCard {
+    DateTime date = widget.document['dateNtime'] ;
     return new Container(
       //  tag: roomCard,
       width: 390,
@@ -100,63 +97,71 @@ class RoomCardState extends State<RoomCard> {
                   padding: const EdgeInsets.only(
                     left: 20.0,
                   )),
-                new Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-
-                    //Title
-                    new Text(
-                      widget.document['name'],
-                      style: Theme.of(context).textTheme.headline,
-                    ),
-                    new Padding(
-                      padding: const EdgeInsets.only(
-                        top: 5,
-                      ),
-                    ),
-                    //day and time
-                    new Row(
+                Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        new Icon(Icons.calendar_today, size: 12),
-                        new Text(' ${widget.document['dateNtime']}', //String 안에서 변수를 사용할 때는 이런식으로 써요
-                          style: Theme.of(context).textTheme.body1
+
+                        //Title
+                        new Text(
+                          '${widget.document['name']}',
+                          style: Theme.of(context).textTheme.headline,
                         ),
                         new Padding(
                           padding: const EdgeInsets.only(
-                            left: 10,
+                            top: 5,
                           ),
                         ),
-                        new Icon(Icons.access_time, size: 12),
-                        new Text('${widget.document['dateNtime']}', //String 안에서 변수를 사용할 때는 이런식으로 써요
-                          style: Theme.of(context).textTheme.body1
+                        //day and time
+                        new Row(
+                            children: <Widget>[
+                              new Icon(Icons.calendar_today, size: 12),
+                              new Text(' ${date.year}년 ${date.month}월 ${date.day}일', //String 안에서 변수를 사용할 때는 이런식으로 써요
+                                  style: Theme.of(context).textTheme
+                                      .body1
+                              ),
+                              new Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 10,
+                                ),
+                              ),
+                              new Icon(Icons.access_time, size: 12),
+                              new Text(
+                                  '${date.hour}시 ${date.minute}분', //String 안에서 변수를 사용할 때는 이런식으로 써요
+                                  style: Theme.of(context).textTheme.body1
+                              ),
+                            ]
                         ),
-                      ]
-                    ),
 
-                    //Location
-                    new Row(
-                      children: <Widget>[
-                        new Icon(Icons.location_on, size: 12),
-                        new Text('경상북도 포항시 북구 흥해읍', //String 안에서 변수를 사용할 때는 이런식으로 써요
-                          style: Theme.of(context).textTheme.body1
+                        //Location
+                        new Row(
+                          children: <Widget>[
+                            new Icon(Icons.location_on, size: 12),
+                            new Text('경상북도 포항시 북구 흥해읍', //String 안에서 변수를 사용할 때는 이런식으로 써요
+                                style: Theme.of(context).textTheme.body1
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    new Padding(
-                      padding: const EdgeInsets.only(
-                        top: 7,
-                      ),
-                    ),
+                        new Padding(
+                          padding: const EdgeInsets.only(
+                            top: 7,
+                          ),
+                        ),
 
-                    //People counts
-                    new Row(
-                      children: <Widget>[
-                        new Icon(Icons.people, size: 15),
-                        new Text(': ${widget.document['currentnumber']} / ${widget.document['totalnumber']}')
+                        //People counts
+                        new Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+//                            new Icon(Icons.people, size: 15),
+                            new Text('${widget.document['currentnumber']}/${widget.document['totalnumber']}'),
+                            Padding(
+                              padding: EdgeInsets.only(right: 20),
+                            ),
+                          ],
+                        )
                       ],
                     )
-                  ],
                 ),
               ]
 

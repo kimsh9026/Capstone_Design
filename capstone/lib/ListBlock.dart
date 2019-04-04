@@ -44,7 +44,7 @@ class ListBlock extends StatelessWidget {
     return new Container(
       //  tag: roomCard,
       width: 500,
-//      height: 130.0,
+      height: 130.0,
       child: new Card(
         color: Colors.white,
         child: new Padding(

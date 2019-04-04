@@ -4,16 +4,23 @@ import 'package:capstone/ListBlock.dart';
 import 'package:capstone/BottomNavigation.dart';
 import 'package:capstone/PopupSearchButton.dart';
 import 'package:capstone/ExpansionPanel.dart' ;
-import 'package:cloud_firestore/cloud_firestore.dart' ;
 /*
-* Scaffold return 으로 변경필요!
+1. 방추가 기능
+- image Firebase 연동 필요
+- 위치 정보 Firebase 연동 필요
+- 해쉬태그 Firebase 연동 필요
+2. 방 검색 기능
+- Firebase 정보 어떻게 검색하는지?
+3. UI 
+- RoomCard 인원 수 오른쪽 모서리로
+
 
 * room이 tap 됐을 때 동작 처리
 
-* Add button tap 됐을 때 동작 처리
-* rooms 데이터 처리
--> firebase와 연동
- */
+* ExpansionPanel - 검색 적용
+* ListBlock - Room tap 시 Detail 정보들
+ 
+*/
 
 
 
