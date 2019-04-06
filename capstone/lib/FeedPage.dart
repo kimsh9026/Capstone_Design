@@ -62,15 +62,17 @@ class FeedPage extends StatelessWidget {
           title: Text(
             '게시판',
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Color.fromRGBO(47, 146, 217, 0.9), //app bar title color
-            ),
+            style: Theme.of(context).textTheme.title,
+//            TextStyle(
+//              fontWeight: FontWeight.bold,
+//              color: Color.fromRGBO(47, 146, 217, 0.9), //app bar title color
+//            ),
           ),
           centerTitle: true,
           backgroundColor: Colors.white,
           actions: <Widget>[
             //        PopupSearchButton()
+
           ]
       ),
       body: Column(
@@ -87,7 +89,11 @@ class FeedPage extends StatelessWidget {
       ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: roomList.createNewRoom,
+        onPressed: (){
+          Navigator.of(context).push(MaterialPageRoute(builder: (context){
+            return roomList.createNewRoom(context) ;
+          })) ;
+        },
         tooltip: 'create',
         child: Icon(Icons.add_comment),
       ),

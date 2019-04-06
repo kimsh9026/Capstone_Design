@@ -5,11 +5,12 @@ import 'package:intl/intl.dart';
 const double _kPickerSheetHeight = 216.0;
 
 class CustomDatePicker extends StatefulWidget{
-
+  FormFieldState<DateTime> state ;
+  CustomDatePicker({this.state}) ;
   @override
   _CustomDatePickerState createState() => _CustomDatePickerState();
-
 }
+
 class _CustomDatePickerState extends State<CustomDatePicker> {
 
   // Value that is shown in the date picker in date mode.
@@ -48,7 +49,10 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                   mode: CupertinoDatePickerMode.date,
                   initialDateTime: date,
                   onDateTimeChanged: (DateTime newDateTime) {
-                    setState(() => date = newDateTime);
+                    setState(() {
+                      date = newDateTime ;
+                      widget.state.didChange(newDateTime) ;
+                    });
                   },
                 ),
               );
@@ -75,7 +79,8 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
 }
 
 class CustomTimePicker extends StatefulWidget{
-
+  FormFieldState<DateTime> state ;
+  CustomTimePicker({this.state}) ;
   @override
   _CustomTimePickerState createState() => _CustomTimePickerState();
 
@@ -119,7 +124,10 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
                   mode: CupertinoDatePickerMode.time,
                   initialDateTime: time,
                   onDateTimeChanged: (DateTime newDateTime){
-                    setState(() => time = newDateTime);
+                    setState(() {
+                      time = newDateTime;
+                      widget.state.didChange(newDateTime);
+                    });
                   },
                 ),
               );

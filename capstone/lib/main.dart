@@ -33,10 +33,15 @@ class MyApp extends StatelessWidget {
         title: 'Trabuddy',
         theme: new ThemeData(
           brightness: Brightness.light,
-//          primaryColor: Color.fromRGBO(61, 174, 218, 0),
+//          hintColor: Colors.white,
+//          primaryColor: Color.fromRGBO(61, 174, 218, 0), //error
           textTheme: TextTheme(
+            title: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Color.fromRGBO(47, 146, 217, 0.9),
+            ),
             headline: TextStyle(
-
                 fontWeight: FontWeight.w400,
                 fontSize: 17.0,
 //                height: 0

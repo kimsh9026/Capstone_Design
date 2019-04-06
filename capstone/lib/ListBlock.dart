@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:capstone/ChatRoom.dart';
 import 'package:capstone/RoomCard.dart';
 import 'package:capstone/BlocProvider.dart' ;
+import 'package:cloud_firestore/cloud_firestore.dart' ;
+import 'package:capstone/CustomPickers.dart' ;
+
 //import 'package:capstone/test/DetailPage.dart' ;
 
 class ListBlock extends StatelessWidget {
 
+  final formKey = GlobalKey<FormState>() ;
+  List<dynamic> roomInfo = List();
   ListBlock();
 
   Widget _buildList(context) {
@@ -40,51 +45,180 @@ class ListBlock extends StatelessWidget {
     //   return DetailPage(chatRooms[number], new RoomCard(chatRooms[number]).) ;
   }
 
-  Widget createNewRoom(){
-    return new Container(
-      //  tag: roomCard,
-      width: 500,
-      height: 130.0,
-      child: new Card(
-        color: Colors.white,
-        child: new Padding(
-          padding: const EdgeInsets.only(
-            top: 8.0,
-            bottom: 8.0,
-            left: 15.0,
-          ),
-          child: new Row(
+  Widget _createRoomBody(BuildContext context){
+    roomInfo.clear() ;
+    roomInfo.insert(0,'') ;
+    roomInfo.insert(1, DateTime.now()) ;
+    DateTime tempDate ;
+    return Container(
+        child: Form(
+            key: formKey,
+            child: Column(
               children: <Widget>[
-                new Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                new Row(
                   children: <Widget>[
-                    new Text('Name',
-                      style: TextStyle(
-                          fontSize: 18.0,
-                          height: 1.3
-                      ),
+                    Expanded(
+                        flex: 1,
+                        child: Text(
+                          '제목',
+                          style: Theme.of(context).textTheme.body1,
+                          textAlign: TextAlign.center,
+                        )
                     ),
-                    new Text('Date', //String 안에서 변수를 사용할 때는 이런식으로 써요
-                      style: TextStyle(
-                        fontSize: 13.0,
-                      ),
-                    ),
-                    new Row(
-                      children: <Widget>[
-                        new Icon(
-                          Icons.people,
-                        ),
-                        new Text('Number of People')
-                      ],
+                    Expanded(
+                        flex: 5,
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+                          ),
+                          validator: (str) => str.isEmpty ? '제목을 입력해주세요!' : null,
+                            onSaved: (str) {
+                            print('name onSaved! ${str}') ;
+                            roomInfo.removeAt(0) ;
+                            roomInfo.insert(0,str);
+                          }
+                        )
                     )
                   ],
                 ),
-              ]
+                Padding(
+                  padding: EdgeInsets.only(top:5),
+                ),
+                new Row(
+                  children: <Widget>[
+                    Expanded(
+                        flex: 1,
+                        child: Container(
+                          child: Text(
+                            '날짜',
+                            style: Theme.of(context).textTheme.body1,
+                            textAlign: TextAlign.center,
+                          )
+                        )
+                    ),
+                    Expanded(
+                        flex: 5,
+                        child: CustomDateTimeFormField(
+                          isDate: true,
+                          initialValue: DateTime.now(),
+                          validator: (DateTime date)
+                          {
+                            print('date validating! ${date.toString()}') ;
+                            return date.isAfter(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)) ? null : '지금보다 이전 날짜입니다' ;
+                          },
+                            onSaved: (DateTime date) {
+                              if(tempDate == null){
+                                tempDate = date ;
+                              }
+                              else{
+                                tempDate = DateTime(date.year, date.month, date.day, tempDate.hour, tempDate.minute, tempDate.second) ;
+                                roomInfo.removeAt(1) ;
+                                roomInfo.insert(1,tempDate) ;
+                                print('date onSaved!! ${roomInfo.elementAt(1)}') ;
+                              }
+                            }
+                        ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top:5),
+                ),
+                new Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 2,
+                      child: Text(
+                        '시간',
+                        style: Theme.of(context).textTheme.body1,
+                        textAlign: TextAlign.center,
+                      )
+                    ),
+                    Expanded(
+                      flex: 8,
+                      child: CustomDateTimeFormField(
+                          isDate: false,
+                          initialValue: DateTime.now(),
+                          validator: (DateTime date)
+                          {
+                            print('time validating! ${date.toString()}') ;
+                            return date.isAfter(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, DateTime.now().hour, DateTime.now().minute, DateTime.now().second))?
+                            null : '지금보다 이전 시간입니다' ;
+                          },
+                            onSaved: (DateTime date) {
 
+                            if(tempDate == null){
+                              tempDate = date ;
+                            }
+                            else{
+                              tempDate = DateTime(tempDate.year, tempDate.month, tempDate.day, date.hour, date.minute, date.second) ;
+                              roomInfo.removeAt(1) ;
+                              roomInfo.insert(1,tempDate) ;
+                              print('time onSaved!! ${roomInfo.elementAt(1)}') ;
+                            }
+//                            tempDate == null ? tempDate = date :
+                            }
+                        ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(),
+                    )
+                  ],
+                ),
+              ],
+            )
+        )
+    );
+  }
+
+  void validate(context){
+    final form = formKey.currentState ;
+    if(form.validate()){
+      form.save() ;
+      BlocProvider.of(context).roomBloc.setAddRoom(roomInfo) ;
+    }
+  }
+
+  Widget createNewRoom(BuildContext context){
+    print("create new Room") ;
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(45),
+        child: AppBar(
+          actions: <Widget>[
+            //        PopupSearchButton()
+            FlatButton(
+              padding: EdgeInsets.only(left:15),
+                child: Text(
+                    '완료',
+                    style: Theme.of(context).textTheme.title
+                    .copyWith(fontSize: 15)
+                ),
+                onPressed: (){
+                  validate(context) ;
+                  print('tapped') ;
+                },
+              ),
+          ],
+          elevation: 0.1,
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          title: Text(
+            '모집글 작성',
+            style: Theme.of(context).textTheme.title,
+          ),
+          iconTheme: IconThemeData(
+            color: Color.fromRGBO(47, 146, 217, 0.9),
           ),
         ),
       ),
+      backgroundColor: Colors.white,
+      body:
+
+      _createRoomBody(context),
+
     );
   }
 
@@ -93,3 +227,38 @@ class ListBlock extends StatelessWidget {
     return _buildList(context);
   }
 }
+
+class CustomDateTimeFormField extends FormField<DateTime>{
+
+  CustomDateTimeFormField({
+    bool isDate = true,
+    FormFieldSetter<DateTime> onSaved,
+    FormFieldValidator<DateTime> validator,
+    DateTime initialValue,
+    bool autoValidate = false,
+  }) : super(
+    onSaved: onSaved,
+    validator: validator,
+    initialValue: initialValue,
+    autovalidate: autoValidate,
+    builder: (FormFieldState<DateTime> state){
+      print('datePicker ! ${state.value.toString()}') ;
+      return Column(
+       children: <Widget>[
+         isDate? CustomDatePicker(state: state) : CustomTimePicker(state: state),
+         state.hasError?
+             Text(
+               state.errorText,
+               style: TextStyle(
+                 color: Colors.red,
+               )
+             )
+             : Container(),
+       ],
+      )
+      ;
+    }
+  ) ;
+
+}
+
