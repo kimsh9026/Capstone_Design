@@ -59,25 +59,40 @@ class ListBlock extends StatelessWidget {
                   children: <Widget>[
                     Expanded(
                         flex: 1,
-                        child: Text(
-                          '제목',
-                          style: Theme.of(context).textTheme.body1,
-                          textAlign: TextAlign.center,
-                        )
+                        child: Container(
+                          color: Colors.black,
+                          alignment: Alignment(0, 2),
+                          child: Text(
+                            '제목',
+                            style: Theme.of(context).textTheme.body1,
+                            textAlign: TextAlign.center,
+                          )
+                        ),
                     ),
                     Expanded(
                         flex: 5,
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-                          ),
-                          validator: (str) => str.isEmpty ? '제목을 입력해주세요!' : null,
-                            onSaved: (str) {
-                            print('name onSaved! ${str}') ;
-                            roomInfo.removeAt(0) ;
-                            roomInfo.insert(0,str);
-                          }
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 5,
+                              child: TextFormField(
+                                  decoration: InputDecoration(
+                                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+                                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+                                  ),
+                                  validator: (str) => str.isEmpty ? '제목을 입력해주세요!' : null,
+                                  onSaved: (str) {
+                                    print('name onSaved! ${str}') ;
+                                    roomInfo.removeAt(0) ;
+                                    roomInfo.insert(0,str);
+                                  }
+                              )
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Container(),
+                            )
+                          ],
                         )
                     )
                   ],
@@ -90,36 +105,36 @@ class ListBlock extends StatelessWidget {
                     Expanded(
                         flex: 1,
                         child: Container(
-                          child: Text(
-                            '날짜',
-                            style: Theme.of(context).textTheme.body1,
-                            textAlign: TextAlign.center,
-                          )
+                            child: Text(
+                              '날짜',
+                              style: Theme.of(context).textTheme.body1,
+                              textAlign: TextAlign.center,
+                            )
                         )
                     ),
                     Expanded(
                         flex: 5,
                         child: CustomDateTimeFormField(
-                          isDate: true,
-                          initialValue: DateTime.now(),
-                          validator: (DateTime date)
-                          {
-                            print('date validating! ${date.toString()}') ;
-                            return date.isAfter(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)) ? null : '지금보다 이전 날짜입니다' ;
-                          },
-                            onSaved: (DateTime date) {
-                              if(tempDate == null){
-                                tempDate = date ;
-                              }
-                              else{
-                                tempDate = DateTime(date.year, date.month, date.day, tempDate.hour, tempDate.minute, tempDate.second) ;
-                                roomInfo.removeAt(1) ;
-                                roomInfo.insert(1,tempDate) ;
-                                print('date onSaved!! ${roomInfo.elementAt(1)}') ;
-                              }
-                            }
+                                isDate: true,
+                                initialValue: DateTime.now(),
+                                validator: (DateTime date)
+                                {
+                                  print('date validating! ${date.toString()}') ;
+                                  return date.isAfter(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)) ? null : '지금보다 이전 날짜입니다' ;
+                                },
+                                onSaved: (DateTime date) {
+                                  if(tempDate == null){
+                                    tempDate = date ;
+                                  }
+                                  else{
+                                    tempDate = DateTime(date.year, date.month, date.day, tempDate.hour, tempDate.minute, tempDate.second) ;
+                                    roomInfo.removeAt(1) ;
+                                    roomInfo.insert(1,tempDate) ;
+                                    print('date onSaved!! ${roomInfo.elementAt(1)}') ;
+                                  }
+                                }
+                            )
                         ),
-                    ),
                   ],
                 ),
                 Padding(
@@ -128,15 +143,15 @@ class ListBlock extends StatelessWidget {
                 new Row(
                   children: <Widget>[
                     Expanded(
-                      flex: 2,
-                      child: Text(
-                        '시간',
-                        style: Theme.of(context).textTheme.body1,
-                        textAlign: TextAlign.center,
-                      )
+                        flex: 1,
+                        child: Text(
+                          '시간',
+                          style: Theme.of(context).textTheme.body1,
+                          textAlign: TextAlign.center,
+                        )
                     ),
                     Expanded(
-                      flex: 8,
+                      flex: 5,
                       child: CustomDateTimeFormField(
                           isDate: false,
                           initialValue: DateTime.now(),
@@ -161,10 +176,6 @@ class ListBlock extends StatelessWidget {
                             }
                         ),
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: Container(),
-                    )
                   ],
                 ),
               ],
@@ -245,8 +256,13 @@ class CustomDateTimeFormField extends FormField<DateTime>{
       print('datePicker ! ${state.value.toString()}') ;
       return Column(
        children: <Widget>[
-         isDate? CustomDatePicker(state: state) : CustomTimePicker(state: state),
-         state.hasError?
+         Container(
+           alignment: Alignment(-1,0),
+           child: isDate? CustomDatePicker(state: state) : CustomTimePicker(state: state),
+         ),
+      Container(
+      alignment: Alignment(-1,0),
+         child: state.hasError?
              Text(
                state.errorText,
                style: TextStyle(
@@ -254,6 +270,7 @@ class CustomDateTimeFormField extends FormField<DateTime>{
                )
              )
              : Container(),
+      ),
        ],
       )
       ;
