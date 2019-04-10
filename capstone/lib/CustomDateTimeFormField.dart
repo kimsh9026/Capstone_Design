@@ -15,7 +15,6 @@ class CustomDateTimeFormField extends FormField<DateTime>{
       initialValue: initialValue,
       autovalidate: autoValidate,
       builder: (FormFieldState<DateTime> state){
-        print('datePicker ! ${state.value.toString()}') ;
         return Column(
           children: <Widget>[
             Container(

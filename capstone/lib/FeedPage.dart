@@ -4,6 +4,8 @@ import 'package:capstone/ListBlock.dart';
 import 'package:capstone/BottomNavigation.dart';
 import 'package:capstone/PopupSearchButton.dart';
 import 'package:capstone/ExpansionPanel.dart' ;
+import 'package:capstone/BlocProvider.dart' ;
+import 'package:capstone/RoomInfo.dart' ;
 /*
 1. 방추가 기능
 - image Firebase 연동 필요
@@ -32,7 +34,9 @@ class FeedPage extends StatelessWidget {
 
   ListBlock roomList = new ListBlock();
 
-  Widget searchingBlock() {
+  Widget searchingBlock(context) {
+    RoomInfo roomInfo = RoomInfo();
+    roomInfo.roomName = '' ;
     return Container(
         color: Colors.white,
         child: TextField(
@@ -43,9 +47,18 @@ class FeedPage extends StatelessWidget {
             hintStyle: TextStyle(
               fontSize: 15,
             ),
-            suffixIcon: Icon(Icons.search, color: Colors.blue),
+            suffixIcon: InkWell(
+              child: Icon(Icons.search, color: Colors.blue),
+          //    onTap: BlocProvider.of(context).
+            ),
             fillColor: Colors.black,
           ),
+          onChanged: (str) {
+            roomInfo.roomName = str ;
+            print(str) ;
+            BlocProvider.of(context).roomBloc.setRoomFinding(roomInfo) ;
+            BlocProvider.of(context).roomBloc.isFInding(true) ;
+          }
         )
     );
   }
@@ -77,7 +90,7 @@ class FeedPage extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          searchingBlock(),
+          searchingBlock(context),
           ExpansionBlock(),
           new Divider(color: Colors.black45, indent: 0.0, height: 0,),
           Expanded(

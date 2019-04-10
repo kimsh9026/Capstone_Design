@@ -100,7 +100,6 @@ class _BottomNavigationState extends State<BottomNavigation>
   Widget build(BuildContext context) {
     print("bottom NavigationBuild") ;
     print("current index : $_currentIndex") ;
-
     return BottomNavigationBar(
         items: _navigationViews
             .map<BottomNavigationBarItem>((NavigationIconView navigationView) => navigationView.item)
