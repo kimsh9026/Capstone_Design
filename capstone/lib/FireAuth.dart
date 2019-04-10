@@ -10,7 +10,7 @@ class FireAuthProvider {
 
 
   FireAuthProvider(){
-
+//sdkjsdij
   }
   /* use
   if (snapshot.connectionState == ConnectionState.waiting) {
