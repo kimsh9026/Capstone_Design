@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
         ),
         home: new Scaffold(
           body: new StreamBuilder(
-            stream: BlocProvider.of(context).authBloc.logIn,
+            stream: BlocProvider.of(context).authBloc.islogIn,
             builder: (context, snapshot){
               ( !snapshot.hasData || !snapshot.data )? logInPage :
               new StreamBuilder(

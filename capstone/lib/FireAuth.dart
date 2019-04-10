@@ -6,6 +6,9 @@ class FireAuthProvider {
 
   Stream<FirebaseUser> get fireAuth => _fireAuth.onAuthStateChanged ;
 
+  FireAuthProvider(){
+//    FirebaseUser.c
+  }
   /* use
   if (snapshot.connectionState == ConnectionState.waiting) {
           return new SplashScreen();
