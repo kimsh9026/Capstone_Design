@@ -6,6 +6,7 @@ import 'package:capstone/ProfilePage.dart';
 import 'package:capstone/FeedPage.dart';
 import 'package:capstone/MatchingPage.dart';
 import 'package:capstone/ChatRoomPage.dart';
+import 'LogInPage.dart' ;
 /* 해결해야 할 것
 
 * App 실행시 BlocProvider 생성
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
   FeedPage feedPage = new FeedPage(botNavBar) ;
   MatchingPage matchingPage = new MatchingPage(botNavBar) ;
   ChatRoomPage chatRoomPage = new ChatRoomPage(botNavBar) ;
+  LogInPage logInPage = new LogInPage() ;
 
   @override
   Widget build(BuildContext context) {
@@ -54,26 +56,28 @@ class MyApp extends StatelessWidget {
         ),
         home: new Scaffold(
           body: new StreamBuilder(
-              stream : BlocProvider.of(context).bottomBarBloc.bottomBarPressed,
-              builder: (context, snapshot) {
-                if(!snapshot.hasData || snapshot.data == 0){
-                  return profilePage ;
-                }
-                else if(snapshot.data == 1){
-                  return matchingPage ;
-                }
-                else if(snapshot.data == 2){
-                  return feedPage ;
-                }
-                else if(snapshot.data == 3){
-                  return chatRoomPage ;
-                }
-              }),
+            stream: BlocProvider.of(context).authBloc.logIn,
+            builder: (context, snapshot){
+              ( !snapshot.hasData || !snapshot.data )? logInPage :
+              new StreamBuilder(
+                  stream : BlocProvider.of(context).bottomBarBloc.bottomBarPressed,
+                  builder: (context, snapshot) {
+                    if(!snapshot.hasData || snapshot.data == 0){
+                      return profilePage ;
+                    }
+                    else if(snapshot.data == 1){
+                      return matchingPage ;
+                    }
+                    else if(snapshot.data == 2){
+                      return feedPage ;
+                    }
+                    else if(snapshot.data == 3){
+                      return chatRoomPage ;
+                    }
+                  }) ;
+            },
+          ),
           bottomNavigationBar: botNavBar,
-
-
-//    BottomNavigation(),
-          //ListUp(),
         )
     );
   }
