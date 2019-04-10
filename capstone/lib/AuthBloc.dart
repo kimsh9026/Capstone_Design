@@ -3,9 +3,9 @@ import 'dart:async';
 
 
 class AuthBloc extends Object {
-  final _logIn = StreamController<bool>.broadcast() ;
+  final _islogIn = StreamController<bool>.broadcast() ;
+//  final _logIn
+  Stream<bool> get islogIn => _islogIn.stream ;
 
-  Stream<bool> get logIn => _logIn.stream ;
-
-  Function(bool) get setlogIn => _logIn.sink.add ;
+  Function(bool) get setIslogIn => _islogIn.sink.add ;
 }
