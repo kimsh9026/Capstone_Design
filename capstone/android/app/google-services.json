@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "29999604104",
+    "firebase_url": "https://trabuddy-a5eac.firebaseio.com",
+    "project_id": "trabuddy-a5eac",
+    "storage_bucket": "trabuddy-a5eac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:29999604104:android:aa0885844b407b61",
+        "android_client_info": {
+          "package_name": "com.example.capstone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "29999604104-2gun1oogd5bhq0epea516nlcfc29f3ht.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.capstone",
+            "certificate_hash": "b12dcc4ec468d56b5b88654bfab2ce377072bd63"
+          }
+        },
+        {
+          "client_id": "29999604104-q21bd0r21h86igeh6aamsvtmunihpp82.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaEZPOqmeOy089TkryRXztFFy347O4GvE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "29999604104-q21bd0r21h86igeh6aamsvtmunihpp82.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "29999604104-oaoc15nb9m5tuu2joi9c6imghtoh18bp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.capstone"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
