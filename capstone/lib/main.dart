@@ -56,11 +56,17 @@ class MyApp extends StatelessWidget {
         ),
         home: new Scaffold(
           body: new StreamBuilder(
-            stream: BlocProvider.of(context).authBloc.logIn,
-            builder: (context, snapshot){
-              ( !snapshot.hasData || !snapshot.data )? logInPage :
-              new StreamBuilder(
-                  stream : BlocProvider.of(context).bottomBarBloc.bottomBarPressed,
+            stream: BlocProvider.of(context).authBloc.isLoggedIn,
+            builder: (context, authSnapshot){
+              print("streambuilder get") ;
+              if( !authSnapshot.hasData) return logInPage ;
+              else if( authSnapshot.connectionState == ConnectionState.waiting ) {
+                return SplashScreen() ;
+              }
+              else{
+//                !authSnapshot.hasData ? logInPage :
+                return new StreamBuilder(
+                    stream : BlocProvider.of(context).bottomBarBloc.bottomBarPressed,
                   builder: (context, snapshot) {
                     if(!snapshot.hasData || snapshot.data == 0){
                       return profilePage ;
@@ -74,11 +80,21 @@ class MyApp extends StatelessWidget {
                     else if(snapshot.data == 3){
                       return chatRoomPage ;
                     }
-                  }) ;
+                  }
+              ) ;
+                }
             },
           ),
           bottomNavigationBar: botNavBar,
         )
+    );
+  }
+
+
+  Widget SplashScreen(){
+    return Scaffold(
+      appBar : AppBar(title: Text('loading')),
+      body: Center(child: Text('loading'),),
     );
   }
 }

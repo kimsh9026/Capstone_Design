@@ -13,7 +13,20 @@
           "package_name": "com.example.capstone"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "29999604104-2gun1oogd5bhq0epea516nlcfc29f3ht.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.capstone",
+            "certificate_hash": "b12dcc4ec468d56b5b88654bfab2ce377072bd63"
+          }
+        },
+        {
+          "client_id": "29999604104-q21bd0r21h86igeh6aamsvtmunihpp82.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCaEZPOqmeOy089TkryRXztFFy347O4GvE"
