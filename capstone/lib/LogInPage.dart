@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:capstone/BlocProvider.dart' ;
 import 'FireAuth.dart' ;
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class LogInPage extends StatelessWidget {
 
@@ -27,13 +28,24 @@ class LogInPage extends StatelessWidget {
                   ),
                 ),
               ),
+              Container(margin: EdgeInsets.only(top: 30.0)),
               Container(
                 margin: EdgeInsets.only(left: 65.0, right: 65.0),
-                child: RaisedButton(
-                  child: Text('Sign In with Google'),
-                  onPressed: (){
+                child: SignInButton(
+                  Buttons.Google,
+                  text: "Sign up with Google",
+                  onPressed: () {
                     FireAuthProvider().authenticate() ;
-                  }
+                  },
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 65.0, right: 65.0),
+                child: SignInButton(
+                  Buttons.Facebook,
+                  text: "Sign up with Facebook",
+                  onPressed: () {
+                  },
                 ),
               ),
               Container(
@@ -85,49 +97,8 @@ class LogInPage extends StatelessWidget {
                 ),
               ),
               Container(margin: EdgeInsets.only(top: 67.0),),
-              Container(
-                margin: EdgeInsets.only(left: 85.0, right: 85.0),
-                child: Row(
-                children: [
-                  Container(
-                    width: 50.0,
-                    height: 50.0,
-                    margin: EdgeInsets.only(right: 20.0),
-                    decoration: BoxDecoration(
-                      image: new DecorationImage(
-                        image: new AssetImage("Images/LoginUI/facebookIcon.png"),
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: 50.0,
-                    height: 50.0,
-                    margin: EdgeInsets.only(right: 20.0),
-                    decoration: BoxDecoration(
-                      image: new DecorationImage(
-                        image: new AssetImage("Images/LoginUI/googleIcon.png"),
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: 50.0,
-                    height: 50.0,
-                    decoration: BoxDecoration(
-                      image: new DecorationImage(
-                        image: new AssetImage("Images/LoginUI/naverIcon.png"),
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ),
-                ]
-              ),
-            ),
-          ],
-        ),
-    );
-  }
-
-
+            ],
+          ),
+      );
+    }
 }

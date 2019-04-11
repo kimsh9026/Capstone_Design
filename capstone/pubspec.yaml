@@ -23,6 +23,7 @@ dependencies:
   firebase_analytics: ^2.1.0  # add dependency for Google Analytics for Firebase
   flutter_bloc : ^0.7.0
   intl: ^0.15.8
+  flutter_signin_button: ^0.2.8
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
