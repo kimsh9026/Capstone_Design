@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart' ;
-import 'package:capstone/RoomInfo.dart' ;
+import 'package:capstone/feed_page_codes/RoomInfo.dart';
 
 class FirestoreProvider {
 

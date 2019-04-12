@@ -3,8 +3,8 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:capstone/BlocProvider.dart';
-import 'package:capstone/FeedPage.dart';
+import 'package:capstone/bloc_codes/BlocProvider.dart';
+import 'package:capstone/feed_page_codes/FeedPage.dart';
 
 class NavigationIconView {
   NavigationIconView({

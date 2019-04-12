@@ -1,12 +1,12 @@
 
 import 'package:flutter/material.dart';
-import 'package:capstone/ChatRoom.dart';
-import 'package:capstone/ListBlock.dart';
+import 'package:capstone/chat_room_codes/ChatRoom.dart';
+import 'package:capstone/feed_page_codes/ListBlock.dart';
 import 'package:capstone/BottomNavigation.dart';
 import 'package:capstone/PopupSearchButton.dart';
-import 'package:capstone/ExpansionPanel.dart' ;
-import 'package:capstone/BlocProvider.dart' ;
-import 'package:capstone/RoomInfo.dart' ;
+import 'package:capstone/feed_page_codes/ExpansionPanel.dart';
+import 'package:capstone/bloc_codes/BlocProvider.dart';
+import 'package:capstone/feed_page_codes/RoomInfo.dart';
 /*
 1. 방추가 기능
 - image Firebase 연동 필요

@@ -4,7 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:capstone/BLoCPattern/bloc_provider.dart' ;
-import 'package:capstone/FeedPage.dart' ;
+import 'package:capstone/feed_page_codes/FeedPage.dart';
 
 class NavigationIconView {
   NavigationIconView({
