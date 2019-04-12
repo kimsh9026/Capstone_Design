@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:capstone/BlocProvider.dart';
+import 'package:capstone/bloc_codes/BlocProvider.dart';
 //import 'package:capstone/fixing/FixingBottomNavigation.dart';
 import 'package:capstone/BottomNavigation.dart';
 import 'package:capstone/ProfilePage.dart';
-import 'package:capstone/FeedPage.dart';
+import 'package:capstone/feed_page_codes/FeedPage.dart';
 import 'package:capstone/MatchingPage.dart';
-import 'package:capstone/ChatRoomPage.dart';
+import 'package:capstone/chat_room_codes/ChatRoomPage.dart';
 import 'LogInPage.dart' ;
 /* 해결해야 할 것
 

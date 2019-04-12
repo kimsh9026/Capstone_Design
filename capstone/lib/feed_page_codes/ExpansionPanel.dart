@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart' ;
-import 'package:capstone/CustomPickers.dart' ;
-import 'package:capstone/BlocProvider.dart' ;
+import 'package:capstone/custom_widgets/CustomPickers.dart';
+import 'package:capstone/bloc_codes/BlocProvider.dart';
 
 
 class ExpansionBlock extends StatefulWidget{

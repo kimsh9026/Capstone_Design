@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:capstone/BlocProvider.dart' ;
-import 'FireAuth.dart' ;
+import 'package:capstone/bloc_codes/BlocProvider.dart';
+import 'package:capstone/fire_base_codes/FireAuth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class LogInPage extends StatelessWidget {

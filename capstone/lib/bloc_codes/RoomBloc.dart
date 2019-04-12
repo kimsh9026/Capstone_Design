@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'RoomInfo.dart' ;
+import 'package:capstone/feed_page_codes/RoomInfo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' ;
-import 'package:capstone/FirestoreProvider.dart' ;
+import 'package:capstone/fire_base_codes/FirestoreProvider.dart';
 class RoomBloc extends Object{
 
   BuildContext _context ;

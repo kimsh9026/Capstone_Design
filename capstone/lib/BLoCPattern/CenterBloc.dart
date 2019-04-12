@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart' ;
-import 'package:capstone/FeedPage.dart' ;
+import 'package:capstone/feed_page_codes/FeedPage.dart';
 import 'dart:async';
 
 class CenterBloc extends Object{

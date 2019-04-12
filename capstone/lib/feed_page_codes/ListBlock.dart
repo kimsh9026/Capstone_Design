@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:capstone/CustomDateTimeFormField.dart' ;
-import 'package:capstone/ChatRoom.dart';
-import 'package:capstone/RoomCard.dart';
-import 'package:capstone/BlocProvider.dart' ;
-import 'package:capstone/RoomInfo.dart' ;
+import 'package:capstone/custom_widgets/CustomDateTimeFormField.dart';
+import 'package:capstone/chat_room_codes/ChatRoom.dart';
+import 'package:capstone/feed_page_codes/RoomCard.dart';
+import 'package:capstone/bloc_codes/BlocProvider.dart';
+import 'package:capstone/feed_page_codes/RoomInfo.dart';
 //import 'package:capstone/test/DetailPage.dart' ;
 
 /*

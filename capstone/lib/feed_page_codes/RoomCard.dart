@@ -1,7 +1,7 @@
-import 'package:capstone/ChatRoom.dart';
+import 'package:capstone/chat_room_codes/ChatRoom.dart';
 import 'package:flutter/material.dart';
 //import 'ProfilePage.dart' ;
-import 'package:capstone/DetailPage.dart';
+import 'package:capstone/feed_page_codes/DetailPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' ;
 /*
 * 이미지 UI 그리는 부분 수정 필요

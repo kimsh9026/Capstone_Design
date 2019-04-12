@@ -1,4 +1,4 @@
-import 'package:capstone/CustomPickers.dart' ;
+import 'package:capstone/custom_widgets/CustomPickers.dart';
 import 'package:flutter/material.dart';
 
 class CustomDateTimeFormField extends FormField<DateTime>{
