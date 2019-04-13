@@ -23,71 +23,67 @@ class MyApp extends StatelessWidget {
 
   static BottomNavigation botNavBar = BottomNavigation() ;
   ProfilePage profilePage = new ProfilePage() ;
-  FeedPage feedPage = new FeedPage(botNavBar) ;
-  MatchingPage matchingPage = new MatchingPage(botNavBar) ;
-  ChatRoomPage chatRoomPage = new ChatRoomPage(botNavBar) ;
+  FeedPage feedPage = new FeedPage() ;
+  MatchingPage matchingPage = new MatchingPage() ;
+  ChatRoomPage chatRoomPage = new ChatRoomPage() ;
   LogInPage logInPage = new LogInPage() ;
 
   @override
   Widget build(BuildContext context) {
     print("My App Build") ;
     return MaterialApp(
-        title: 'Trabuddy',
-        theme: new ThemeData(
+      title: 'Trabuddy',
+      theme: new ThemeData(
           brightness: Brightness.light,
 //          hintColor: Colors.white,
 //          primaryColor: Color.fromRGBO(61, 174, 218, 0), //error
           textTheme: TextTheme(
-            title: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Color.fromRGBO(47, 146, 217, 0.9),
-            ),
-            headline: TextStyle(
+              title: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Color.fromRGBO(47, 146, 217, 0.9),
+              ),
+              headline: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: 17.0,
 //                height: 0
-            ),
-            body1: TextStyle(
-              fontWeight: FontWeight.w300,
-              fontSize: 13.0,
-            )
+              ),
+              body1: TextStyle(
+                fontWeight: FontWeight.w300,
+                fontSize: 13.0,
+              )
           )
-        ),
-        home: new Scaffold(
-          body: new StreamBuilder(
-            stream: BlocProvider.of(context).authBloc.isLoggedIn,
-            builder: (context, authSnapshot){
-              print("streambuilder get") ;
-              if( !authSnapshot.hasData ) return logInPage ;
-              else if( authSnapshot.connectionState == ConnectionState.waiting ) {
-                return SplashScreen() ;
-              }
-              else{
-                print(authSnapshot.data);
-//                !authSnapshot.hasData ? logInPage :
-                return new StreamBuilder(
+      ),
+      home: new StreamBuilder(
+        stream: BlocProvider.of(context).authBloc.isLoggedIn,
+        builder: (context, authSnapshot){
+          print("streambuilder get") ;
+          return Scaffold(
+            body: !authSnapshot.hasData ? logInPage :
+            (
+                authSnapshot.connectionState == ConnectionState.waiting ? SplashScreen() :
+                new StreamBuilder(
                     stream : BlocProvider.of(context).bottomBarBloc.bottomBarPressed,
-                  builder: (context, snapshot) {
-                    if(!snapshot.hasData || snapshot.data == 0){
-                      return profilePage ;
+                    builder: (context, snapshot) {
+                      if(!snapshot.hasData || snapshot.data == 0){
+                        return profilePage ;
+                      }
+                      else if(snapshot.data == 1){
+                        return matchingPage ;
+                      }
+                      else if(snapshot.data == 2){
+                        return feedPage ;
+                      }
+                      else if(snapshot.data == 3){
+                        return chatRoomPage ;
+                      }
                     }
-                    else if(snapshot.data == 1){
-                      return matchingPage ;
-                    }
-                    else if(snapshot.data == 2){
-                      return feedPage ;
-                    }
-                    else if(snapshot.data == 3){
-                      return chatRoomPage ;
-                    }
-                  }
-              ) ;
-                }
-            },
-          ),
-          bottomNavigationBar: botNavBar,
-        )
+                )
+            ),
+            bottomNavigationBar: !authSnapshot.hasData ? null: botNavBar,
+          ) ;
+        },
+      ),
     );
   }
 

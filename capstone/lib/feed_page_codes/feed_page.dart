@@ -22,9 +22,6 @@ import 'package:capstone/feed_page_codes/room_info.dart';
 
 
 class FeedPage extends StatelessWidget {
-  final BottomNavigation botNavBar ;
-
-  FeedPage(this.botNavBar) ;
 
   ListBlock roomList = new ListBlock();
 

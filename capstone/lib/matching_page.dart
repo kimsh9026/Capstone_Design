@@ -6,10 +6,6 @@ import 'package:capstone/buttom_navigation.dart';
 
 class MatchingPage extends StatelessWidget {
 
-  BottomNavigation botNavBar ;
-
-  MatchingPage(this.botNavBar) ;
-
   @override
   Widget build(BuildContext context) {
     print("MatchingPage Build") ;

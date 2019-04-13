@@ -4,10 +4,6 @@ import 'package:capstone/buttom_navigation.dart';
 
 class ChatRoomPage extends StatelessWidget {
 
-  BottomNavigation botNavBar ;
-
-  ChatRoomPage(this.botNavBar) ;
-
   @override
   Widget build(BuildContext context) {
     print("ChatRoomPage Build") ;
