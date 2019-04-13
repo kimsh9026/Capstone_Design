@@ -28,9 +28,6 @@ class RoomCardState extends State<RoomCard> {
 
     var roomAvatar = new Hero(
       tag: widget.document,
-//      child: new CircleAvatar(
-//        radius: 30,
-////        backgroundImage: AssetImage('Images/sample.png'),
         child: new Container(
           width: 60.0,
           height: 60.0,
@@ -42,37 +39,38 @@ class RoomCardState extends State<RoomCard> {
             ),
           ),
         ),
-//      )
     );
 
-    var placeholder = new Container(
-        width: 50.0,
-        height: 50.0,
-        decoration: new BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: new LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Colors.black54, Colors.black, Colors.blueGrey[600]],
-          ),
-        ),
-        alignment: Alignment.center,
-        child: new Text(
-          'Room',
-          textAlign: TextAlign.center,
-        )
-    );
+//    var placeholder = new Container(
+//        width: 50.0,
+//        height: 50.0,
+//        decoration: new BoxDecoration(
+//          shape: BoxShape.circle,
+//          gradient: new LinearGradient(
+//            begin: Alignment.topLeft,
+//            end: Alignment.bottomRight,
+//            colors: [Colors.black54, Colors.black, Colors.blueGrey[600]],
+//          ),
+//        ),
+//        alignment: Alignment.center,
+//        child: new Text(
+//          'Room',
+//          textAlign: TextAlign.center,
+//        )
+//    );
+//
+//    var crossFade = new AnimatedCrossFade(
+//      firstChild: placeholder,
+//      secondChild: roomAvatar,
+//      crossFadeState: 1 == 2
+//          ? CrossFadeState.showFirst
+//          : CrossFadeState.showSecond,
+//      duration: new Duration(milliseconds: 1000),
+//    );
+//
+//    return crossFade;
 
-    var crossFade = new AnimatedCrossFade(
-      firstChild: placeholder,
-      secondChild: roomAvatar,
-      crossFadeState: 1 == 2
-          ? CrossFadeState.showFirst
-          : CrossFadeState.showSecond,
-      duration: new Duration(milliseconds: 1000),
-    );
-
-    return crossFade;
+    return roomAvatar ;
   }
 
   Widget get roomCard {
@@ -113,6 +111,7 @@ class RoomCardState extends State<RoomCard> {
                             top: 5,
                           ),
                         ),
+
                         //day and time
                         new Row(
                             children: <Widget>[
@@ -160,6 +159,7 @@ class RoomCardState extends State<RoomCard> {
                             ),
                           ],
                         )
+
                       ],
                     )
                 ),

@@ -39,15 +39,12 @@ class FeedPage extends StatelessWidget {
             ),
             suffixIcon: InkWell(
               child: Icon(Icons.search, color: Colors.blue),
-          //    onTap: BlocProvider.of(context).
             ),
             fillColor: Colors.black,
           ),
           onChanged: (str) {
             roomInfo.roomName = str ;
-            print(str) ;
             BlocProvider.of(context).roomBloc.setRoomFinding(roomInfo) ;
-            BlocProvider.of(context).roomBloc.isFInding(true) ;
           }
         )
     );
@@ -55,7 +52,6 @@ class FeedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Color.fromRGBO(215, 238, 247, 0.9),
       appBar: AppBar(
@@ -92,7 +88,7 @@ class FeedPage extends StatelessWidget {
             return roomList.createNewRoom(context) ;
           })) ;
         },
-        tooltip: 'create',
+        tooltip: 'create room',
         child: Icon(Icons.add_comment),
       ),
     );

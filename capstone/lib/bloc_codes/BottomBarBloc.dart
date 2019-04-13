@@ -25,4 +25,9 @@ class BottomBarBloc extends Object{
     });
   }
 
+  dispose(){
+    _bottomBarPressed.close() ;
+    _bottomBarAnimation.close() ;
+  }
+
 }

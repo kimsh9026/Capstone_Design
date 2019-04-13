@@ -16,4 +16,8 @@ class AuthBloc extends Object {
 
 //  Function(bool) get setlogIn => _logIn.sink.add ;
 
+  dispose(){
+    _logIn.close() ;
+  }
+
 }

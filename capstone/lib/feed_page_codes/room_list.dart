@@ -14,43 +14,32 @@ class RoomList extends StatelessWidget {
 
   final formKey = GlobalKey<FormState>() ;
   RoomInfo roomInfo = RoomInfo();
-  RoomList();
 
   Widget _buildList(context) {
     return StreamBuilder(
-      stream: BlocProvider.of(context).roomBloc.isFinding,
-      builder: (context, snapshot) {
-          return StreamBuilder(
-              stream: BlocProvider.of(context).roomBloc.roomList,
-              builder: (context, snapshot) {
-                if(!snapshot.hasData) return const Text('Loading..') ;
-                return ListView.builder(
+        stream: BlocProvider.of(context).roomBloc.roomList,
+        builder: (context, snapshot) {
+          if(!snapshot.hasData) return const Text('Loading..') ;
+          return ListView.builder(
+            shrinkWrap: true,
+            padding: const EdgeInsets.only(
+              top: 8.0,
+              bottom: 8.0,
+            ),
+            itemCount: snapshot.data.documents.length,
+            itemBuilder: (context, int,
+                {
                   shrinkWrap: true,
                   padding: const EdgeInsets.only(
-                    top: 8.0,
-                    bottom: 8.0,
+                    top: 30.0,
+                    bottom: 30.0,
                   ),
-                  itemCount: snapshot.data.documents.length,
-                  itemBuilder: (context, int,
-                      {
-                        shrinkWrap: true,
-                        padding: const EdgeInsets.only(
-                          top: 30.0,
-                          bottom: 30.0,
-                        ),
-                      }) {
-                    return new RoomCard(context, snapshot.data.documents[int]);
-                  },
-                );
-              }
+                }) {
+              return new RoomCard(context, snapshot.data.documents[int]);
+            },
           );
-
-      }
+        }
     );
-  }
-
-  Widget detailRoomView(int number) {
-    //   return DetailPage(chatRooms[number], new RoomCard(chatRooms[number]).) ;
   }
 
   Widget _createRoomBody(BuildContext context){
@@ -188,13 +177,11 @@ class RoomList extends StatelessWidget {
         preferredSize: Size.fromHeight(45),
         child: AppBar(
           actions: <Widget>[
-            //        PopupSearchButton()
             FlatButton(
               padding: EdgeInsets.only(left:15),
               child: Text(
                   '완료',
-                  style: Theme.of(context).textTheme.title
-                      .copyWith(fontSize: 15)
+                  style: Theme.of(context).textTheme.title.copyWith(fontSize: 15)
               ),
               onPressed: (){
                 validate(context) ;
