@@ -1,9 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:capstone/chat_room_codes/ChatRoom.dart';
 import 'package:capstone/feed_page_codes/ListBlock.dart';
 import 'package:capstone/BottomNavigation.dart';
-import 'package:capstone/PopupSearchButton.dart';
 import 'package:capstone/feed_page_codes/ExpansionPanel.dart';
 import 'package:capstone/bloc_codes/BlocProvider.dart';
 import 'package:capstone/feed_page_codes/RoomInfo.dart';
@@ -12,11 +10,6 @@ import 'package:capstone/feed_page_codes/RoomInfo.dart';
 - image Firebase 연동 필요
 - 위치 정보 Firebase 연동 필요
 - 해쉬태그 Firebase 연동 필요
-2. 방 검색 기능
-- Firebase 정보 어떻게 검색하는지?
-3. UI 
-- RoomCard 인원 수 오른쪽 모서리로
-
 
 * room이 tap 됐을 때 동작 처리
 
@@ -29,9 +22,9 @@ import 'package:capstone/feed_page_codes/RoomInfo.dart';
 
 
 class FeedPage extends StatelessWidget {
-  BottomNavigation botNavBar;
+  final BottomNavigation botNavBar ;
 
-  FeedPage(this.botNavBar);
+  FeedPage(this.botNavBar) ;
 
   ListBlock roomList = new ListBlock();
 
@@ -77,10 +70,6 @@ class FeedPage extends StatelessWidget {
             '게시판',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.title,
-//            TextStyle(
-//              fontWeight: FontWeight.bold,
-//              color: Color.fromRGBO(47, 146, 217, 0.9), //app bar title color
-//            ),
           ),
           centerTitle: true,
           backgroundColor: Colors.white,

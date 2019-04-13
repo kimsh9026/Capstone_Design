@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:capstone/custom_widgets/CustomDateTimeFormField.dart';
-import 'package:capstone/chat_room_codes/ChatRoom.dart';
+//import 'package:capstone/chat_room_codes/ChatRoom.dart';
 import 'package:capstone/feed_page_codes/RoomCard.dart';
 import 'package:capstone/bloc_codes/BlocProvider.dart';
 import 'package:capstone/feed_page_codes/RoomInfo.dart';
@@ -10,10 +10,6 @@ import 'package:capstone/feed_page_codes/RoomInfo.dart';
 
 * createRoom과 분리 필요?
 
-* searching block이 edit되면 바로 찾기 시작??
-* text에만 입력이 되면 그냥 바로 찾기
-* expansion panel에 '적용' 버튼 ....
-* firebase에서 데이터를 어떻게 가져오는지 확실하게 탐구 필요.
 */
 
 class ListBlock extends StatelessWidget {
@@ -186,11 +182,11 @@ class ListBlock extends StatelessWidget {
     if(form.validate()){
       form.save() ;
       BlocProvider.of(context).roomBloc.registerRoom(roomInfo) ;
+      Navigator.pop(context) ;
     }
   }
 
   Widget createNewRoom(BuildContext context){
-    print("create new Room") ;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45),
@@ -206,7 +202,6 @@ class ListBlock extends StatelessWidget {
               ),
               onPressed: (){
                 validate(context) ;
-                print('tapped') ;
               },
             ),
           ],
@@ -223,10 +218,7 @@ class ListBlock extends StatelessWidget {
         ),
       ),
       backgroundColor: Colors.white,
-      body:
-
-      _createRoomBody(context),
-
+      body: _createRoomBody(context),
     );
   }
 

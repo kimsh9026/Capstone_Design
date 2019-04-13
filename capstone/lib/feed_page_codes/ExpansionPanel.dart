@@ -46,30 +46,28 @@ class _ExpansionBlockState extends State<ExpansionBlock> {
   }
 
   Widget expansionHeader(context,txt){
-
-    return Container(
-        color: Color.fromRGBO(247, 252, 254, 0.8),
-        height: 40,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: 10,
-          ),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                flex:2,
-                child: Container(
-                  width: double.infinity,
-                ),
+    return InkWell(
+        onTap: () {
+          BlocProvider.of(context).expansionPanelBloc.setExpansionBarPressed(true) ;
+          isExpanded = !isExpanded ;
+        },
+        child: Container(
+            color: Color.fromRGBO(247, 252, 254, 0.8),
+            height: 40,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: 10,
               ),
-              Expanded(
-                  flex: 1,
-                  child: InkWell(
-                      onTap: () {
-                        print("tapped");
-                        BlocProvider.of(context).expansionPanelBloc.setExpansionBarPressed(true) ;
-                        isExpanded = !isExpanded ;
-                      },
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    flex:2,
+                    child: Container(
+                      width: double.infinity,
+                    ),
+                  ),
+                  Expanded(
+                      flex: 1,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
@@ -80,9 +78,9 @@ class _ExpansionBlockState extends State<ExpansionBlock> {
                         ],
                       )
                   )
-              )
-            ],
-          ),
+                ],
+              ),
+            )
         )
     );
   }

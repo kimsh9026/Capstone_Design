@@ -15,14 +15,9 @@ class FireAuthProvider {
 
   Stream<FirebaseUser> get fireAuth => _fireAuth.onAuthStateChanged ;
 
-  FireAuthProvider(){
-
-  }
-
   Future<FirebaseUser> _authenticateWithGoogle() async {
     final GoogleSignInAccount googleUser = await googleSignIn.signIn();
     print("GoogleSignInAccount :  ${googleUser.toString()}") ;
-//    googleUser.
     GoogleSignInAuthentication googleAuth =
     await googleUser.authentication;
     print('GoogleSignInAuthentication : ${googleAuth.toString()}') ;
@@ -41,8 +36,6 @@ class FireAuthProvider {
 
   void authenticate() {
     _authenticateWithGoogle() ;
-//        .then((FirebaseUser user) => print(user))
-//        .catchError((e) => print(e)) ;
   }
 
 /* use
