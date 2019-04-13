@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 //import 'package:capstone/test/ChatRoom.dart' ;
-import 'package:capstone/buttom_navigation.dart';
+import 'package:capstone/bottom_navigation.dart';
 
 class ChatRoomPage extends StatelessWidget {
 

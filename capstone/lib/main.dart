@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:capstone/bloc_codes/BlocProvider.dart';
 //import 'package:capstone/fixing/FixingBottomNavigation.dart';
-import 'package:capstone/buttom_navigation.dart';
+import 'package:capstone/bottom_navigation.dart';
 import 'package:capstone/ProfilePage.dart';
 import 'package:capstone/feed_page_codes/feed_page.dart';
 import 'package:capstone/matching_page.dart';
