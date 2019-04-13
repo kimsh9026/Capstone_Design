@@ -8,7 +8,6 @@ class FirestoreProvider {
   roomInfo == null ?
   => roomInfo.name == '', roomInfo.date == ... 등
    */
-
   Firestore _firestore = Firestore.instance ;
   Stream<QuerySnapshot> _roomList = Firestore.instance.collection('roomInfo').snapshots() ;
 
@@ -35,7 +34,7 @@ class FirestoreProvider {
 //  }
 }
 
-/* warning message
+/* warning message : if upgraded version of firestore break our codes, than try adding this.
 W/Firestore( 8276): FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 W/Firestore( 8276): FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
 W/Firestore( 8276):     .setTimestampsInSnapshotsEnabled(true)

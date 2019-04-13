@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:capstone/feed_page_codes/room_list.dart';
-import 'package:capstone/buttom_navigation.dart';
 import 'package:capstone/custom_widgets/custom_expansion_panel.dart';
 import 'package:capstone/bloc_codes/BlocProvider.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
@@ -23,7 +22,7 @@ import 'package:capstone/feed_page_codes/room_info.dart';
 
 class FeedPage extends StatelessWidget {
 
-  ListBlock roomList = new ListBlock();
+  RoomList roomList = new RoomList();
 
   Widget searchingBlock(context) {
     RoomInfo roomInfo = RoomInfo();
@@ -56,6 +55,7 @@ class FeedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Color.fromRGBO(215, 238, 247, 0.9),
       appBar: AppBar(

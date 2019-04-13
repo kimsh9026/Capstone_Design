@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:capstone/custom_widgets/custom_datetime_form_field.dart';
-//import 'package:capstone/chat_room_codes/ChatRoom.dart';
 import 'package:capstone/feed_page_codes/room_card.dart';
 import 'package:capstone/bloc_codes/BlocProvider.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
-//import 'package:capstone/test/detail_page.dart' ;
 
 /*
 
@@ -12,11 +10,11 @@ import 'package:capstone/feed_page_codes/room_info.dart';
 
 */
 
-class ListBlock extends StatelessWidget {
+class RoomList extends StatelessWidget {
 
   final formKey = GlobalKey<FormState>() ;
   RoomInfo roomInfo = RoomInfo();
-  ListBlock();
+  RoomList();
 
   Widget _buildList(context) {
     return StreamBuilder(
@@ -41,8 +39,6 @@ class ListBlock extends StatelessWidget {
                           bottom: 30.0,
                         ),
                       }) {
-                    print('has Data!') ;
-                    print('ListBlock: ${snapshot.data.documents[int]['name']}') ;
                     return new RoomCard(context, snapshot.data.documents[int]);
                   },
                 );

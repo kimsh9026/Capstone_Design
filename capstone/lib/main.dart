@@ -35,8 +35,6 @@ class MyApp extends StatelessWidget {
       title: 'Trabuddy',
       theme: new ThemeData(
           brightness: Brightness.light,
-//          hintColor: Colors.white,
-//          primaryColor: Color.fromRGBO(61, 174, 218, 0), //error
           textTheme: TextTheme(
               title: TextStyle(
                 fontSize: 18,
@@ -46,7 +44,6 @@ class MyApp extends StatelessWidget {
               headline: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: 17.0,
-//                height: 0
               ),
               body1: TextStyle(
                 fontWeight: FontWeight.w300,

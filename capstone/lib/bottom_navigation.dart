@@ -14,9 +14,6 @@ class NavigationIconView {
     Color color,
     TickerProvider vsync,
   }) :
-//        _icon = icon,
-//        _color = color,
-//        _title = title,
         item = BottomNavigationBarItem(
           icon: icon,
           activeIcon: activeIcon,
@@ -27,17 +24,10 @@ class NavigationIconView {
           duration: kThemeAnimationDuration,
           vsync: vsync,
         ) {
-//    _animation = controller.drive(CurveTween(
-//      curve: const Interval(0.5, 1.0, curve: Curves.fastOutSlowIn),
-//    ));
   }
 
-//  final Widget _icon;
-//  final Color _color;
-//  final String _title;
   final BottomNavigationBarItem item;
   final AnimationController controller;
-//  Animation<double> _animation;
 
 }
 
@@ -112,8 +102,6 @@ class _BottomNavigationState extends State<BottomNavigation>
           }) ;
         },
       );
-//set State
-
   }
 
   void animate(int index){
