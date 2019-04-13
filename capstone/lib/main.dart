@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:capstone/bloc_codes/BlocProvider.dart';
 //import 'package:capstone/fixing/FixingBottomNavigation.dart';
-import 'package:capstone/BottomNavigation.dart';
+import 'package:capstone/buttom_navigation.dart';
 import 'package:capstone/ProfilePage.dart';
-import 'package:capstone/feed_page_codes/FeedPage.dart';
-import 'package:capstone/MatchingPage.dart';
+import 'package:capstone/feed_page_codes/feed_page.dart';
+import 'package:capstone/matching_page.dart';
 import 'package:capstone/chat_room_codes/ChatRoomPage.dart';
 import 'LogInPage.dart' ;
 /* 해결해야 할 것
@@ -59,11 +59,12 @@ class MyApp extends StatelessWidget {
             stream: BlocProvider.of(context).authBloc.isLoggedIn,
             builder: (context, authSnapshot){
               print("streambuilder get") ;
-              if( !authSnapshot.hasData) return logInPage ;
+              if( !authSnapshot.hasData ) return logInPage ;
               else if( authSnapshot.connectionState == ConnectionState.waiting ) {
                 return SplashScreen() ;
               }
               else{
+                print(authSnapshot.data);
 //                !authSnapshot.hasData ? logInPage :
                 return new StreamBuilder(
                     stream : BlocProvider.of(context).bottomBarBloc.bottomBarPressed,

@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
-import 'package:capstone/feed_page_codes/ListBlock.dart';
-import 'package:capstone/BottomNavigation.dart';
-import 'package:capstone/feed_page_codes/ExpansionPanel.dart';
+import 'package:capstone/feed_page_codes/room_list.dart';
+import 'package:capstone/buttom_navigation.dart';
+import 'package:capstone/custom_widgets/custom_expansion_panel.dart';
 import 'package:capstone/bloc_codes/BlocProvider.dart';
-import 'package:capstone/feed_page_codes/RoomInfo.dart';
+import 'package:capstone/feed_page_codes/room_info.dart';
 /*
 1. 방추가 기능
 - image Firebase 연동 필요
@@ -59,7 +59,6 @@ class FeedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("FeedPage build");
     return Scaffold(
       backgroundColor: Color.fromRGBO(215, 238, 247, 0.9),
       appBar: AppBar(
@@ -74,8 +73,7 @@ class FeedPage extends StatelessWidget {
           centerTitle: true,
           backgroundColor: Colors.white,
           actions: <Widget>[
-            //        PopupSearchButton()
-
+            // might need profile check or something actions...
           ]
       ),
       body: Column(

@@ -4,7 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:capstone/bloc_codes/BlocProvider.dart';
-import 'package:capstone/feed_page_codes/FeedPage.dart';
+import 'package:capstone/feed_page_codes/feed_page.dart';
 
 class NavigationIconView {
   NavigationIconView({
@@ -99,8 +99,6 @@ class _BottomNavigationState extends State<BottomNavigation>
 
   @override
   Widget build(BuildContext context) {
-    print("bottom NavigationBuild") ;
-    print("current index : $_currentIndex") ;
     return BottomNavigationBar(
         items: _navigationViews
             .map<BottomNavigationBarItem>((NavigationIconView navigationView) => navigationView.item)

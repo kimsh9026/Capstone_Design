@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:capstone/feed_page_codes/ExpansionPanel.dart';
+import 'package:capstone/custom_widgets/custom_expansion_panel.dart';
 
 /*
 * Picker 접혔을 때 눌리지 않도록 처리 필요
