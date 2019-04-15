@@ -3,7 +3,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class FireAuthProvider {
 
-  GoogleSignIn googleSignIn = GoogleSignIn(
+  GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes:[
       'email',
       'https://www.googleapis.com/auth/contacts.readonly',
@@ -11,13 +11,16 @@ class FireAuthProvider {
   );
 
   FirebaseAuth _fireAuth = FirebaseAuth.instance ;
+  FirebaseUser _user ;
+
+  FirebaseUser get user => _user;
 
   Stream<FirebaseUser> get fireAuth => _fireAuth.onAuthStateChanged ;
 
-  Future<FirebaseUser> _authenticateWithGoogle() async {
-    final GoogleSignInAccount googleUser = await googleSignIn.signIn();
+  void _authenticateWithGoogle() async {
+    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     print("GoogleSignInAccount :  ${googleUser.toString()}") ;
-    GoogleSignInAuthentication googleAuth =
+    final GoogleSignInAuthentication googleAuth =
     await googleUser.authentication;
     print('GoogleSignInAuthentication : ${googleAuth.toString()}') ;
     final FirebaseUser user = await
@@ -25,15 +28,23 @@ class FireAuthProvider {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    return user ;
+    _user = user ;
   }
 
   void signOut(){
     _fireAuth.signOut() ;
+    _googleSignIn.signOut() ;
+    _user = null ;
+  }
+
+  void dispose(){
+    signOut() ;
+    _fireAuth = null ;
+    _googleSignIn = null ;
   }
 
   void authenticate() {
-    _authenticateWithGoogle() ;
+   _authenticateWithGoogle() ;
   }
 
 /* use

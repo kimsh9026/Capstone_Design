@@ -1,6 +1,6 @@
-//import 'package:capstone/chat_room_codes/ChatRoom.dart';
+//import 'package:capstone/chat_room_codes/chat_room_info.dart';
 import 'package:flutter/material.dart';
-//import 'ProfilePage.dart' ;
+//import 'profie_page.dart' ;
 import 'package:capstone/feed_page_codes/detail_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' ;
 /*

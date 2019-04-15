@@ -32,10 +32,14 @@ class NavigationIconView {
 }
 
 class BottomNavigation extends StatefulWidget {
+
   static const String routeName = '/material/bottom_navigation';
+
+  void stateClear() => _BottomNavigationState().clear() ;
 
   @override
   _BottomNavigationState createState() => _BottomNavigationState();
+
 }
 
 class _BottomNavigationState extends State<BottomNavigation>
@@ -90,18 +94,22 @@ class _BottomNavigationState extends State<BottomNavigation>
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-        items: _navigationViews
-            .map<BottomNavigationBarItem>((NavigationIconView navigationView) => navigationView.item)
-            .toList(),
-        currentIndex: _currentIndex,
-        type: _type,
-        onTap: (int index) {
-          BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(index) ;
-          setState((){
-            animate(index) ;
-          }) ;
-        },
-      );
+      items: _navigationViews
+          .map<BottomNavigationBarItem>((NavigationIconView navigationView) => navigationView.item)
+          .toList(),
+      currentIndex: _currentIndex,
+      type: _type,
+      onTap: (int index) {
+        BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(index) ;
+        setState((){
+          animate(index) ;
+        }) ;
+      },
+    ) ;
+  }
+
+  void clear(){
+    _currentIndex = 0 ;
   }
 
   void animate(int index){

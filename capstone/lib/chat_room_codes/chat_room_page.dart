@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'package:capstone/test/ChatRoom.dart' ;
-import 'package:capstone/bottom_navigation.dart';
+import 'package:capstone/feed_page_codes/room_info.dart' ;
 
 class ChatRoomPage extends StatelessWidget {
 
@@ -44,8 +43,5 @@ class ChatRoomPage extends StatelessWidget {
       ),
 //      bottomNavigationBar: botNavBar,
     );
-
-
-
   }
 }

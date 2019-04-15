@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:capstone/chat_room_codes/ChatRoom.dart';
+import 'package:capstone/feed_page_codes/room_info.dart';
 import 'package:capstone/feed_page_codes/room_card.dart';
 class DetailPage extends StatelessWidget {
 
