@@ -1,3 +1,4 @@
+
 class RoomInfo {
 
   String _roomName = '' ;
@@ -7,6 +8,11 @@ class RoomInfo {
   int _totalNumber = 0;
   int _currentNumber = 0;
   String _roomPurpose = '';
+
+//  RoomInfo({DocumentSnapshot document}){
+//    _roomName = document['name'] ;
+////    _roomLeaderName =
+//  }
 
   String get roomName => _roomName;
 

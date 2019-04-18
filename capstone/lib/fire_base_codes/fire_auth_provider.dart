@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' ;
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -28,6 +29,14 @@ class FireAuthProvider {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
+    final QuerySnapshot result =
+    await Firestore.instance.collection('users').where('id', isEqualTo: user.uid).getDocuments();
+    final List<DocumentSnapshot> documents = result.documents;
+    if (documents.length == 0) {
+      // Update data to server if new user
+      Firestore.instance.collection('users').document(user.uid).setData(
+          {'nickname': user.displayName, 'photoUrl': user.photoUrl, 'id': user.uid});
+    }
     _user = user ;
   }
 

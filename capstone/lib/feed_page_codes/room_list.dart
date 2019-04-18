@@ -166,8 +166,10 @@ class RoomList extends StatelessWidget {
     final form = formKey.currentState ;
     if(form.validate()){
       form.save() ;
-      BlocProvider.of(context).roomBloc.registerRoom(roomInfo) ;
+      BlocProvider.of(context).roomBloc.registerRoom(roomInfo);
       Navigator.pop(context) ;
+      BlocProvider.of(context).roomBloc.setEnterRoom(roomInfo) ;
+      BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(3) ;
     }
   }
 

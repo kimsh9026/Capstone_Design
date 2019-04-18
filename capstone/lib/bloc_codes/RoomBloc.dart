@@ -5,6 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart' ;
 import 'package:capstone/fire_base_codes/fire_store_provider.dart';
 class RoomBloc extends Object{
 
+//  FirestoreProvider _firestoreProvider = FirestoreProvider() ;
+
   BuildContext _context ;
   final _roomPressed = StreamController<int>.broadcast() ;
   final _initRooms = StreamController<bool>.broadcast() ;
@@ -12,8 +14,12 @@ class RoomBloc extends Object{
   final _addedRoom = StreamController<RoomInfo>.broadcast() ;
   final _roomList = FirestoreProvider().roomList;
   final _roomFinding = StreamController<RoomInfo>.broadcast() ;
-//  final _isFinding = StreamController<bool>.broadcast() ;
-  RoomInfo roomInfo ;
+  final _enterRoom = StreamController<RoomInfo>.broadcast() ;
+  final _roomMessages = FirestoreProvider().enterRoom;
+
+//  final _roomEntered = FirestoreProvider().enterRoom ;
+  RoomInfo roomInfo;
+  String roomName = '';
 
   Stream<int> get roomPressed => _roomPressed.stream ;
   Stream<bool> get initRooms => _initRooms.stream ;
@@ -21,8 +27,8 @@ class RoomBloc extends Object{
   Stream<RoomInfo> get addedRoom => _addedRoom.stream ;
   Stream<QuerySnapshot> get roomList => _roomList(roomInfo) ;
   Stream<RoomInfo> get roomFinding => _roomFinding.stream ;
-//  Stream<bool> get isFinding => _isFinding.stream ;
-
+  Stream<RoomInfo> get enterRoom => _enterRoom.stream ;
+  Stream<QuerySnapshot> get roomMessages => _roomMessages(roomName) ;
 /*
 searching stream 만들어서 searching block icon 눌렸을 때 list block stream 바꿔줌
  */
@@ -32,22 +38,31 @@ searching stream 만들어서 searching block icon 눌렸을 때 list block stre
   Function(bool) get setScrollRooms => _scrollRooms.sink.add ;
   Function(RoomInfo) get registerRoom => FirestoreProvider().registerRoom;
   Function(RoomInfo) get setRoomFinding => _roomFinding.sink.add ;
-//  Function(bool) get isFInding => _isFinding.sink.add ;
-
-  //해결필요
-//  Function(Map<String,dynamic>) get setRoomInfo =>  Firestore.instance.collection('roomInfo').add ;
+  Function(RoomInfo) get setEnterRoom => _enterRoom.sink.add ;
 
   RoomBloc(){
-    roomPressed.listen((int roomNumber){
-
-    }, onError: (error){
-      print("room pressed error occured") ;
+//    roomPressed.listen((int roomNumber){
+//
+//    }, onError: (error){
+//      print("room pressed error occured") ;
+//      Scaffold.of(_context).showSnackBar(new SnackBar(
+//        content: new Text("Error!"),
+//      )
+//      );
+//    }
+//    ) ;
+    enterRoom.listen((RoomInfo roomInfo){
+      roomName = roomInfo.roomName ;
+      print('here is room bloc: ${roomInfo.roomName}, roomName: ${roomName}') ;
+    },onError: (error) {
+      print("room finding error occured");
       Scaffold.of(_context).showSnackBar(new SnackBar(
         content: new Text("Error!"),
       )
-      );
+      ) ;
     }
-    ) ;
+    );
+
     roomFinding.listen((RoomInfo roomInfo){
       print(roomInfo.roomName) ;
       this.roomInfo = roomInfo;
@@ -67,6 +82,8 @@ searching stream 만들어서 searching block icon 눌렸을 때 list block stre
     _scrollRooms.close() ;
     _addedRoom.close() ;
     _roomFinding.close() ;
+    _enterRoom.close() ;
+
   }
 
 }

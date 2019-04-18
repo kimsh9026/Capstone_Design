@@ -1,4 +1,6 @@
 //import 'package:capstone/chat_room_codes/chat_room_info.dart';
+import 'package:capstone/bloc_codes/BlocProvider.dart';
+import 'package:capstone/feed_page_codes/room_info.dart';
 import 'package:flutter/material.dart';
 //import 'profie_page.dart' ;
 import 'package:capstone/feed_page_codes/detail_page.dart';
@@ -11,6 +13,8 @@ class RoomCard extends StatefulWidget{
 
   final DocumentSnapshot document ;
 
+  DocumentSnapshot get roomInfo => document ;
+
   RoomCard(BuildContext context, this.document) ;
 
   @override
@@ -19,6 +23,7 @@ class RoomCard extends StatefulWidget{
 
 
 class RoomCardState extends State<RoomCard> {
+  RoomInfo _roomInfo = RoomInfo();
 
   void initState(){
     super.initState() ;
@@ -174,7 +179,13 @@ class RoomCardState extends State<RoomCard> {
   @override
   Widget build(BuildContext context) {
     return new InkWell(
-      onTap: () => showRoomDetailPage(),
+      onTap: () {
+        _roomInfo.roomName = widget.document['name'];
+        print('here is room card: ${_roomInfo.roomName}') ;
+        BlocProvider.of(context).roomBloc.setEnterRoom(_roomInfo) ;
+        BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(3) ;
+      },
+//          showRoomDetailPage(),
       child: new Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0),
         child: new Container(
