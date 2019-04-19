@@ -1,18 +1,50 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class RoomInfo {
 
   String _roomName = '' ;
   String _roomLeaderName  = '';
-  DateTime _date = DateTime.now();
-  DateTime _time = DateTime.now();
-  int _totalNumber = 0;
+  String _joinedUserName = '' ;
+  DateTime _roomCreatedTime = DateTime(0,0,0,0,0,0,0) ;
+  DateTime _meetingDate = DateTime(0,0,0,0,0,0,0);
+  DateTime _meetingTime = DateTime(0,0,0,0,0,0,0);
+  String _meetingLocation = '';
   int _currentNumber = 0;
+  int _totalNumber = 0;
   String _roomPurpose = '';
+  String _contents = '' ;
 
-//  RoomInfo({DocumentSnapshot document}){
-//    _roomName = document['name'] ;
-////    _roomLeaderName =
-//  }
+  void clear(){
+    _roomName = '' ;
+    _roomLeaderName  = '';
+    _meetingDate = DateTime(0,0,0,0,0,0,0);
+    _meetingTime = DateTime(0,0,0,0,0,0,0);
+    _totalNumber = 0;
+    _currentNumber = 0;
+    _roomPurpose = '';
+    _meetingLocation = '';
+    _contents = '' ;
+    _roomCreatedTime = DateTime(0,0,0,0,0,0,0) ;
+  }
+
+  void setDocument(DocumentSnapshot document){
+    _roomName = document['roomName'] ;
+    _roomLeaderName = document['roomLeaderName'] ;
+    _roomCreatedTime = document['roomCreatedTime'].toDate() ;
+  }
+
+  String get joinedUserName => _joinedUserName;
+
+  set joinedUserName(String value) {
+    _joinedUserName = value;
+  }
+
+  String get meetingLocation => _meetingLocation;
+
+  set meetingLocation(String value) {
+    _meetingLocation = value;
+  }
 
   String get roomName => _roomName;
 
@@ -26,16 +58,16 @@ class RoomInfo {
     _roomLeaderName = value;
   }
 
-  DateTime get date => _date;
+  DateTime get meetingDate => _meetingDate;
 
-  set date(DateTime value) {
-    _date = value;
+  set meetingDate(DateTime value) {
+    _meetingDate = value;
   }
 
-  DateTime get time => _time;
+  DateTime get meetingTime => _meetingTime;
 
-  set time(DateTime value) {
-    _time = value;
+  set meetingTime(DateTime value) {
+    _meetingTime = value;
   }
 
   int get totalNumber => _totalNumber;
@@ -56,15 +88,17 @@ class RoomInfo {
     _roomPurpose = value;
   }
 
-  DateTime get dateNTime => DateTime(date.year, date.month, date.day, time.hour, time.minute, time.second) ;
+  Timestamp get meetingDateTime => Timestamp.fromDate(DateTime(meetingDate.year, meetingDate.month, meetingDate.day, meetingTime.hour, meetingTime.minute, meetingTime.second)) ;
 
-  void clear(){
-    _roomName = null ;
-    _roomLeaderName = null ;
-    _date = null ;
-    _time = null ;
-    _totalNumber = null ;
-    _currentNumber = null ;
-    _roomPurpose = null;
+  String get contents => _contents;
+
+  set contents(String value) {
+    _contents = value;
+  }
+
+  DateTime get roomCreatedTime => _roomCreatedTime;
+
+  set roomCreatedTime(DateTime value) {
+    _roomCreatedTime = value;
   }
 }

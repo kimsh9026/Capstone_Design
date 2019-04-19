@@ -12,9 +12,9 @@ class FireAuthProvider {
   );
 
   FirebaseAuth _fireAuth = FirebaseAuth.instance ;
-  FirebaseUser _user ;
+  static FirebaseUser _user ;
 
-  FirebaseUser get user => _user;
+  static FirebaseUser get user => _user;
 
   Stream<FirebaseUser> get fireAuth => _fireAuth.onAuthStateChanged ;
 
@@ -29,6 +29,9 @@ class FireAuthProvider {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
+    print(user.email) ;
+
+    //if there is no info about current user in our fire base, add it.
     final QuerySnapshot result =
     await Firestore.instance.collection('users').where('id', isEqualTo: user.uid).getDocuments();
     final List<DocumentSnapshot> documents = result.documents;

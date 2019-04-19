@@ -45,7 +45,7 @@ class BottomNavigation extends StatefulWidget {
 class _BottomNavigationState extends State<BottomNavigation>
     with TickerProviderStateMixin
 {
-  static int _currentIndex = 0;
+  int _currentIndex = 0;
   BottomNavigationBarType _type = BottomNavigationBarType.fixed;
   List<NavigationIconView> _navigationViews;
   BottomNavigationBar botNavBar ;

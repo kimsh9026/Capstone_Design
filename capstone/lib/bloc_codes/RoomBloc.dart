@@ -15,20 +15,20 @@ class RoomBloc extends Object{
   final _roomList = FirestoreProvider().roomList;
   final _roomFinding = StreamController<RoomInfo>.broadcast() ;
   final _enterRoom = StreamController<RoomInfo>.broadcast() ;
-  final _roomMessages = FirestoreProvider().enterRoom;
+  final _roomMessages = FirestoreProvider().roomMessages;
 
 //  final _roomEntered = FirestoreProvider().enterRoom ;
-  RoomInfo roomInfo;
-  String roomName = '';
+  RoomInfo feedPageRoomInfo;
+  RoomInfo chatPageRoomInfo;
 
   Stream<int> get roomPressed => _roomPressed.stream ;
   Stream<bool> get initRooms => _initRooms.stream ;
   Stream<bool> get scrollRooms => _scrollRooms.stream ;
   Stream<RoomInfo> get addedRoom => _addedRoom.stream ;
-  Stream<QuerySnapshot> get roomList => _roomList(roomInfo) ;
+  Stream<QuerySnapshot> get roomList => _roomList(feedPageRoomInfo) ;
   Stream<RoomInfo> get roomFinding => _roomFinding.stream ;
   Stream<RoomInfo> get enterRoom => _enterRoom.stream ;
-  Stream<QuerySnapshot> get roomMessages => _roomMessages(roomName) ;
+  Stream<QuerySnapshot> get roomMessages => _roomMessages(chatPageRoomInfo) ;
 /*
 searching stream 만들어서 searching block icon 눌렸을 때 list block stream 바꿔줌
  */
@@ -41,19 +41,10 @@ searching stream 만들어서 searching block icon 눌렸을 때 list block stre
   Function(RoomInfo) get setEnterRoom => _enterRoom.sink.add ;
 
   RoomBloc(){
-//    roomPressed.listen((int roomNumber){
-//
-//    }, onError: (error){
-//      print("room pressed error occured") ;
-//      Scaffold.of(_context).showSnackBar(new SnackBar(
-//        content: new Text("Error!"),
-//      )
-//      );
-//    }
-//    ) ;
+
     enterRoom.listen((RoomInfo roomInfo){
-      roomName = roomInfo.roomName ;
-      print('here is room bloc: ${roomInfo.roomName}, roomName: ${roomName}') ;
+      print(roomInfo.roomName) ;
+      chatPageRoomInfo = roomInfo ;
     },onError: (error) {
       print("room finding error occured");
       Scaffold.of(_context).showSnackBar(new SnackBar(
@@ -65,7 +56,7 @@ searching stream 만들어서 searching block icon 눌렸을 때 list block stre
 
     roomFinding.listen((RoomInfo roomInfo){
       print(roomInfo.roomName) ;
-      this.roomInfo = roomInfo;
+      feedPageRoomInfo = roomInfo;
     },onError: (error) {
       print("room finding error occured");
       Scaffold.of(_context).showSnackBar(new SnackBar(

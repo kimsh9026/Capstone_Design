@@ -10,8 +10,8 @@ class ChatRoomPage extends StatelessWidget {
 
     return StreamBuilder(
       stream: BlocProvider.of(context).roomBloc.roomMessages,
-        builder: (context, enterSnapShot){
-          if(!enterSnapShot.hasData){
+        builder: (context, messageSnapshot){
+          if(!messageSnapshot.hasData){
             return StreamBuilder(
                 stream: BlocProvider.of(context).roomBloc.roomList,
                 builder: (context, snapshot) {
@@ -38,6 +38,8 @@ class ChatRoomPage extends StatelessWidget {
             );
           }
           else
+            print('room Message item builder2') ;
+
 //            return StreamBuilder(
 //              stream: BlocProvider.of(context).roomBloc.roomMessages,
 //              builder: (context, snapshot) {
@@ -49,7 +51,7 @@ class ChatRoomPage extends StatelessWidget {
                     top: 8.0,
                     bottom: 8.0,
                   ),
-                  itemCount: enterSnapShot.data.documents.length,
+                  itemCount: messageSnapshot.data.documents.length,
                   itemBuilder: (context, int,
                       {
                         shrinkWrap: true,
@@ -59,8 +61,8 @@ class ChatRoomPage extends StatelessWidget {
                         ),
                       }) {
                     print('room Message item builder') ;
-                    print(enterSnapShot.data.documents[int]) ;
-                    return Text(enterSnapShot.data.documents[int]['messages']);
+                    print(messageSnapshot.data.documents[int]['roomName']) ;
+                    return Text(messageSnapshot.data.documents[int]['roomName']);
                   },
                 );
               }

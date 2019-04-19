@@ -26,7 +26,6 @@ class FeedPage extends StatelessWidget {
 
   Widget searchingBlock(context) {
     RoomInfo roomInfo = RoomInfo();
-    roomInfo.roomName = '' ;
     return Container(
         color: Colors.white,
         child: TextField(

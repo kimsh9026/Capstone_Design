@@ -11,15 +11,16 @@ class FirestoreProvider {
   * stream들 future로 안보내줘도 되나.. 로딩은?
    */
 
-
   Firestore _firestore = Firestore.instance ;
-  Stream<QuerySnapshot> _roomList = Firestore.instance.collection('roomInfo').snapshots() ;
+
+  FirestoreProvider(){
+    _firestore.settings(timestampsInSnapshotsEnabled: true) ;
+  }
 
   Stream<QuerySnapshot> roomList(RoomInfo roomInfo) {
-//    print(_firestore.collection('roomInfo').document('hellow worlds!!').collection('messages').where('uid', isEqualTo: 'sdsd').snapshots().toList());
     print('here is firestore list') ;
     if(roomInfo == null || roomInfo.roomName == '')
-    return _roomList;
+    return _firestore.collection('roomInfo').snapshots() ;
    else
      return _firestore.collection('roomInfo').where('name', isEqualTo: roomInfo.roomName).getDocuments().asStream() ;
   }
@@ -27,24 +28,35 @@ class FirestoreProvider {
   Future<void> registerRoom(RoomInfo roomInfo) async {
 
     return _firestore.collection('roomInfo').document().setData({
-      'name' : roomInfo.roomName,
-      'dateNtime' : roomInfo.dateNTime,
-      'currentnumber' : 2,
+      'roomName' : roomInfo.roomName,
+      'roomLeaderName' : roomInfo.roomLeaderName,
+      'roomCreatedTime' : Timestamp.fromDate(DateTime.now()),
+      'meetingDateTime' : roomInfo.meetingDateTime,
+
+      'meetingLocation' : '경상북도 포항시 북구 흥해읍',
+//      'meetingLocation' : roomInfo.meetingLocation,
+      'currentNumber' : 2,
 //        'currentnumber' : roomInfo.currentNumber,
-      'totalnumber' : 4,
+      'totalNumber' : 4,
 //        'totalnumber' : roomInfo.totalNumber,
+//      'roomPurpose' : roomInfo.roomPurpose,
+//      'contents' : roomInfo.contents,
     }) ;
   }
 
-  Stream<QuerySnapshot> enterRoom(String name) {
-    print('here is fire store: ${name}') ;
-    if(name == null || name == '')
+  Stream<QuerySnapshot> roomMessages(RoomInfo roomInfo) {
+    print('here is firestore roomMessages') ;
+    print('roomName, isEqualTo: ${roomInfo.roomName}') ;
+    print('roomLeaderName, isEqualTo: ${roomInfo.roomLeaderName}') ;
+    print('roomCreatedTime, isEqualTo: ${roomInfo.roomCreatedTime}') ;
+
+    if(roomInfo == null)
       return null ;
     else
-      return _firestore.collection('roomInfo') //.where('name', isEqualTo: name).reference().
-          .document(name)
-          .collection('messages')
-          .orderBy('time' , descending: true)
+      return _firestore.collection('roomMessages') //.where('name', isEqualTo: name).reference().
+          .where('roomName', isEqualTo: roomInfo.roomName)
+          .where('roomLeaderName', isEqualTo: roomInfo.roomLeaderName)
+//          .where('roomCreatedTime', isEqualTo: roomInfo.roomCreatedTime)
           .getDocuments().asStream() ;
 
   }

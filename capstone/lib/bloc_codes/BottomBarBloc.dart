@@ -6,12 +6,9 @@ class BottomBarBloc extends Object{
   BuildContext _context ;
 
   final _bottomBarPressed = StreamController<int>.broadcast() ;
-  final _bottomBarAnimation = StreamController<Function>.broadcast() ;
 
   Stream<int> get bottomBarPressed => _bottomBarPressed.stream ;
-  Stream<Function> get bottomBarAnimation => _bottomBarAnimation.stream ;
 
-  Function(Function) get setBottomBarAnimation => _bottomBarAnimation.sink.add ;
   Function(int) get setBottomBarPressed => _bottomBarPressed.sink.add ;
 
   BottomBarBloc(){
@@ -27,7 +24,6 @@ class BottomBarBloc extends Object{
 
   dispose(){
     _bottomBarPressed.close() ;
-    _bottomBarAnimation.close() ;
   }
 
 }

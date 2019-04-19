@@ -48,7 +48,6 @@ class MatchingPage extends StatelessWidget {
                   child: Text('Sign out with Google'),
                   onPressed: (){
                     FireAuthProvider().signOut() ;
-                    BlocProvider.of(context).authBloc.setLogIn(false) ;
                   }
               )
             ],

@@ -20,7 +20,7 @@ void main() => runApp(BlocProvider(child : MyApp())) ;
 
 class MyApp extends StatelessWidget {
 
-  static BottomNavigation botNavBar = BottomNavigation() ;
+  BottomNavigation botNavBar = BottomNavigation() ;
   ProfilePage profilePage = new ProfilePage() ;
   FeedPage feedPage = new FeedPage() ;
   MatchingPage matchingPage = new MatchingPage() ;

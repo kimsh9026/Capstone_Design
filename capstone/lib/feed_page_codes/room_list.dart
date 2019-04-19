@@ -1,3 +1,4 @@
+import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:capstone/custom_widgets/custom_datetime_form_field.dart';
 import 'package:capstone/feed_page_codes/room_card.dart';
@@ -119,7 +120,7 @@ class RoomList extends StatelessWidget {
                     isDate: true,
                     initialValue: DateTime.now(),
                     validator: (DateTime date) => date.isAfter(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)) ? null : '지금보다 이전 날짜입니다',
-                    onSaved: (DateTime date) => roomInfo.date = date,
+                    onSaved: (DateTime date) => roomInfo.meetingDate = date,
                   )
               ),
             ],
@@ -150,7 +151,7 @@ class RoomList extends StatelessWidget {
                     isDate: false,
                     initialValue: DateTime.now(),
                     validator: (DateTime date) => date.isAfter(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, DateTime.now().hour, DateTime.now().minute, DateTime.now().second))? null : '지금보다 이전 시간입니다',
-                    onSaved: (DateTime date) => roomInfo.time = date,
+                    onSaved: (DateTime date) => roomInfo.meetingTime = date,
                   ),
                 ),
               ],
@@ -166,6 +167,8 @@ class RoomList extends StatelessWidget {
     final form = formKey.currentState ;
     if(form.validate()){
       form.save() ;
+      print('room Leader: ${FireAuthProvider.user.email}');
+      roomInfo.roomLeaderName = FireAuthProvider.user.email ;
       BlocProvider.of(context).roomBloc.registerRoom(roomInfo);
       Navigator.pop(context) ;
       BlocProvider.of(context).roomBloc.setEnterRoom(roomInfo) ;

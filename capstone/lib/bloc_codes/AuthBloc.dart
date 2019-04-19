@@ -7,17 +7,7 @@ import 'dart:async';
 class AuthBloc extends Object {
 
   final _isLoggedIn = FireAuthProvider().fireAuth;
-  final _logIn = StreamController<bool>.broadcast() ;
 
   Stream<FirebaseUser> get isLoggedIn => _isLoggedIn ;
-  Stream<bool> get logIn => _logIn.stream ;
-
-  Function(bool) get setLogIn => _logIn.sink.add ;
-
-//  Function(bool) get setlogIn => _logIn.sink.add ;
-
-  dispose(){
-    _logIn.close() ;
-  }
 
 }

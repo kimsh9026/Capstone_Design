@@ -27,11 +27,12 @@ class RoomCardState extends State<RoomCard> {
 
   void initState(){
     super.initState() ;
+    _roomInfo.setDocument(widget.document) ;
   }
 
   Widget get roomImage {
 
-    var roomAvatar = new Hero(
+    var roomImage = new Hero(
       tag: widget.document,
         child: new Container(
           width: 60.0,
@@ -45,7 +46,7 @@ class RoomCardState extends State<RoomCard> {
           ),
         ),
     );
-
+/*
 //    var placeholder = new Container(
 //        width: 50.0,
 //        height: 50.0,
@@ -74,12 +75,12 @@ class RoomCardState extends State<RoomCard> {
 //    );
 //
 //    return crossFade;
-
-    return roomAvatar ;
+*/
+    return roomImage ;
   }
 
   Widget get roomCard {
-    DateTime date = widget.document['dateNtime'] ;
+    DateTime date = widget.document['meetingDateTime'].toDate() ;
     return new Container(
       //  tag: roomCard,
       width: 390,
@@ -108,7 +109,7 @@ class RoomCardState extends State<RoomCard> {
 
                         //Title
                         new Text(
-                          '${widget.document['name']}',
+                          '${widget.document['roomName']}',
                           style: Theme.of(context).textTheme.headline,
                         ),
                         new Padding(
@@ -142,7 +143,7 @@ class RoomCardState extends State<RoomCard> {
                         new Row(
                           children: <Widget>[
                             new Icon(Icons.location_on, size: 12),
-                            new Text('경상북도 포항시 북구 흥해읍', //String 안에서 변수를 사용할 때는 이런식으로 써요
+                            new Text('${widget.document['meetingLocation']}', //String 안에서 변수를 사용할 때는 이런식으로 써요
                                 style: Theme.of(context).textTheme.body1
                             ),
                           ],
@@ -158,7 +159,7 @@ class RoomCardState extends State<RoomCard> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
 //                            new Icon(Icons.people, size: 15),
-                            new Text('${widget.document['currentnumber']}/${widget.document['totalnumber']}'),
+                            new Text('${widget.document['currentNumber']}/${widget.document['totalNumber']}'),
                             Padding(
                               padding: EdgeInsets.only(right: 20),
                             ),
@@ -180,8 +181,6 @@ class RoomCardState extends State<RoomCard> {
   Widget build(BuildContext context) {
     return new InkWell(
       onTap: () {
-        _roomInfo.roomName = widget.document['name'];
-        print('here is room card: ${_roomInfo.roomName}') ;
         BlocProvider.of(context).roomBloc.setEnterRoom(_roomInfo) ;
         BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(3) ;
       },
