@@ -43,122 +43,134 @@ class RoomList extends StatelessWidget {
     );
   }
 
+  Widget _createRoomTitleContainer(BuildContext context){
+    return Container(
+      height: 50,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: Container(
+                color: Colors.blue,
+                alignment: Alignment.center,
+                child: Text(
+                  '제목',
+                  style: Theme.of(context).textTheme.body1,
+                  textAlign: TextAlign.center,
+                )
+            ),
+          ),
+          Expanded(
+              flex: 5,
+              child: Container(
+                  alignment: Alignment.topCenter,
+                  color: Colors.yellow,
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                          flex: 5,
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+                              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+                            ),
+                            validator: (str) => str.isEmpty ? '제목을 입력해주세요!' : null,
+                            onSaved: (str) => roomInfo.roomName = str,
+                          )
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(),
+                      )
+                    ],
+                  )
+              )
+          )
+        ],
+      ),
+    ) ;
+  }
+
+  Widget _createRoomDateContainer(BuildContext context){
+    return Container(
+        height: 50,
+        child: Row(
+          children: <Widget>[
+            Expanded(
+                flex: 1,
+                child: Container(
+                    padding: EdgeInsets.only(top: 2),
+                    alignment: Alignment.topCenter,
+                    child: Text(
+                      '날짜',
+                      style: Theme.of(context).textTheme.body1,
+                      textAlign: TextAlign.center,
+                    )
+                )
+            ),
+            Expanded(
+                flex: 5,
+                child: CustomDateTimeFormField(
+                  isDate: true,
+                  initialValue: DateTime.now(),
+                  validator: (DateTime date) => date.isAfter(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)) ? null : '지금보다 이전 날짜입니다',
+                  onSaved: (DateTime date) => roomInfo.meetingDate = date,
+                )
+            ),
+          ],
+        )
+    ) ;
+  }
+
+  Widget _createRoomTimeContainer(BuildContext context){
+    return Container(
+        height: 50,
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              flex: 1,
+              child: Container(
+                  padding: EdgeInsets.only(top: 2),
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                    '시간',
+                    style: Theme.of(context).textTheme.body1,
+                    textAlign: TextAlign.center,
+                  )
+              ),
+            ),
+            Expanded(
+              flex: 5,
+              child: CustomDateTimeFormField(
+                isDate: false,
+                initialValue: DateTime.now(),
+                validator: (DateTime date) => date.isAfter(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, DateTime.now().hour, DateTime.now().minute, DateTime.now().second))? null : '지금보다 이전 시간입니다',
+                onSaved: (DateTime date) => roomInfo.meetingTime = date,
+              ),
+            ),
+          ],
+        )
+    ) ;
+  }
+
   Widget _createRoomBody(BuildContext context){
     roomInfo.clear() ;
     return Container(
         child: Form(
-          key: formKey,
-          child: Column(
-            children: <Widget>[
-          Container(
-            height: 50,
-            child: Row(
+            key: formKey,
+            child: Column(
               children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    color: Colors.blue,
-                      alignment: Alignment.center,
-                      child: Text(
-                        '제목',
-                        style: Theme.of(context).textTheme.body1,
-                        textAlign: TextAlign.center,
-                      )
-                  ),
+                _createRoomTitleContainer(context),
+                Padding(
+                  padding: EdgeInsets.only(top:15),
                 ),
-                Expanded(
-                    flex: 5,
-                    child: Container(
-                        alignment: Alignment.topCenter,
-                        color: Colors.yellow,
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                                flex: 5,
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-                                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-                                  ),
-                                  validator: (str) => str.isEmpty ? '제목을 입력해주세요!' : null,
-                                  onSaved: (str) => roomInfo.roomName = str,
-                                )
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Container(),
-                            )
-                          ],
-                        )
-                    )
-                )
-              ],
-            ),
-          ),
-        Padding(
-          padding: EdgeInsets.only(top:15),
-        ),
-        Container(
-          height: 50,
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.only(top: 2),
-                    alignment: Alignment.topCenter,
-                      child: Text(
-                        '날짜',
-                        style: Theme.of(context).textTheme.body1,
-                        textAlign: TextAlign.center,
-                      )
-                  )
-              ),
-              Expanded(
-                  flex: 5,
-                  child: CustomDateTimeFormField(
-                    isDate: true,
-                    initialValue: DateTime.now(),
-                    validator: (DateTime date) => date.isAfter(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)) ? null : '지금보다 이전 날짜입니다',
-                    onSaved: (DateTime date) => roomInfo.meetingDate = date,
-                  )
-              ),
-            ],
-          )
-        ),
-          Padding(
-            padding: EdgeInsets.only(top:5),
-          ),
-          Container(
-            height: 50,
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                    flex: 1,
-                    child: Container(
-                        padding: EdgeInsets.only(top: 2),
-                        alignment: Alignment.topCenter,
-                      child: Text(
-                        '시간',
-                        style: Theme.of(context).textTheme.body1,
-                        textAlign: TextAlign.center,
-                      )
-                    ),
+                _createRoomDateContainer(context),
+                Padding(
+                  padding: EdgeInsets.only(top:5),
                 ),
-                Expanded(
-                  flex: 5,
-                  child: CustomDateTimeFormField(
-                    isDate: false,
-                    initialValue: DateTime.now(),
-                    validator: (DateTime date) => date.isAfter(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, DateTime.now().hour, DateTime.now().minute, DateTime.now().second))? null : '지금보다 이전 시간입니다',
-                    onSaved: (DateTime date) => roomInfo.meetingTime = date,
-                  ),
-                ),
+                _createRoomTimeContainer(context),
               ],
             )
-          ),
-            ],
-          )
         )
     );
   }
@@ -167,7 +179,6 @@ class RoomList extends StatelessWidget {
     final form = formKey.currentState ;
     if(form.validate()){
       form.save() ;
-      print('room Leader: ${FireAuthProvider.user.email}');
       roomInfo.roomLeaderName = FireAuthProvider.user.email ;
       BlocProvider.of(context).roomBloc.registerRoom(roomInfo);
       Navigator.pop(context) ;

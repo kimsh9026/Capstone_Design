@@ -48,7 +48,7 @@ class _BottomNavigationState extends State<BottomNavigation>
   int _currentIndex = 0;
   BottomNavigationBarType _type = BottomNavigationBarType.fixed;
   List<NavigationIconView> _navigationViews;
-  BottomNavigationBar botNavBar ;
+
   @override
   void initState() {
     super.initState();

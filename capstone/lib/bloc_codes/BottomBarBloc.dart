@@ -13,7 +13,6 @@ class BottomBarBloc extends Object{
 
   BottomBarBloc(){
     bottomBarPressed.listen((int index) {
-      print("Pressed : $index");
       }
     ,onError: (error) {
       Scaffold.of(_context).showSnackBar(new SnackBar(

@@ -5,8 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart' ;
 import 'package:capstone/fire_base_codes/fire_store_provider.dart';
 class RoomBloc extends Object{
 
-//  FirestoreProvider _firestoreProvider = FirestoreProvider() ;
-
   BuildContext _context ;
   final _roomPressed = StreamController<int>.broadcast() ;
   final _initRooms = StreamController<bool>.broadcast() ;
@@ -17,7 +15,6 @@ class RoomBloc extends Object{
   final _enterRoom = StreamController<RoomInfo>.broadcast() ;
   final _roomMessages = FirestoreProvider().roomMessages;
 
-//  final _roomEntered = FirestoreProvider().enterRoom ;
   RoomInfo feedPageRoomInfo;
   RoomInfo chatPageRoomInfo;
 
@@ -46,7 +43,7 @@ searching stream 만들어서 searching block icon 눌렸을 때 list block stre
       print(roomInfo.roomName) ;
       chatPageRoomInfo = roomInfo ;
     },onError: (error) {
-      print("room finding error occured");
+      print("enter Room error occured");
       Scaffold.of(_context).showSnackBar(new SnackBar(
         content: new Text("Error!"),
       )
@@ -56,7 +53,7 @@ searching stream 만들어서 searching block icon 눌렸을 때 list block stre
 
     roomFinding.listen((RoomInfo roomInfo){
       print(roomInfo.roomName) ;
-      feedPageRoomInfo = roomInfo;
+      this.feedPageRoomInfo = roomInfo;
     },onError: (error) {
       print("room finding error occured");
       Scaffold.of(_context).showSnackBar(new SnackBar(

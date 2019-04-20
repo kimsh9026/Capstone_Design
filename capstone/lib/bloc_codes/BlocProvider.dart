@@ -20,7 +20,6 @@ class BlocProvider extends InheritedWidget {
   static _BlocState of(BuildContext context) {
     return (context.inheritFromWidgetOfExactType(BlocProvider) as BlocProvider)
         .blocState; //context.inheritFromWidgetOfExactType(BlocProvider) => inheritedWidget type return
-    //as로 BlocProvider 타입으로 바꿔주는듯
   }
 }
 
