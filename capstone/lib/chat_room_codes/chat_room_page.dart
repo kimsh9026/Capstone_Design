@@ -61,8 +61,8 @@ class ChatRoomPage extends StatelessWidget {
                         ),
                       }) {
                     print('room Message item builder') ;
-                    print(messageSnapshot.data.documents[int]['roomName']) ;
-                    return Text(messageSnapshot.data.documents[int]['roomName']);
+                    print(messageSnapshot.data.documents[int]['message']) ;
+                    return Text(messageSnapshot.data.documents[int]['message'].toString());
                   },
                 );
               }

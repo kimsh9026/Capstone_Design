@@ -181,6 +181,7 @@ class RoomCardState extends State<RoomCard> {
   Widget build(BuildContext context) {
     return new InkWell(
       onTap: () {
+        print('here is room card : ${_roomInfo.roomCreatedTime}') ;
         BlocProvider.of(context).roomBloc.setEnterRoom(_roomInfo) ;
         BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(3) ;
       },

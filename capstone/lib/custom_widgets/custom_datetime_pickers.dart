@@ -88,7 +88,7 @@ class CustomTimePicker extends StatefulWidget{
 class _CustomTimePickerState extends State<CustomTimePicker> {
 
   // Value that is shown in the date picker in time mode.
-  DateTime time = DateTime.now();
+  DateTime time = DateTime.now().toLocal();
 
   Widget _buildBottomPicker(Widget picker) {
     return Container(

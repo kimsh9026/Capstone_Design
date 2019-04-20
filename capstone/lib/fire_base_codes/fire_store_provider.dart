@@ -22,15 +22,15 @@ class FirestoreProvider {
     if(roomInfo == null || roomInfo.roomName == '')
     return _firestore.collection('roomInfo').snapshots() ;
    else
-     return _firestore.collection('roomInfo').where('name', isEqualTo: roomInfo.roomName).getDocuments().asStream() ;
+     return _firestore.collection('roomInfo').where('roomName', isEqualTo: roomInfo.roomName).getDocuments().asStream() ;
   }
 
   Future<void> registerRoom(RoomInfo roomInfo) async {
-
-    return _firestore.collection('roomInfo').document().setData({
+      DateTime date = DateTime.now() ;
+    _firestore.collection('roomInfo').document().setData({
       'roomName' : roomInfo.roomName,
       'roomLeaderName' : roomInfo.roomLeaderName,
-      'roomCreatedTime' : Timestamp.fromDate(DateTime.now()),
+      'roomCreatedTime' : Timestamp.fromDate(date),
       'meetingDateTime' : roomInfo.meetingDateTime,
 
       'meetingLocation' : '경상북도 포항시 북구 흥해읍',
@@ -42,23 +42,54 @@ class FirestoreProvider {
 //      'roomPurpose' : roomInfo.roomPurpose,
 //      'contents' : roomInfo.contents,
     }) ;
+
+    return _firestore.collection('roomMessages').document().setData({
+      'roomName' : roomInfo.roomName,
+      'roomLeaderName' : roomInfo.roomLeaderName,
+      'roomCreatedTime' : Timestamp.fromDate(date),
+    }) ;
+
   }
 
   Stream<QuerySnapshot> roomMessages(RoomInfo roomInfo) {
     print('here is firestore roomMessages') ;
     print('roomName, isEqualTo: ${roomInfo.roomName}') ;
     print('roomLeaderName, isEqualTo: ${roomInfo.roomLeaderName}') ;
-    print('roomCreatedTime, isEqualTo: ${roomInfo.roomCreatedTime}') ;
+    print('roomCreatedTime, isEqualTo: ${roomInfo.roomCreatedTime.toString()}') ;
 
     if(roomInfo == null)
       return null ;
     else
-      return _firestore.collection('roomMessages') //.where('name', isEqualTo: name).reference().
+
+      _firestore.collection('roomMessages')
           .where('roomName', isEqualTo: roomInfo.roomName)
           .where('roomLeaderName', isEqualTo: roomInfo.roomLeaderName)
-//          .where('roomCreatedTime', isEqualTo: roomInfo.roomCreatedTime)
-          .getDocuments().asStream() ;
+          .where('roomCreatedTime', isEqualTo: Timestamp.fromDate(roomInfo.roomCreatedTime))
+          .getDocuments()
+          .then((value) {
+        _firestore.collection('roomMessages')
+            .document(value.documents.elementAt(0).documentID)
+            .collection('Messages')
+            .orderBy('timestamp',descending: true)
+            .limit(20)
+            .getDocuments().then((value){
+              print(value.documents.elementAt(0)['message']);
+        }) ;
 
+        return _firestore.collection('roomMessages')
+            .document(value.documents.elementAt(0).documentID)
+            .collection('Messages')
+            .orderBy('timestamp',descending: true)
+            .limit(20)
+            .getDocuments().asStream() ;
+      }
+      ) ;
+
+//      return _firestore.collection('roomMessages')
+//          .where('roomName', isEqualTo: roomInfo.roomName)
+//          .where('roomLeaderName', isEqualTo: roomInfo.roomLeaderName)
+//          .where('roomCreatedTime', isEqualTo: Timestamp.fromDate(roomInfo.roomCreatedTime))
+//          .getDocuments().asStream() ;
   }
 
 

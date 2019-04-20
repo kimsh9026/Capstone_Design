@@ -32,6 +32,7 @@ class RoomInfo {
     _roomName = document['roomName'] ;
     _roomLeaderName = document['roomLeaderName'] ;
     _roomCreatedTime = document['roomCreatedTime'].toDate() ;
+    print('here is room Info: ${_roomCreatedTime}') ;
   }
 
   String get joinedUserName => _joinedUserName;
