@@ -9,7 +9,7 @@ class ChatRoomPage extends StatelessWidget {
   Widget _createChatRoomList(context) {
 
     return StreamBuilder(
-      stream: BlocProvider.of(context).roomBloc.roomMessages,
+        stream: BlocProvider.of(context).roomBloc.roomMessages,
         builder: (context, messageSnapshot){
           if(!messageSnapshot.hasData){
             return StreamBuilder(
@@ -38,49 +38,32 @@ class ChatRoomPage extends StatelessWidget {
             );
           }
           else
-            print('room Message item builder2') ;
-
-//            return StreamBuilder(
-//              stream: BlocProvider.of(context).roomBloc.roomMessages,
-//              builder: (context, snapshot) {
-//                print('here is chat room: ${snapshot.hasData ? snapshot.data : null}') ;
-//                if(!snapshot.hasData) return const Text('Loading..') ;
-                return ListView.builder(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.only(
-                    top: 8.0,
-                    bottom: 8.0,
-                  ),
-                  itemCount: messageSnapshot.data.documents.length,
-                  itemBuilder: (context, int,
-                      {
-                        shrinkWrap: true,
-                        padding: const EdgeInsets.only(
-                          top: 30.0,
-                          bottom: 30.0,
-                        ),
-                      }) {
-                    print('room Message item builder') ;
-                    print(messageSnapshot.data.documents[int]['message']) ;
-                    return Text(messageSnapshot.data.documents[int]['message'].toString());
-                  },
-                );
-              }
-            ) ;
-
-//
-//        }
-//    ) ;
-
-
-//
+            return ListView.builder(
+              shrinkWrap: true,
+              padding: const EdgeInsets.only(
+                top: 8.0,
+                bottom: 8.0,
+              ),
+              itemCount: messageSnapshot.data.documents.length,
+              itemBuilder: (context, int,
+                  {
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.only(
+                      top: 30.0,
+                      bottom: 30.0,
+                    ),
+                  }) {
+                print(messageSnapshot.data.documents[int]['message']) ;
+                return Text(messageSnapshot.data.documents[int]['message'].toString());
+              },
+            );
+        }
+    ) ;
   }
 
 
   @override
   Widget build(BuildContext context) {
-    print("ChatRoomPage Build") ;
-
     return Scaffold(
       backgroundColor: Color.fromRGBO(215, 238, 247, 0.9),
       appBar: AppBar(
@@ -108,16 +91,6 @@ class ChatRoomPage extends StatelessWidget {
           ),
         ],
       ),
-
-//      floatingActionButton: FloatingActionButton(
-//        onPressed: (){
-//          Navigator.of(context).push(MaterialPageRoute(builder: (context){
-//            return roomList.createNewRoom(context) ;
-//          })) ;
-//        },
-//        tooltip: 'create room',
-//        child: Icon(Icons.add_comment),
-//      ),
     );
   }
 }

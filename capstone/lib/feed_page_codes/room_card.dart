@@ -79,8 +79,60 @@ class RoomCardState extends State<RoomCard> {
     return roomImage ;
   }
 
-  Widget get roomCard {
+  Widget _titleText(){
+    return Text(
+      '${widget.document['roomName']}',
+      style: Theme.of(context).textTheme.headline,
+    ) ;
+  }
+
+  Widget _dateNTimeRow(){
     DateTime date = widget.document['meetingDateTime'].toDate() ;
+    return Row(
+        children: <Widget>[
+          new Icon(Icons.calendar_today, size: 12),
+          new Text(' ${date.year}년 ${date.month}월 ${date.day}일',
+              style: Theme.of(context).textTheme
+                  .body1
+          ),
+          new Padding(
+            padding: const EdgeInsets.only(
+              left: 10,
+            ),
+          ),
+          new Icon(Icons.access_time, size: 12),
+          new Text(
+              '${date.hour}시 ${date.minute}분',
+              style: Theme.of(context).textTheme.body1
+          ),
+        ]
+    ) ;
+  }
+
+  Widget _meetingLocationRow(){
+    return Row(
+      children: <Widget>[
+        new Icon(Icons.location_on, size: 12),
+        new Text('${widget.document['meetingLocation']}',
+            style: Theme.of(context).textTheme.body1
+        ),
+      ],
+    ) ;
+  }
+
+  Widget _peopleCountRow(){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        new Text('${widget.document['currentNumber']}/${widget.document['totalNumber']}'),
+        Padding(
+          padding: EdgeInsets.only(right: 20),
+        ),
+      ],
+    ) ;
+  }
+
+  Widget get roomCard {
     return new Container(
       //  tag: roomCard,
       width: 390,
@@ -106,66 +158,20 @@ class RoomCardState extends State<RoomCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-
-                        //Title
-                        new Text(
-                          '${widget.document['roomName']}',
-                          style: Theme.of(context).textTheme.headline,
-                        ),
+                        _titleText(),
                         new Padding(
                           padding: const EdgeInsets.only(
                             top: 5,
                           ),
                         ),
-
-                        //day and time
-                        new Row(
-                            children: <Widget>[
-                              new Icon(Icons.calendar_today, size: 12),
-                              new Text(' ${date.year}년 ${date.month}월 ${date.day}일', //String 안에서 변수를 사용할 때는 이런식으로 써요
-                                  style: Theme.of(context).textTheme
-                                      .body1
-                              ),
-                              new Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 10,
-                                ),
-                              ),
-                              new Icon(Icons.access_time, size: 12),
-                              new Text(
-                                  '${date.hour}시 ${date.minute}분', //String 안에서 변수를 사용할 때는 이런식으로 써요
-                                  style: Theme.of(context).textTheme.body1
-                              ),
-                            ]
-                        ),
-
-                        //Location
-                        new Row(
-                          children: <Widget>[
-                            new Icon(Icons.location_on, size: 12),
-                            new Text('${widget.document['meetingLocation']}', //String 안에서 변수를 사용할 때는 이런식으로 써요
-                                style: Theme.of(context).textTheme.body1
-                            ),
-                          ],
-                        ),
+                        _dateNTimeRow(),
+                        _meetingLocationRow(),
                         new Padding(
                           padding: const EdgeInsets.only(
                             top: 7,
                           ),
                         ),
-
-                        //People counts
-                        new Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-//                            new Icon(Icons.people, size: 15),
-                            new Text('${widget.document['currentNumber']}/${widget.document['totalNumber']}'),
-                            Padding(
-                              padding: EdgeInsets.only(right: 20),
-                            ),
-                          ],
-                        )
-
+                       _peopleCountRow(),
                       ],
                     )
                 ),
@@ -185,7 +191,6 @@ class RoomCardState extends State<RoomCard> {
         BlocProvider.of(context).roomBloc.setEnterRoom(_roomInfo) ;
         BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(3) ;
       },
-//          showRoomDetailPage(),
       child: new Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0),
         child: new Container(

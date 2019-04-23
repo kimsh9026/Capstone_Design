@@ -70,5 +70,4 @@ class FireAuthProvider {
           return new LoginScreen();
    */
 
-
 }

@@ -19,10 +19,15 @@ class FirestoreProvider {
 
   Stream<QuerySnapshot> roomList(RoomInfo roomInfo) {
     print('here is firestore list') ;
-    if(roomInfo == null || roomInfo.roomName == '')
-    return _firestore.collection('roomInfo').snapshots() ;
-   else
-     return _firestore.collection('roomInfo').where('roomName', isEqualTo: roomInfo.roomName).getDocuments().asStream() ;
+    if(roomInfo == null || roomInfo.roomName == ''){
+      print('roomName null') ;
+      return Firestore.instance.collection('roomInfo').snapshots() ;
+    }
+//    return _firestore.collection('roomInfo').snapshots() ;
+    else{
+      print('roomName ${roomInfo.roomName}') ;
+      return _firestore.collection('roomInfo').where('roomName', isEqualTo: roomInfo.roomName).getDocuments().asStream() ;
+    }
   }
 
   Future<void> registerRoom(RoomInfo roomInfo) async {
@@ -52,30 +57,15 @@ class FirestoreProvider {
   }
 
   Stream<QuerySnapshot> roomMessages(RoomInfo roomInfo) {
-    print('here is firestore roomMessages') ;
-    print('roomName, isEqualTo: ${roomInfo.roomName}') ;
-    print('roomLeaderName, isEqualTo: ${roomInfo.roomLeaderName}') ;
-    print('roomCreatedTime, isEqualTo: ${roomInfo.roomCreatedTime.toString()}') ;
-
     if(roomInfo == null)
       return null ;
     else
-
       _firestore.collection('roomMessages')
           .where('roomName', isEqualTo: roomInfo.roomName)
           .where('roomLeaderName', isEqualTo: roomInfo.roomLeaderName)
           .where('roomCreatedTime', isEqualTo: Timestamp.fromDate(roomInfo.roomCreatedTime))
           .getDocuments()
           .then((value) {
-        _firestore.collection('roomMessages')
-            .document(value.documents.elementAt(0).documentID)
-            .collection('Messages')
-            .orderBy('timestamp',descending: true)
-            .limit(20)
-            .getDocuments().then((value){
-              print(value.documents.elementAt(0)['message']);
-        }) ;
-
         return _firestore.collection('roomMessages')
             .document(value.documents.elementAt(0).documentID)
             .collection('Messages')
@@ -84,23 +74,7 @@ class FirestoreProvider {
             .getDocuments().asStream() ;
       }
       ) ;
-
-//      return _firestore.collection('roomMessages')
-//          .where('roomName', isEqualTo: roomInfo.roomName)
-//          .where('roomLeaderName', isEqualTo: roomInfo.roomLeaderName)
-//          .where('roomCreatedTime', isEqualTo: Timestamp.fromDate(roomInfo.roomCreatedTime))
-//          .getDocuments().asStream() ;
   }
-
-
-
-//  Future<void> sendMessage(RoomInfo roomInfo, String msg){
-//    _firestore.collection('roomInfo').document(roomInfo.roomName).collection('messages')
-//  }
-
-//  Stream<QuerySnapshot> searchRoom(RoomInfo roomInfo) {
-//   return _firestore.collection('roomInfo').where('name', isEqualTo: roomInfo.roomName).getDocuments().asStream() ;
-//  }
 }
 
 /* warning message : if upgraded version of firestore break our codes, than try adding this.
