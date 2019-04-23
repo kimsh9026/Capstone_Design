@@ -1,4 +1,4 @@
-import 'package:capstone/bloc_codes/BlocProvider.dart';
+import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
 import 'package:flutter/material.dart';
 //import 'package:capstone/test/chat_room_info.dart' ;

@@ -2,7 +2,7 @@ import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:capstone/custom_widgets/custom_datetime_form_field.dart';
 import 'package:capstone/feed_page_codes/room_card.dart';
-import 'package:capstone/bloc_codes/BlocProvider.dart';
+import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
 
 /*
@@ -18,29 +18,36 @@ class RoomList extends StatelessWidget {
 
   Widget _buildList(context) {
     return StreamBuilder(
-        stream: BlocProvider.of(context).roomBloc.roomList,
-        builder: (context, snapshot) {
-          if(!snapshot.hasData) return const Text('Loading..') ;
-          return ListView.builder(
-            shrinkWrap: true,
-            padding: const EdgeInsets.only(
-              top: 8.0,
-              bottom: 8.0,
-            ),
-            itemCount: snapshot.data.documents.length,
-            itemBuilder: (context, int,
-                {
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.only(
-                    top: 30.0,
-                    bottom: 30.0,
-                  ),
-                }) {
-              return new RoomCard(context, snapshot.data.documents[int]);
-            },
-          );
-        }
-    );
+      stream: BlocProvider.of(context).roomBloc.isRoomFinding,
+      builder: (context, snapshot){
+        return StreamBuilder(
+            stream: BlocProvider.of(context).roomBloc.roomList,
+            builder: (context, snapshot) {
+              if(!snapshot.hasData) return const Text('Loading..') ;
+              return ListView.builder(
+                shrinkWrap: true,
+                padding: const EdgeInsets.only(
+                  top: 8.0,
+                  bottom: 8.0,
+                ),
+                itemCount: snapshot.data.documents.length,
+                itemBuilder: (context, int,
+                    {
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.only(
+                        top: 30.0,
+                        bottom: 30.0,
+                      ),
+                    }) {
+                  return RoomCard(context, snapshot.data.documents[int]);
+                },
+              );
+            }
+        ) ;
+      }
+    ) ;
+
+
   }
 
   Widget _createRoomTitleContainer(BuildContext context){

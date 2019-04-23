@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:capstone/bloc_codes/BlocProvider.dart';
+import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/bottom_navigation.dart';
 import 'package:capstone/profie_page.dart';
 import 'package:capstone/feed_page_codes/feed_page.dart';
@@ -72,6 +72,7 @@ class MyApp extends StatelessWidget {
                         return feedPage ;
                       }
                       else if(snapshot.data == 3){
+                        print('here is main, and change scaffold to chatRoomPage') ;
                         return chatRoomPage ;
                       }
                     }

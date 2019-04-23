@@ -1,5 +1,5 @@
 //import 'package:capstone/chat_room_codes/chat_room_info.dart';
-import 'package:capstone/bloc_codes/BlocProvider.dart';
+import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
 import 'package:flutter/material.dart';
 //import 'profie_page.dart' ;
@@ -187,9 +187,11 @@ class RoomCardState extends State<RoomCard> {
   Widget build(BuildContext context) {
     return new InkWell(
       onTap: () {
-        print('here is room card : ${_roomInfo.roomCreatedTime}') ;
+        print('here is room card, card tapped') ;
+//        BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(3) ;
         BlocProvider.of(context).roomBloc.setEnterRoom(_roomInfo) ;
-        BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(3) ;
+        print('here is room card, card tapped, and set is room Entered') ;
+        BlocProvider.of(context).roomBloc.setIsRoomEntered(true) ;
       },
       child: new Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0),
