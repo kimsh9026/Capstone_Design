@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:capstone/bloc_codes/BlocProvider.dart';
 import 'package:capstone/bottom_navigation.dart';
-import 'package:capstone/profie_page.dart';
+import 'package:capstone/profile_page.dart';
 import 'package:capstone/feed_page_codes/feed_page.dart';
 import 'package:capstone/matching_page.dart';
 import 'package:capstone/chat_room_codes/chat_room_page.dart';
 import 'LogInPage.dart' ;
+import 'package:gradient_widgets/gradient_widgets.dart';
 /* 해결해야 할 것
 
 * App 실행시 BlocProvider 생성
