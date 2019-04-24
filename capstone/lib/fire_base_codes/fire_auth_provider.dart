@@ -18,6 +18,8 @@ class FireAuthProvider {
 
   Stream<FirebaseUser> get fireAuth => _fireAuth.onAuthStateChanged ;
 
+  // error case to be solved: sometimes (may be when try log-in first time) google User is null.
+  // temp solution : re-boot the emulator
   void _authenticateWithGoogle() async {
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     print("GoogleSignInAccount :  ${googleUser.toString()}") ;
@@ -29,16 +31,15 @@ class FireAuthProvider {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    print(user.email) ;
 
     //if there is no info about current user in our fire base, add it.
     final QuerySnapshot result =
-    await Firestore.instance.collection('users').where('id', isEqualTo: user.uid).getDocuments();
+    await Firestore.instance.collection('userInfo').where('id', isEqualTo: user.uid).getDocuments();
     final List<DocumentSnapshot> documents = result.documents;
     if (documents.length == 0) {
       // Update data to server if new user
-      Firestore.instance.collection('users').document(user.uid).setData(
-          {'nickname': user.displayName, 'photoUrl': user.photoUrl, 'id': user.uid});
+      Firestore.instance.collection('userInfo').document(user.uid).setData(
+          {'nickname': user.displayName, 'photoUrl': user.photoUrl, 'id': user.uid, 'email': user.email});
     }
     _user = user ;
   }

@@ -17,7 +17,7 @@ class NavigationIconView {
         item = BottomNavigationBarItem(
           icon: icon,
           activeIcon: activeIcon,
-          title: Text(title),
+          title: Text(''),
           backgroundColor: color,
         ),
         controller = AnimationController(
@@ -35,10 +35,16 @@ class BottomNavigation extends StatefulWidget {
 
   static const String routeName = '/material/bottom_navigation';
 
-  void stateClear() => _BottomNavigationState().clear() ;
+  _BottomNavigationState _botNavBarState;
 
+  Function(int) get animate => _botNavBarState.animate;
+  Function() get stateClear => _BottomNavigationState().clear ;
   @override
-  _BottomNavigationState createState() => _BottomNavigationState();
+  _BottomNavigationState createState() {
+    _botNavBarState = _BottomNavigationState() ;
+    return _botNavBarState ;
+  }
+//  _BottomNavigationState createState() => _BottomNavigationState() ;
 
 }
 
@@ -55,27 +61,27 @@ class _BottomNavigationState extends State<BottomNavigation>
     _navigationViews = <NavigationIconView>[
       NavigationIconView(
         icon: const Icon(Icons.access_alarm),
-        title: 'ProfilePage',
+//        title: 'ProfilePage',
         color: Colors.deepPurple,
         vsync: this,
       ),
       NavigationIconView(
         activeIcon: const Icon(Icons.cloud),
         icon: const Icon(Icons.cloud_queue),
-        title: 'MatchingPage',
+//        title: 'MatchingPage',
         color: Colors.teal,
         vsync: this,
       ),
       NavigationIconView(
         activeIcon: const Icon(Icons.favorite),
         icon: const Icon(Icons.favorite_border),
-        title: 'FeedPage',
+//        title: 'FeedPage',
         color: Colors.indigo,
         vsync: this,
       ),
       NavigationIconView(
         icon: const Icon(Icons.event_available),
-        title: 'Event',
+//        title: 'Event',
         color: Colors.pink,
         vsync: this,
       )
@@ -93,18 +99,23 @@ class _BottomNavigationState extends State<BottomNavigation>
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: _navigationViews
-          .map<BottomNavigationBarItem>((NavigationIconView navigationView) => navigationView.item)
-          .toList(),
-      currentIndex: _currentIndex,
-      type: _type,
-      onTap: (int index) {
-        BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(index) ;
-        setState((){
-          animate(index) ;
-        }) ;
-      },
+    return StreamBuilder(
+      stream: BlocProvider.of(context).bottomBarBloc.bottomBarPressed,
+      builder:(context,snapshot){
+       return BottomNavigationBar(
+          items: _navigationViews
+              .map<BottomNavigationBarItem>((NavigationIconView navigationView) => navigationView.item)
+              .toList(),
+          currentIndex: _currentIndex,
+          type: _type,
+          onTap: (int index) {
+            BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(index) ;
+//        setState((){
+//          animate(index) ;
+//        }) ;
+          },
+        ) ;
+      }
     ) ;
   }
 

@@ -1,7 +1,7 @@
 import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:capstone/custom_widgets/custom_datetime_form_field.dart';
-import 'package:capstone/feed_page_codes/room_card.dart';
+import 'package:capstone/feed_page_codes/feed_room_card.dart';
 import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
 
@@ -39,7 +39,7 @@ class RoomList extends StatelessWidget {
                         bottom: 30.0,
                       ),
                     }) {
-                  return RoomCard(context, snapshot.data.documents[int]);
+                  return FeedRoomCard(context, snapshot.data.documents[int]);
                 },
               );
             }
@@ -58,7 +58,7 @@ class RoomList extends StatelessWidget {
           Expanded(
             flex: 1,
             child: Container(
-                color: Colors.blue,
+//                color: Colors.blue,
                 alignment: Alignment.center,
                 child: Text(
                   '제목',
@@ -71,7 +71,7 @@ class RoomList extends StatelessWidget {
               flex: 5,
               child: Container(
                   alignment: Alignment.topCenter,
-                  color: Colors.yellow,
+//                  color: Colors.yellow,
                   child: Row(
                     children: <Widget>[
                       Expanded(
@@ -186,14 +186,15 @@ class RoomList extends StatelessWidget {
     final form = formKey.currentState ;
     if(form.validate()){
       form.save() ;
-      roomInfo.roomLeaderName = FireAuthProvider.user.email ;
+      roomInfo.roomLeaderUID = FireAuthProvider.user.uid ;
       BlocProvider.of(context).roomBloc.registerRoom(roomInfo);
       Navigator.pop(context) ;
-      BlocProvider.of(context).roomBloc.setEnterRoom(roomInfo) ;
+      BlocProvider.of(context).roomBloc.setRoomEntering(roomInfo) ;
       BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(3) ;
     }
   }
 
+  // meetingDateTime이 하루 지난 날짜로 등록된다!
   Widget createNewRoom(BuildContext context){
     return Scaffold(
       appBar: PreferredSize(

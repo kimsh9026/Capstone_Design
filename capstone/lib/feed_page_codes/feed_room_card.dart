@@ -9,20 +9,20 @@ import 'package:cloud_firestore/cloud_firestore.dart' ;
 * 이미지 UI 그리는 부분 수정 필요
  */
 
-class RoomCard extends StatefulWidget{
+class FeedRoomCard extends StatefulWidget{
 
   final DocumentSnapshot document ;
 
   DocumentSnapshot get roomInfo => document ;
 
-  RoomCard(BuildContext context, this.document) ;
+  FeedRoomCard(BuildContext context, this.document) ;
 
   @override
-  RoomCardState createState() => new RoomCardState();
+  FeedRoomCardState createState() => new FeedRoomCardState();
 }
 
 
-class RoomCardState extends State<RoomCard> {
+class FeedRoomCardState extends State<FeedRoomCard> {
   RoomInfo _roomInfo = RoomInfo();
 
   void initState(){
@@ -120,7 +120,7 @@ class RoomCardState extends State<RoomCard> {
     ) ;
   }
 
-  Widget _peopleCountRow(){
+  Widget get _peopleCountRow{
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
@@ -171,7 +171,7 @@ class RoomCardState extends State<RoomCard> {
                             top: 7,
                           ),
                         ),
-                       _peopleCountRow(),
+                       _peopleCountRow,
                       ],
                     )
                 ),
@@ -187,10 +187,8 @@ class RoomCardState extends State<RoomCard> {
   Widget build(BuildContext context) {
     return new InkWell(
       onTap: () {
-        print('here is room card, card tapped') ;
-//        BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(3) ;
-        BlocProvider.of(context).roomBloc.setEnterRoom(_roomInfo) ;
-        print('here is room card, card tapped, and set is room Entered') ;
+        BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(3) ;
+        BlocProvider.of(context).roomBloc.setRoomEntering(_roomInfo) ;
         BlocProvider.of(context).roomBloc.setIsRoomEntered(true) ;
       },
       child: new Padding(

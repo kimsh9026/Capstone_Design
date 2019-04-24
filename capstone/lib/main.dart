@@ -4,7 +4,7 @@ import 'package:capstone/bottom_navigation.dart';
 import 'package:capstone/profie_page.dart';
 import 'package:capstone/feed_page_codes/feed_page.dart';
 import 'package:capstone/matching_page.dart';
-import 'package:capstone/chat_room_codes/chat_room_page.dart';
+import 'package:capstone/chat_room_codes/my_chat_room_page.dart';
 import 'LogInPage.dart' ;
 /* 해결해야 할 것
 
@@ -20,11 +20,11 @@ void main() => runApp(BlocProvider(child : MyApp())) ;
 
 class MyApp extends StatelessWidget {
 
-  BottomNavigation botNavBar = BottomNavigation() ;
+  static BottomNavigation botNavBar = BottomNavigation() ;
   ProfilePage profilePage = new ProfilePage() ;
   FeedPage feedPage = new FeedPage() ;
   MatchingPage matchingPage = new MatchingPage() ;
-  ChatRoomPage chatRoomPage = new ChatRoomPage() ;
+  MyChatRoomPage chatRoomPage = new MyChatRoomPage() ;
   LogInPage logInPage = new LogInPage() ;
 
   @override
@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
         stream: BlocProvider.of(context).authBloc.isLoggedIn,
         builder: (context, authSnapshot){
           print("streambuilder get") ;
-          botNavBar.stateClear() ;
+          BottomNavigation().stateClear;
           return Scaffold(
             body: !authSnapshot.hasData ? logInPage :
             (
