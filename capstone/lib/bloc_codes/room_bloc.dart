@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:capstone/feed_page_codes/chat_room.dart';
 import 'package:flutter/material.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' ;
@@ -10,47 +11,45 @@ class RoomBloc extends Object{
 
   BuildContext _context ;
   final _roomPressed = StreamController<int>.broadcast() ;
-  final _initRooms = StreamController<bool>.broadcast() ;
-  final _scrollRooms = StreamController<bool>.broadcast() ;
   final _addedRoom = StreamController<RoomInfo>.broadcast() ;
-  final _roomList = FirestoreProvider().roomList;
   final _roomFinding = StreamController<RoomInfo>.broadcast() ;
   final _isRoomFinding = StreamController<bool>.broadcast() ;
   final _roomEntering = StreamController<RoomInfo>.broadcast() ;
-  final _isRoomEntered = StreamController<bool>.broadcast() ;
+  final _isRoomEntered = StreamController<BuildContext>.broadcast() ;
   final _roomMessages = FirestoreProvider().getRoomMessages;
-  
+  final _chatRoomList = FirestoreProvider().chatRoomList ;
+  final _feedRoomList = FirestoreProvider().feedRoomList;
+
   RoomInfo feedPageRoomInfo;
   RoomInfo chatRoomInfo;
 
   Stream<int> get roomPressed => _roomPressed.stream ;
-  Stream<bool> get initRooms => _initRooms.stream ;
-  Stream<bool> get scrollRooms => _scrollRooms.stream ;
-  Stream<bool> get isRoomFinding => _isRoomFinding.stream ;
-  Stream<bool> get isRoomEntered => _isRoomEntered.stream ;
   Stream<RoomInfo> get addedRoom => _addedRoom.stream ;
-  Stream<QuerySnapshot> get roomList => _roomList(feedPageRoomInfo) ;
   Stream<RoomInfo> get roomFinding => _roomFinding.stream ;
+  Stream<bool> get isRoomFinding => _isRoomFinding.stream ;
   Stream<RoomInfo> get roomEntering => _roomEntering.stream ;
+  Stream<BuildContext> get isRoomEntered => _isRoomEntered.stream ;
   Stream<QuerySnapshot> get roomMessages => _roomMessages(chatRoomInfo) ;
+  Stream<QuerySnapshot> get roomList => _feedRoomList(feedPageRoomInfo) ;
+  Stream<QuerySnapshot> get chatRoomList => _chatRoomList() ;
 /*
 searching stream 만들어서 searching block icon 눌렸을 때 list block stream 바꿔줌
  */
 
   Function(int) get setRoomPressed => _roomPressed.sink.add ;
-  Function(bool) get setInitRooms => _initRooms.sink.add ;
-  Function(bool) get setScrollRooms => _scrollRooms.sink.add ;
-  Function(RoomInfo) get registerRoom => FirestoreProvider().registerRoom;
   Function(RoomInfo) get setRoomFinding => _roomFinding.sink.add ;
   Function(RoomInfo) get setRoomEntering => _roomEntering.sink.add ;
   Function(bool) get setIsRoomFinding => _isRoomFinding.sink.add ;
-  Function(bool) get setIsRoomEntered => _isRoomEntered.sink.add ;
+  Function(BuildContext) get setIsRoomEntered => _isRoomEntered.sink.add ;
+  Function(RoomInfo) get registerRoom => FirestoreProvider().registerRoom;
 
 
   RoomBloc(){
     roomEntering.listen((RoomInfo roomInfo){
       print('here is enterRoom.listen ${roomInfo.roomName}') ;
       chatRoomInfo = roomInfo ;
+      FirestoreProvider().addUserInRoom(roomInfo) ;
+//      Navigator.push()
     },onError: (error) {
       print("enter Room error occured");
       Scaffold.of(_context).showSnackBar(new SnackBar(
@@ -60,7 +59,11 @@ searching stream 만들어서 searching block icon 눌렸을 때 list block stre
     }
     );
 
-    isRoomEntered.listen((bool value){
+    isRoomEntered.listen((BuildContext context){
+      var roomInfo = FirestoreProvider().getRoomInfo(chatRoomInfo);
+      Navigator.push(context, MaterialPageRoute(
+        builder: (context) => ChatRoom(roomInfo)
+      )) ;
       print('here is isRoomEntered.listen') ;
     },onError: (error) {
       print("enter Room error occured");
@@ -85,8 +88,6 @@ searching stream 만들어서 searching block icon 눌렸을 때 list block stre
 
   dispose(){
     _roomPressed.close() ;
-    _initRooms.close() ;
-    _scrollRooms.close() ;
     _addedRoom.close() ;
     _roomFinding.close() ;
     _roomEntering.close() ;

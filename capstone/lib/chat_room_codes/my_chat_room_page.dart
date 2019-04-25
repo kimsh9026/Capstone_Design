@@ -9,7 +9,7 @@ class MyChatRoomPage extends StatelessWidget {
 
   Widget _createChatRoomList(context){
     return StreamBuilder(
-        stream: BlocProvider.of(context).roomBloc.roomList,
+        stream: BlocProvider.of(context).roomBloc.chatRoomList,
         builder: (context, snapshot) {
           if(!snapshot.hasData) return const Text('Loading..') ;
           return ListView.builder(

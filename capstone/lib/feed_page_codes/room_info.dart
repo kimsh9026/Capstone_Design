@@ -15,6 +15,7 @@ class RoomInfo {
   String _roomPurpose = '';
   String _contents = '' ;
   String _documentID = '' ;
+  List<String> _users = List<String>();
 
   void clear(){
     _roomName = '' ;
@@ -27,12 +28,22 @@ class RoomInfo {
     _meetingLocation = '';
     _contents = '' ;
     _roomCreatedTime = DateTime(0,0,0,0,0,0,0) ;
+    _documentID = '' ;
+    _users = List<String>() ;
   }
 
   void setDocument(DocumentSnapshot document){
+    DateTime date = document['meetingDateTime'].toDate() ;
     print('here is room Info, setDocument') ;
     _roomName = document['roomName'] ;
     _roomLeaderUID = document['roomLeaderUID'] ;
+    _meetingDate = DateTime(date.year,date.month,date.day,0,0,0,0);
+    _meetingTime = DateTime(0,0,0,date.hour,date.minute,date.second,0);
+    _totalNumber = document['totalNumber'];
+    _currentNumber = document['currentNumber'];
+//    _roomPurpose = document['roomPurpose'];
+    _meetingLocation = document['meetingLocation'];
+//    _contents = document['contents'] ;
     _roomCreatedTime = document['roomCreatedTime'].toDate() ;
     _documentID = document.documentID ;
   }

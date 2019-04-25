@@ -85,7 +85,7 @@ class ChatRoomCardState extends State<ChatRoomCard> {
     return new InkWell(
       onTap: () {
         BlocProvider.of(context).roomBloc.setRoomEntering(_roomInfo) ;
-        BlocProvider.of(context).roomBloc.setIsRoomEntered(true) ;
+        BlocProvider.of(context).roomBloc.setIsRoomEntered(context) ;
       },
       child: new Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0),

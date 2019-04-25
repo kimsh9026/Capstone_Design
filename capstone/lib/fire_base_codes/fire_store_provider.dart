@@ -1,3 +1,4 @@
+import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' ;
 import 'package:capstone/feed_page_codes/room_info.dart';
 
@@ -17,7 +18,7 @@ class FirestoreProvider {
     _firestore.settings(timestampsInSnapshotsEnabled: true) ;
   }
 
-  Stream<QuerySnapshot> roomList(RoomInfo roomInfo) {
+  Stream<QuerySnapshot> feedRoomList(RoomInfo roomInfo) {
 
     if(roomInfo == null || roomInfo.roomName == ''){
       print('here is firestore, room list, FindingRoomName is null') ;
@@ -44,6 +45,11 @@ class FirestoreProvider {
 
   }
 
+  Future<DocumentSnapshot> getRoomInfo(RoomInfo roomInfo) {
+    return _firestore.collection('roomInfo')
+        .document(roomInfo.documentID).get() ;
+  }
+
   Future<void> registerRoom(RoomInfo roomInfo) async {
     DateTime date = DateTime.now() ;
     return _firestore.collection('roomInfo').document().setData({
@@ -62,4 +68,19 @@ class FirestoreProvider {
 //      'contents' : roomInfo.contents,
     }) ;
   }
+
+  Future<void> addUserInRoom(RoomInfo roomInfo) {
+    print(roomInfo.documentID) ;
+    _firestore.collection('roomInfo').document(roomInfo.documentID)
+        .updateData({
+      'users' : FieldValue.arrayUnion([FireAuthProvider.user.uid])
+    }) ;
+  }
+
+  Stream<QuerySnapshot> chatRoomList(){
+    return _firestore.collection('roomInfo')
+        .where('users', arrayContains:FireAuthProvider.user.uid)
+        .snapshots() ;
+  }
+
 }
