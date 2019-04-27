@@ -34,10 +34,6 @@ class MyChatRoomPage extends StatelessWidget {
     );
   }
 
-  Widget _chatText(BuildContext context, DocumentSnapshot document){
-    return Text(document['message'].toString());
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

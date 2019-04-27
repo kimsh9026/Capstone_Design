@@ -190,6 +190,7 @@ class FeedRoomCardState extends State<FeedRoomCard> {
         BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(3) ;
         BlocProvider.of(context).roomBloc.setRoomEntering(_roomInfo) ;
         BlocProvider.of(context).roomBloc.setIsRoomEntered(context) ;
+//        BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(3) ;
       },
       child: new Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0),

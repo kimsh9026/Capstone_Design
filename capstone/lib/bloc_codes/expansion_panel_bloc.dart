@@ -10,4 +10,8 @@ class ExpansionPanelBloc extends Object{
 
   Function(bool) get setExpansionBarPressed => _ExpansionPanelPressed.sink.add ;
 
+  dispose(){
+    _ExpansionPanelPressed.close() ;
+  }
+
 }

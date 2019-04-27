@@ -46,6 +46,13 @@ class RoomInfo {
 //    _contents = document['contents'] ;
     _roomCreatedTime = document['roomCreatedTime'].toDate() ;
     _documentID = document.documentID ;
+    _users = List.from(document['users']) ;
+  }
+
+  List<String> get users => _users;
+
+  set users(List<String> value) {
+    _users = value;
   }
 
   String get documentID => _documentID;

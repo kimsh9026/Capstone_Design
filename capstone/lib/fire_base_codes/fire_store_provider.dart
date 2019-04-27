@@ -39,15 +39,15 @@ class FirestoreProvider {
       return _firestore.collection('roomInfo')
           .document(roomInfo.documentID)
           .collection('Messages')
-          .orderBy('timestamp',descending: false)
+          .orderBy('timestamp',descending: true)
           .limit(20)
           .snapshots() ;
 
   }
 
-  Future<DocumentSnapshot> getRoomInfo(RoomInfo roomInfo) {
+  Stream<DocumentSnapshot> getRoomSnapshot(RoomInfo roomInfo) {
     return _firestore.collection('roomInfo')
-        .document(roomInfo.documentID).get() ;
+        .document(roomInfo.documentID).snapshots() ;
   }
 
   Future<void> registerRoom(RoomInfo roomInfo) async {
@@ -70,7 +70,6 @@ class FirestoreProvider {
   }
 
   Future<void> addUserInRoom(RoomInfo roomInfo) {
-    print(roomInfo.documentID) ;
     _firestore.collection('roomInfo').document(roomInfo.documentID)
         .updateData({
       'users' : FieldValue.arrayUnion([FireAuthProvider.user.uid])

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class ChatRoomCard extends StatefulWidget{
   final DocumentSnapshot document ;
 
-  DocumentSnapshot get roomInfo => document ;
+//  DocumentSnapshot get getDocument => document ;
 
   ChatRoomCard(BuildContext context, this.document) ;
 
@@ -27,10 +27,11 @@ class ChatRoomCardState extends State<ChatRoomCard> {
     var roomImage = new Hero(
       tag: widget.document,
       child: new Container(
-        width: 60.0,
-        height: 60.0,
+        width: 50.0,
+        height: 50.0,
         decoration: new BoxDecoration(
           shape: BoxShape.circle,
+          color: Colors.yellow,
           image: new DecorationImage(
             fit: BoxFit.cover,
             image: AssetImage('Images/sample.png'),
@@ -63,19 +64,29 @@ class ChatRoomCardState extends State<ChatRoomCard> {
 
   Widget get _roomCard {
     return Container(
-      child: Card(
+      decoration: BoxDecoration(
         color: Colors.white,
-        child: Row(
-          children: <Widget>[
-            _roomImage,
-            new Padding(
-              padding: const EdgeInsets.only(left : 20),
-            ),
-            _titleText,
-            _peopleCountRow
-
-          ],
-        )
+//        border: Border.all(color: Colors.blueGrey, width:0.06)
+      ),
+      height: 70,
+      child: Row(
+        children: <Widget>[
+          new Padding(
+            padding: const EdgeInsets.only(left : 10),
+          ),
+          _roomImage,
+          new Padding(
+            padding: const EdgeInsets.only(left : 20),
+          ),
+          Expanded(
+            flex: 5,
+            child: _titleText
+          ),
+          Expanded(
+              flex: 1,
+              child: _peopleCountRow,
+          ),
+        ],
       )
     ) ;
   }
@@ -89,10 +100,7 @@ class ChatRoomCardState extends State<ChatRoomCard> {
       },
       child: new Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0),
-        child: new Container(
-          height: 125.0,
-          child: _roomCard,
-        ),
+        child:  _roomCard,
       ),
     );
   }

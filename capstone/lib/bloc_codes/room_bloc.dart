@@ -19,7 +19,7 @@ class RoomBloc extends Object{
   final _roomMessages = FirestoreProvider().getRoomMessages;
   final _chatRoomList = FirestoreProvider().chatRoomList ;
   final _feedRoomList = FirestoreProvider().feedRoomList;
-
+  final _getRoomSnapshot = FirestoreProvider().getRoomSnapshot;
   RoomInfo feedPageRoomInfo;
   RoomInfo chatRoomInfo;
 
@@ -32,6 +32,7 @@ class RoomBloc extends Object{
   Stream<QuerySnapshot> get roomMessages => _roomMessages(chatRoomInfo) ;
   Stream<QuerySnapshot> get roomList => _feedRoomList(feedPageRoomInfo) ;
   Stream<QuerySnapshot> get chatRoomList => _chatRoomList() ;
+  Stream<DocumentSnapshot> get getRoomSnapshot => _getRoomSnapshot(chatRoomInfo) ;
 /*
 searching stream 만들어서 searching block icon 눌렸을 때 list block stream 바꿔줌
  */
@@ -49,7 +50,6 @@ searching stream 만들어서 searching block icon 눌렸을 때 list block stre
       print('here is enterRoom.listen ${roomInfo.roomName}') ;
       chatRoomInfo = roomInfo ;
       FirestoreProvider().addUserInRoom(roomInfo) ;
-//      Navigator.push()
     },onError: (error) {
       print("enter Room error occured");
       Scaffold.of(_context).showSnackBar(new SnackBar(
@@ -60,9 +60,8 @@ searching stream 만들어서 searching block icon 눌렸을 때 list block stre
     );
 
     isRoomEntered.listen((BuildContext context){
-      var roomInfo = FirestoreProvider().getRoomInfo(chatRoomInfo);
       Navigator.push(context, MaterialPageRoute(
-        builder: (context) => ChatRoom(roomInfo)
+        builder: (context) => ChatRoom()
       )) ;
       print('here is isRoomEntered.listen') ;
     },onError: (error) {
