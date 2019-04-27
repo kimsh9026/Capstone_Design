@@ -1,3 +1,4 @@
+import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' ;
 import 'package:capstone/feed_page_codes/room_info.dart';
 
@@ -17,24 +18,43 @@ class FirestoreProvider {
     _firestore.settings(timestampsInSnapshotsEnabled: true) ;
   }
 
-  Stream<QuerySnapshot> roomList(RoomInfo roomInfo) {
-    print('here is firestore list') ;
+  Stream<QuerySnapshot> feedRoomList(RoomInfo roomInfo) {
+
     if(roomInfo == null || roomInfo.roomName == ''){
-      print('roomName null') ;
-      return Firestore.instance.collection('roomInfo').snapshots() ;
+      print('here is firestore, room list, FindingRoomName is null') ;
+      return _firestore.collection('roomInfo').snapshots() ;
     }
-//    return _firestore.collection('roomInfo').snapshots() ;
     else{
-      print('roomName ${roomInfo.roomName}') ;
+      print('here is firestore, room list, FindingRoomName is ${roomInfo.roomName}') ;
       return _firestore.collection('roomInfo').where('roomName', isEqualTo: roomInfo.roomName).getDocuments().asStream() ;
     }
   }
 
+  Stream<QuerySnapshot> getRoomMessages(RoomInfo roomInfo) {
+
+    if(roomInfo == null){
+      return null ;
+    }
+    else
+      return _firestore.collection('roomInfo')
+          .document(roomInfo.documentID)
+          .collection('Messages')
+          .orderBy('timestamp',descending: false)
+          .limit(20)
+          .snapshots() ;
+
+  }
+
+  Future<DocumentSnapshot> getRoomInfo(RoomInfo roomInfo) {
+    return _firestore.collection('roomInfo')
+        .document(roomInfo.documentID).get() ;
+  }
+
   Future<void> registerRoom(RoomInfo roomInfo) async {
-      DateTime date = DateTime.now() ;
-    _firestore.collection('roomInfo').document().setData({
+    DateTime date = DateTime.now() ;
+    return _firestore.collection('roomInfo').document().setData({
       'roomName' : roomInfo.roomName,
-      'roomLeaderName' : roomInfo.roomLeaderName,
+      'roomLeaderUID' : roomInfo.roomLeaderUID,
       'roomCreatedTime' : Timestamp.fromDate(date),
       'meetingDateTime' : roomInfo.meetingDateTime,
 
@@ -47,46 +67,20 @@ class FirestoreProvider {
 //      'roomPurpose' : roomInfo.roomPurpose,
 //      'contents' : roomInfo.contents,
     }) ;
+  }
 
-    return _firestore.collection('roomMessages').document().setData({
-      'roomName' : roomInfo.roomName,
-      'roomLeaderName' : roomInfo.roomLeaderName,
-      'roomCreatedTime' : Timestamp.fromDate(date),
+  Future<void> addUserInRoom(RoomInfo roomInfo) {
+    print(roomInfo.documentID) ;
+    _firestore.collection('roomInfo').document(roomInfo.documentID)
+        .updateData({
+      'users' : FieldValue.arrayUnion([FireAuthProvider.user.uid])
     }) ;
-
   }
 
-  Stream<QuerySnapshot> roomMessages(RoomInfo roomInfo) {
-    if(roomInfo == null)
-      return null ;
-    else
-      _firestore.collection('roomMessages')
-          .where('roomName', isEqualTo: roomInfo.roomName)
-          .where('roomLeaderName', isEqualTo: roomInfo.roomLeaderName)
-          .where('roomCreatedTime', isEqualTo: Timestamp.fromDate(roomInfo.roomCreatedTime))
-          .getDocuments()
-          .then((value) {
-        return _firestore.collection('roomMessages')
-            .document(value.documents.elementAt(0).documentID)
-            .collection('Messages')
-            .orderBy('timestamp',descending: true)
-            .limit(20)
-            .getDocuments().asStream() ;
-      }
-      ) ;
+  Stream<QuerySnapshot> chatRoomList(){
+    return _firestore.collection('roomInfo')
+        .where('users', arrayContains:FireAuthProvider.user.uid)
+        .snapshots() ;
   }
+
 }
-
-/* warning message : if upgraded version of firestore break our codes, than try adding this.
-W/Firestore( 8276): FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-W/Firestore( 8276): FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-W/Firestore( 8276):     .setTimestampsInSnapshotsEnabled(true)
-W/Firestore( 8276):     .build();
-W/Firestore( 8276): firestore.setFirestoreSettings(settings);
-
-W/Firestore( 8276): // Old:
-W/Firestore( 8276): java.util.Date date = snapshot.getDate("created_at");
-W/Firestore( 8276): // New:
-W/Firestore( 8276): Timestamp timestamp = snapshot.getTimestamp("created_at");
-W/Firestore( 8276): java.util.Date date = timestamp.toDate();
- */

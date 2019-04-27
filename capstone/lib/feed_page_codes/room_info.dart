@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class RoomInfo {
 
   String _roomName = '' ;
-  String _roomLeaderName  = '';
+  String _roomLeaderUID = '';
   String _joinedUserName = '' ;
   DateTime _roomCreatedTime = DateTime(0,0,0,0,0,0,0) ;
   DateTime _meetingDate = DateTime(0,0,0,0,0,0,0);
@@ -14,10 +14,12 @@ class RoomInfo {
   int _totalNumber = 0;
   String _roomPurpose = '';
   String _contents = '' ;
+  String _documentID = '' ;
+  List<String> _users = List<String>();
 
   void clear(){
     _roomName = '' ;
-    _roomLeaderName  = '';
+    _roomLeaderUID = '';
     _meetingDate = DateTime(0,0,0,0,0,0,0);
     _meetingTime = DateTime(0,0,0,0,0,0,0);
     _totalNumber = 0;
@@ -26,13 +28,30 @@ class RoomInfo {
     _meetingLocation = '';
     _contents = '' ;
     _roomCreatedTime = DateTime(0,0,0,0,0,0,0) ;
+    _documentID = '' ;
+    _users = List<String>() ;
   }
 
   void setDocument(DocumentSnapshot document){
+    DateTime date = document['meetingDateTime'].toDate() ;
+    print('here is room Info, setDocument') ;
     _roomName = document['roomName'] ;
-    _roomLeaderName = document['roomLeaderName'] ;
+    _roomLeaderUID = document['roomLeaderUID'] ;
+    _meetingDate = DateTime(date.year,date.month,date.day,0,0,0,0);
+    _meetingTime = DateTime(0,0,0,date.hour,date.minute,date.second,0);
+    _totalNumber = document['totalNumber'];
+    _currentNumber = document['currentNumber'];
+//    _roomPurpose = document['roomPurpose'];
+    _meetingLocation = document['meetingLocation'];
+//    _contents = document['contents'] ;
     _roomCreatedTime = document['roomCreatedTime'].toDate() ;
-    print('here is room Info: ${_roomCreatedTime}') ;
+    _documentID = document.documentID ;
+  }
+
+  String get documentID => _documentID;
+
+  set documentID(String value) {
+    _documentID = value;
   }
 
   String get joinedUserName => _joinedUserName;
@@ -53,10 +72,10 @@ class RoomInfo {
     _roomName = value;
   }
 
-  String get roomLeaderName => _roomLeaderName;
+  String get roomLeaderUID => _roomLeaderUID;
 
-  set roomLeaderName(String value) {
-    _roomLeaderName = value;
+  set roomLeaderUID(String value) {
+    _roomLeaderUID = value;
   }
 
   DateTime get meetingDate => _meetingDate;

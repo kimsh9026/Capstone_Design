@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:capstone/bloc_codes/AuthBloc.dart';
-import 'package:capstone/bloc_codes/RoomBloc.dart';
-import 'package:capstone/bloc_codes/BottomBarBloc.dart';
-import 'package:capstone/bloc_codes/ExpansionPanelBloc.dart';
+import 'package:capstone/bloc_codes/auth_bloc.dart';
+import 'package:capstone/bloc_codes/room_bloc.dart';
+import 'package:capstone/bloc_codes/bottom_bar_bloc.dart';
+import 'package:capstone/bloc_codes/expansion_panel_bloc.dart';
 
 
 class BlocProvider extends InheritedWidget {

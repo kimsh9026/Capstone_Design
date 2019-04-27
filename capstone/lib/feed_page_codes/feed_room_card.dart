@@ -1,5 +1,5 @@
 //import 'package:capstone/chat_room_codes/chat_room_info.dart';
-import 'package:capstone/bloc_codes/BlocProvider.dart';
+import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
 import 'package:flutter/material.dart';
 //import 'profie_page.dart' ;
@@ -9,20 +9,20 @@ import 'package:cloud_firestore/cloud_firestore.dart' ;
 * 이미지 UI 그리는 부분 수정 필요
  */
 
-class RoomCard extends StatefulWidget{
+class FeedRoomCard extends StatefulWidget{
 
   final DocumentSnapshot document ;
 
   DocumentSnapshot get roomInfo => document ;
 
-  RoomCard(BuildContext context, this.document) ;
+  FeedRoomCard(BuildContext context, this.document) ;
 
   @override
-  RoomCardState createState() => new RoomCardState();
+  FeedRoomCardState createState() => new FeedRoomCardState();
 }
 
 
-class RoomCardState extends State<RoomCard> {
+class FeedRoomCardState extends State<FeedRoomCard> {
   RoomInfo _roomInfo = RoomInfo();
 
   void initState(){
@@ -120,7 +120,7 @@ class RoomCardState extends State<RoomCard> {
     ) ;
   }
 
-  Widget _peopleCountRow(){
+  Widget get _peopleCountRow{
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
@@ -171,7 +171,7 @@ class RoomCardState extends State<RoomCard> {
                             top: 7,
                           ),
                         ),
-                       _peopleCountRow(),
+                       _peopleCountRow,
                       ],
                     )
                 ),
@@ -187,9 +187,9 @@ class RoomCardState extends State<RoomCard> {
   Widget build(BuildContext context) {
     return new InkWell(
       onTap: () {
-        print('here is room card : ${_roomInfo.roomCreatedTime}') ;
-        BlocProvider.of(context).roomBloc.setEnterRoom(_roomInfo) ;
         BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(3) ;
+        BlocProvider.of(context).roomBloc.setRoomEntering(_roomInfo) ;
+        BlocProvider.of(context).roomBloc.setIsRoomEntered(context) ;
       },
       child: new Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0),
