@@ -50,6 +50,11 @@ class FirestoreProvider {
         .document(roomInfo.documentID).snapshots() ;
   }
 
+  Future<DocumentSnapshot> getUserSnapshot(String uid){
+    return _firestore.collection('userInfo')
+        .document(uid).get() ;
+  }
+
   Future<void> registerRoom(RoomInfo roomInfo) async {
     DateTime date = DateTime.now() ;
     return _firestore.collection('roomInfo').document().setData({
@@ -60,7 +65,7 @@ class FirestoreProvider {
 
       'meetingLocation' : '경상북도 포항시 북구 흥해읍',
 //      'meetingLocation' : roomInfo.meetingLocation,
-      'currentNumber' : 2,
+      'currentNumber' : 1,
 //        'currentnumber' : roomInfo.currentNumber,
       'totalNumber' : 4,
 //        'totalnumber' : roomInfo.totalNumber,

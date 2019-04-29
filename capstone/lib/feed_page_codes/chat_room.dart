@@ -3,51 +3,92 @@
 import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
 import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
+import 'package:capstone/fire_base_codes/fire_store_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ChatRoom extends StatelessWidget{
   //future error 뭐라는겨
   RoomInfo _roomInfo = RoomInfo();
+  List<String> _usersDisplayName = List<String>() ;
+  List<String> _usersImageURL = List<String>() ;
   String _currentUserName = FireAuthProvider.user.displayName ;
   String _currentUserUID = FireAuthProvider.user.uid ;
 
+  void _getUsersInfo() {
+    _roomInfo.users.forEach((uid) async {
+      var result = await FirestoreProvider().getUserSnapshot(uid);
+      print(result.data['nickname']) ;
+      print(result.data['photoUrl']) ;
+      _usersDisplayName.add(result.data['nickname']) ;
+      _usersImageURL.add(result.data['photoUrl']) ;
+    }) ;
+  }
+
   Widget _chatBody(BuildContext context, DocumentSnapshot document){
+    print('choose') ;
+   return document['uid'] == _currentUserUID ? _myMessage(document)
+    : _othersMessage(document) ;
+  }
+
+  Widget _myMessage(DocumentSnapshot document){
     return new Container(
-        color: Colors.white,
         margin: const EdgeInsets.symmetric(vertical: 10.0),
         child: new Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            new Container(
-              margin: const EdgeInsets.only(right: 16.0),
-//              decoration: new BoxDecoration(
-//                shape: BoxShape.circle,
-//                color: Colors.yellow,
-//                image: new DecorationImage(
-//                  fit: BoxFit.cover,
-//                  image: AssetImage('Images/sample.png'),
-//                ),
-//              ),
-              child: new CircleAvatar(
-                child: new Image.network("http://res.cloudinary.com/kennyy/image/upload/v1531317427/avatar_z1rc6f.png"),
-              ),
-            ),
             new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                new Text(_currentUserName, style: Theme.of(context).textTheme.subhead),
-                new Container(
-                  margin: const EdgeInsets.only(top: 5.0),
-                  child: new Text(document['message']),
+                new Text(_currentUserName),
+                new Card(
+                  color: Colors.white70,
+                  margin: const EdgeInsets.all(10),
+                  child: Container(
+                    height: 30,
+                    alignment: Alignment.center,
+                    child: Text(document['message']),
+                  )
                 )
               ],
-            )
+            ),
+            _usersImageURL.length == 0 ? Container(color: Colors.white30) :
+            CircleAvatar(
+                child: Image.network(_usersImageURL.elementAt(_roomInfo.users.indexOf(_currentUserUID)))
+            ),
           ],
         )
     );
+  }
 
-    //    return Text(document['message'].toString());
+  Widget _othersMessage(DocumentSnapshot document){
+    return new Container(
+        margin: const EdgeInsets.symmetric(vertical: 10.0),
+        child: new Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            _usersImageURL.length == 0 ? Container(color: Colors.white30) :
+            CircleAvatar(
+                child: Image.network(_usersImageURL.elementAt(_roomInfo.users.indexOf(_currentUserUID)))
+            ),
+            new Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                new Text(_currentUserName),
+                new Card(
+                    color: Colors.white70,
+                    margin: const EdgeInsets.all(10),
+                    child: Container(
+                      height: 30,
+                      alignment: Alignment.center,
+                      child: Text(document['message']),
+                    )
+                )
+              ],
+            ),
+          ],
+        )
+    );
   }
 
   Widget _createChatRoomBody(context){
@@ -102,7 +143,6 @@ class ChatRoom extends StatelessWidget{
     ) ;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -134,6 +174,7 @@ class ChatRoom extends StatelessWidget{
           }
           else{
             _roomInfo.setDocument(snapshot.data) ;
+            _getUsersInfo() ;
             return Scaffold(
               appBar: PreferredSize(
                 preferredSize: Size.fromHeight(45),

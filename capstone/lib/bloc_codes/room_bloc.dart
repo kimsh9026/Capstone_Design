@@ -43,13 +43,12 @@ searching stream 만들어서 searching block icon 눌렸을 때 list block stre
   Function(bool) get setIsRoomFinding => _isRoomFinding.sink.add ;
   Function(BuildContext) get setIsRoomEntered => _isRoomEntered.sink.add ;
   Function(RoomInfo) get registerRoom => FirestoreProvider().registerRoom;
-
+  Function(RoomInfo) get addUserInRoom => FirestoreProvider().addUserInRoom;
 
   RoomBloc(){
     roomEntering.listen((RoomInfo roomInfo){
       print('here is enterRoom.listen ${roomInfo.roomName}') ;
       chatRoomInfo = roomInfo ;
-      FirestoreProvider().addUserInRoom(roomInfo) ;
     },onError: (error) {
       print("enter Room error occured");
       Scaffold.of(_context).showSnackBar(new SnackBar(

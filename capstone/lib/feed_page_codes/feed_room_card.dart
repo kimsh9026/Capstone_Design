@@ -189,6 +189,7 @@ class FeedRoomCardState extends State<FeedRoomCard> {
       onTap: () {
         BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(3) ;
         BlocProvider.of(context).roomBloc.setRoomEntering(_roomInfo) ;
+        BlocProvider.of(context).roomBloc.addUserInRoom(_roomInfo) ;
         BlocProvider.of(context).roomBloc.setIsRoomEntered(context) ;
 //        BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(3) ;
       },
