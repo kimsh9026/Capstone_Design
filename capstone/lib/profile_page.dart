@@ -1,71 +1,111 @@
 import 'package:flutter/material.dart';
 import 'package:capstone/custom_widgets/custom_expansion_panel.dart';
 
-/*
-* Picker 접혔을 때 눌리지 않도록 처리 필요
- */
-
 class ProfilePage extends StatelessWidget {
-
-  Widget searchingBlock(){
-    return TextField(
-      textAlign: TextAlign.center,
-      decoration: InputDecoration(
-        border: InputBorder.none,
-        hintText: '제목, 내용 또는 키워드를 입력해주세요',
-        hintStyle: TextStyle(
-          fontSize: 15,
-        ),
-        suffixIcon: Icon(Icons.search,color: Colors.blue),
-        fillColor: Colors.black,
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     print("Profile Build") ;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color:Color.fromRGBO(61, 174, 218, 1),
+          onPressed: () => Navigator.pop(context),
+        ),
+        backgroundColor: Colors.white,
+        title: Text('Profile', textAlign : TextAlign.center, style : TextStyle(color: Color.fromRGBO(61, 174, 218, 1))),
+        centerTitle: true,
         actions:
         <Widget>[
-          PopupMenuButton<BottomNavigationBarType>(
-            itemBuilder: (BuildContext context) => <PopupMenuItem<BottomNavigationBarType>>[
-              const PopupMenuItem<BottomNavigationBarType>(
-                value: BottomNavigationBarType.fixed,
-                child: Text('Something1'),
-              ),
-              const PopupMenuItem<BottomNavigationBarType>(
-                value: BottomNavigationBarType.shifting,
-                child: Text('something2'),
-              )
-            ],
+          IconButton(
+            icon: Icon(Icons.edit, color:Color.fromRGBO(61,174,218,1)),
+
           )
         ],
-
       ),
       body: Column(
         children: <Widget>[
-          searchingBlock(),
-          ExpansionBlock(),
           Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin:Alignment.topCenter,
+                  end:Alignment.bottomCenter,
+
+                  stops:[0.0, 0.18],
+                  colors: [
+                    Color.fromRGBO(61,174,218,1),
+                    Colors.white,
+                  ]
+                )
+              ),
+
               child: Container(
-                color: Colors.blue,
+                margin: EdgeInsets.only(top: 20),
                 child: Center(
-                  child: Text(
-                    'Profile..',
-                    style: TextStyle(
-                      fontSize: 32.0,
-                      color: Colors.white,
-                      decorationStyle: TextDecorationStyle.solid,
-                    ),
-                  ),
-                ),
-              )
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        width:160,
+                        height:160,
+                        child: Stack(
+                          children:<Widget>[
+                            Container(
+                              width:160,
+                              height:160,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.grey,
+                              )
+                            ),
+                            Container(
+                                alignment: Alignment.topRight,
+                                child: Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color.fromRGBO(61, 174, 218, 1),
+                                  ),
+                                  child: IconButton(
+                                    icon:Icon(Icons.add),
+                                    color: Colors.white,
+                                    onPressed: ()=> print('hello!'),
+                                  )
+                                )
+                            ),
+
+                            Container(
+                                alignment: Alignment.bottomRight,
+                                child: Container(
+                                    width: 40,
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color.fromRGBO(61, 174, 218, 1),
+                                    ),
+                                    child: IconButton(
+                                      icon:Icon(Icons.message),
+                                      color: Colors.white,
+                                      onPressed: ()=> print('hello!'),
+                                    )
+                                )
+                            ),
+
+
+                          ]
+                        ),
+                      )
+                    ]
+                  )
+                )
+              ),
+            ),
           )
-        ],
-      ),
+        ]
+      )
     );
   }
 }
