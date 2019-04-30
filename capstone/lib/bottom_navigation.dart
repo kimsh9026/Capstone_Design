@@ -60,27 +60,62 @@ class _BottomNavigationState extends State<BottomNavigation>
     super.initState();
     _navigationViews = <NavigationIconView>[
       NavigationIconView(
-        icon: const Icon(Icons.access_alarm),
+        activeIcon: Image(
+          width: 30,
+          height: 30,
+          image: AssetImage('Images/bottom_bar_UI/person_active.PNG'),
+        ),
+        icon: Image(
+          width: 30,
+          height: 30,
+          image: AssetImage('Images/bottom_bar_UI/person.PNG'),
+        ),
+//        const Icon(Icons.access_alarm),
 //        title: 'ProfilePage',
         color: Colors.deepPurple,
         vsync: this,
       ),
       NavigationIconView(
-        activeIcon: const Icon(Icons.cloud),
-        icon: const Icon(Icons.cloud_queue),
+        activeIcon: Image(
+          width: 30,
+          height: 30,
+          image: AssetImage('Images/bottom_bar_UI/matching_active.PNG'),
+        ),
+        icon: Image(
+          width: 30,
+          height: 30,
+          image: AssetImage('Images/bottom_bar_UI/matching.PNG'),
+        ),
 //        title: 'MatchingPage',
         color: Colors.teal,
         vsync: this,
       ),
       NavigationIconView(
-        activeIcon: const Icon(Icons.favorite),
-        icon: const Icon(Icons.favorite_border),
+        activeIcon: Image(
+          width: 30,
+          height: 30,
+          image: AssetImage('Images/bottom_bar_UI/feed_active.PNG'),
+        ),
+        icon: Image(
+          width: 30,
+          height: 30,
+          image: AssetImage('Images/bottom_bar_UI/feed.PNG'),
+        ),
 //        title: 'FeedPage',
         color: Colors.indigo,
         vsync: this,
       ),
       NavigationIconView(
-        icon: const Icon(Icons.event_available),
+        activeIcon: Image(
+          width: 30,
+          height: 30,
+          image: AssetImage('Images/bottom_bar_UI/chat_active.PNG'),
+        ),
+        icon: Image(
+          width: 30,
+          height: 30,
+          image: AssetImage('Images/bottom_bar_UI/chat.PNG'),
+        ),
 //        title: 'Event',
         color: Colors.pink,
         vsync: this,

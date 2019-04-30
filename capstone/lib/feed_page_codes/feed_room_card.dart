@@ -183,15 +183,43 @@ class FeedRoomCardState extends State<FeedRoomCard> {
     );
   }
 
+  Widget _enterFailed(context){
+    showDialog(
+        context: context,
+        child: new AlertDialog(
+      title: Text('Entering Failure'),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text('이미 방이 가득 찼습니다.'),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        FlatButton(
+          child: Text('OK'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    )
+    ) ;
+  }
+
   @override
   Widget build(BuildContext context) {
     return new InkWell(
-      onTap: () {
-        BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(3) ;
-        BlocProvider.of(context).roomBloc.setRoomEntering(_roomInfo) ;
-        BlocProvider.of(context).roomBloc.addUserInRoom(_roomInfo) ;
-        BlocProvider.of(context).roomBloc.setIsRoomEntered(context) ;
-//        BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(3) ;
+      onTap: () async {
+        var result = await BlocProvider.of(context).roomBloc.addUserInRoom(_roomInfo) ;
+        print('result : ${result}') ;
+        if(result){
+          BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(3) ;
+          BlocProvider.of(context).roomBloc.setRoomEntering(_roomInfo) ;
+          BlocProvider.of(context).roomBloc.setIsRoomEntered(context) ;
+        }
+        else
+          _enterFailed(context);
       },
       child: new Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0),

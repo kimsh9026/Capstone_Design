@@ -74,11 +74,42 @@ class FirestoreProvider {
     }) ;
   }
 
-  Future<void> addUserInRoom(RoomInfo roomInfo) {
-    _firestore.collection('roomInfo').document(roomInfo.documentID)
-        .updateData({
-      'users' : FieldValue.arrayUnion([FireAuthProvider.user.uid])
+  Future<bool> addUserInRoom(RoomInfo roomInfo) async {
+
+    var doc = _firestore.collection('roomInfo').document(roomInfo.documentID);
+    bool result ;
+    await doc.get().then((DocumentSnapshot snapshot) async {
+      result = await snapshot.data['users'].contains(FireAuthProvider.user.uid);
     }) ;
+
+    if(result == true)
+      return result ;
+
+    final TransactionHandler handler = (Transaction tran) async {
+      await tran.get(doc).then((DocumentSnapshot snapshot) async {
+        if(snapshot.exists) {
+          if(snapshot.data['currentNumber'] < snapshot.data['totalNumber']){
+            await tran.update(doc, { 'currentNumber' : snapshot.data['currentNumber'] + 1}).whenComplete((){});
+            print('number added') ;
+            result = true ;
+          }
+          else {
+            result = false;
+          }
+        }
+      }) ;
+    } ;
+    await _firestore.runTransaction(handler)
+    .whenComplete((){
+      if(result) {
+        _firestore.collection('roomInfo').document(roomInfo.documentID)
+            .updateData({
+          'users' : FieldValue.arrayUnion([FireAuthProvider.user.uid])
+        }).whenComplete((){}) ;
+      }
+    }) ;
+    print(result) ;
+    return result ;
   }
 
   Stream<QuerySnapshot> chatRoomList(){

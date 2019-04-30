@@ -15,18 +15,22 @@ class ChatRoom extends StatelessWidget{
   String _currentUserName = FireAuthProvider.user.displayName ;
   String _currentUserUID = FireAuthProvider.user.uid ;
 
+  ChatRoom(){
+
+  }
+
   void _getUsersInfo() {
     _roomInfo.users.forEach((uid) async {
       var result = await FirestoreProvider().getUserSnapshot(uid);
       print(result.data['nickname']) ;
       print(result.data['photoUrl']) ;
+      print(_currentUserUID.length) ;
       _usersDisplayName.add(result.data['nickname']) ;
       _usersImageURL.add(result.data['photoUrl']) ;
     }) ;
   }
 
   Widget _chatBody(BuildContext context, DocumentSnapshot document){
-    print('choose') ;
    return document['uid'] == _currentUserUID ? _myMessage(document)
     : _othersMessage(document) ;
   }
@@ -40,7 +44,7 @@ class ChatRoom extends StatelessWidget{
             new Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                new Text(_currentUserName),
+                new Text('Me'),
                 new Card(
                   color: Colors.white70,
                   margin: const EdgeInsets.all(10),
@@ -52,10 +56,10 @@ class ChatRoom extends StatelessWidget{
                 )
               ],
             ),
-            _usersImageURL.length == 0 ? Container(color: Colors.white30) :
-            CircleAvatar(
-                child: Image.network(_usersImageURL.elementAt(_roomInfo.users.indexOf(_currentUserUID)))
-            ),
+//            _usersImageURL.length == 0 ? Container(color: Colors.white30) :
+//            CircleAvatar(
+//                child: Image.network(_usersImageURL.elementAt(_roomInfo.users.indexOf(_currentUserUID)))
+//            ),
           ],
         )
     );
@@ -65,14 +69,14 @@ class ChatRoom extends StatelessWidget{
     return new Container(
         margin: const EdgeInsets.symmetric(vertical: 10.0),
         child: new Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            _usersImageURL.length == 0 ? Container(color: Colors.white30) :
-            CircleAvatar(
-                child: Image.network(_usersImageURL.elementAt(_roomInfo.users.indexOf(_currentUserUID)))
-            ),
+//            _usersImageURL.length == 0 ? Container(color: Colors.white30) :
+//            CircleAvatar(
+//                child: Image.network(_usersImageURL.elementAt(_roomInfo.users.indexOf(_currentUserUID)))
+//            ),
             new Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 new Text(_currentUserName),
                 new Card(
@@ -132,7 +136,25 @@ class ChatRoom extends StatelessWidget{
                     new Container(decoration: new BoxDecoration(
                       color: Colors.white,
                     ),
-                      child: TextField(),
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                          ),
+                          Expanded(
+                            flex: 5,
+                            child: TextField(
+                              enabled: true,
+
+//                              autofocus: true,
+                            ) ,
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: IconButton(icon: Icon(Icons.send), onPressed: null),
+                          )
+                        ],
+                      )
                     ),
                   ],
                 ),

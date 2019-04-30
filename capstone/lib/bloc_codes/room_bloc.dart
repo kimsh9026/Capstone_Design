@@ -20,6 +20,7 @@ class RoomBloc extends Object{
   final _chatRoomList = FirestoreProvider().chatRoomList ;
   final _feedRoomList = FirestoreProvider().feedRoomList;
   final _getRoomSnapshot = FirestoreProvider().getRoomSnapshot;
+
   RoomInfo feedPageRoomInfo;
   RoomInfo chatRoomInfo;
 
