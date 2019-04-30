@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:capstone/feed_page_codes/room_list.dart';
 import 'package:capstone/custom_widgets/custom_expansion_panel.dart';
-import 'package:capstone/bloc_codes/BlocProvider.dart';
+import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
 /*
 1. 방추가 기능
@@ -43,6 +43,7 @@ class FeedPage extends StatelessWidget {
           ),
           onChanged: (str) {
             roomInfo.roomName = str ;
+            BlocProvider.of(context).roomBloc.setIsRoomFinding(true) ;
             BlocProvider.of(context).roomBloc.setRoomFinding(roomInfo) ;
           }
         )

@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:capstone/bloc_codes/BlocProvider.dart';
+import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/feed_page_codes/feed_page.dart';
 
 class NavigationIconView {
@@ -17,7 +17,7 @@ class NavigationIconView {
         item = BottomNavigationBarItem(
           icon: icon,
           activeIcon: activeIcon,
-          title: Text(title),
+          title: Text(''),
           backgroundColor: color,
         ),
         controller = AnimationController(
@@ -35,10 +35,16 @@ class BottomNavigation extends StatefulWidget {
 
   static const String routeName = '/material/bottom_navigation';
 
-  void stateClear() => _BottomNavigationState().clear() ;
+  _BottomNavigationState _botNavBarState;
 
+  Function(int) get animate => _botNavBarState.animate;
+  Function() get stateClear => _BottomNavigationState().clear ;
   @override
-  _BottomNavigationState createState() => _BottomNavigationState();
+  _BottomNavigationState createState() {
+    _botNavBarState = _BottomNavigationState() ;
+    return _botNavBarState ;
+  }
+//  _BottomNavigationState createState() => _BottomNavigationState() ;
 
 }
 
@@ -54,28 +60,63 @@ class _BottomNavigationState extends State<BottomNavigation>
     super.initState();
     _navigationViews = <NavigationIconView>[
       NavigationIconView(
-        icon: const Icon(Icons.access_alarm),
-        title: 'ProfilePage',
+        activeIcon: Image(
+          width: 30,
+          height: 30,
+          image: AssetImage('Images/bottom_bar_UI/person_active.PNG'),
+        ),
+        icon: Image(
+          width: 30,
+          height: 30,
+          image: AssetImage('Images/bottom_bar_UI/person.PNG'),
+        ),
+//        const Icon(Icons.access_alarm),
+//        title: 'ProfilePage',
         color: Colors.deepPurple,
         vsync: this,
       ),
       NavigationIconView(
-        activeIcon: const Icon(Icons.cloud),
-        icon: const Icon(Icons.cloud_queue),
-        title: 'MatchingPage',
+        activeIcon: Image(
+          width: 30,
+          height: 30,
+          image: AssetImage('Images/bottom_bar_UI/matching_active.PNG'),
+        ),
+        icon: Image(
+          width: 30,
+          height: 30,
+          image: AssetImage('Images/bottom_bar_UI/matching.PNG'),
+        ),
+//        title: 'MatchingPage',
         color: Colors.teal,
         vsync: this,
       ),
       NavigationIconView(
-        activeIcon: const Icon(Icons.favorite),
-        icon: const Icon(Icons.favorite_border),
-        title: 'FeedPage',
+        activeIcon: Image(
+          width: 30,
+          height: 30,
+          image: AssetImage('Images/bottom_bar_UI/feed_active.PNG'),
+        ),
+        icon: Image(
+          width: 30,
+          height: 30,
+          image: AssetImage('Images/bottom_bar_UI/feed.PNG'),
+        ),
+//        title: 'FeedPage',
         color: Colors.indigo,
         vsync: this,
       ),
       NavigationIconView(
-        icon: const Icon(Icons.event_available),
-        title: 'Event',
+        activeIcon: Image(
+          width: 30,
+          height: 30,
+          image: AssetImage('Images/bottom_bar_UI/chat_active.PNG'),
+        ),
+        icon: Image(
+          width: 30,
+          height: 30,
+          image: AssetImage('Images/bottom_bar_UI/chat.PNG'),
+        ),
+//        title: 'Event',
         color: Colors.pink,
         vsync: this,
       )
@@ -93,18 +134,23 @@ class _BottomNavigationState extends State<BottomNavigation>
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: _navigationViews
-          .map<BottomNavigationBarItem>((NavigationIconView navigationView) => navigationView.item)
-          .toList(),
-      currentIndex: _currentIndex,
-      type: _type,
-      onTap: (int index) {
-        BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(index) ;
-        setState((){
-          animate(index) ;
-        }) ;
-      },
+    return StreamBuilder(
+      stream: BlocProvider.of(context).bottomBarBloc.bottomBarPressed,
+      builder:(context,snapshot){
+       return BottomNavigationBar(
+          items: _navigationViews
+              .map<BottomNavigationBarItem>((NavigationIconView navigationView) => navigationView.item)
+              .toList(),
+          currentIndex: _currentIndex,
+          type: _type,
+          onTap: (int index) {
+            BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(index) ;
+//        setState((){
+//          animate(index) ;
+//        }) ;
+          },
+        ) ;
+      }
     ) ;
   }
 
