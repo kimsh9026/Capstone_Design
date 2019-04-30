@@ -18,6 +18,18 @@ class FirestoreProvider {
     _firestore.settings(timestampsInSnapshotsEnabled: true) ;
   }
 
+  void sendMessage(RoomInfo roomInfo, String msg){
+    _firestore.collection('roomInfo')
+        .document(roomInfo.documentID)
+        .collection('Messages')
+        .document()
+        .setData({
+      'message' : msg,
+      'timestamp' : Timestamp.fromDate(DateTime.now()),
+      'uid' : FireAuthProvider.user.uid,
+    }) ;
+  }
+
   Stream<QuerySnapshot> feedRoomList(RoomInfo roomInfo) {
 
     if(roomInfo == null || roomInfo.roomName == ''){

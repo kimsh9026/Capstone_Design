@@ -14,7 +14,7 @@ class ChatRoom extends StatelessWidget{
   List<String> _usersImageURL = List<String>() ;
   String _currentUserName = FireAuthProvider.user.displayName ;
   String _currentUserUID = FireAuthProvider.user.uid ;
-
+  TextEditingController _textEditingController = TextEditingController() ;
   ChatRoom(){
 
   }
@@ -95,6 +95,10 @@ class ChatRoom extends StatelessWidget{
     );
   }
 
+  void _sendMessage(BuildContext context, String msg){
+    BlocProvider.of(context).roomBloc.sendMessage(_roomInfo, msg) ;
+  }
+
   Widget _createChatRoomBody(context){
     return StreamBuilder(
         stream: BlocProvider.of(context).roomBloc.roomMessages,
@@ -144,14 +148,22 @@ class ChatRoom extends StatelessWidget{
                           Expanded(
                             flex: 5,
                             child: TextField(
-                              enabled: true,
-
-//                              autofocus: true,
+                              controller: _textEditingController,
+//                              onChanged: (str) => _textEditingController.text = str,
+                              decoration: InputDecoration(
+                                hintText: '메세지를 입력해주세요',
+                              ),
                             ) ,
                           ),
                           Expanded(
                             flex: 1,
-                            child: IconButton(icon: Icon(Icons.send), onPressed: null),
+                            child:
+                            IconButton(icon: Icon(Icons.send), onPressed: () {
+                              if(_textEditingController.text.trim() != ''){
+                                _sendMessage(context, _textEditingController.text) ;
+                                _textEditingController.clear() ;
+                              }
+                            })
                           )
                         ],
                       )

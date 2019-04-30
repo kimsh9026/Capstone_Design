@@ -45,7 +45,7 @@ searching stream 만들어서 searching block icon 눌렸을 때 list block stre
   Function(BuildContext) get setIsRoomEntered => _isRoomEntered.sink.add ;
   Function(RoomInfo) get registerRoom => FirestoreProvider().registerRoom;
   Function(RoomInfo) get addUserInRoom => FirestoreProvider().addUserInRoom;
-
+  Function(RoomInfo, String) get sendMessage => FirestoreProvider().sendMessage ;
   RoomBloc(){
     roomEntering.listen((RoomInfo roomInfo){
       print('here is enterRoom.listen ${roomInfo.roomName}') ;
