@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:capstone/custom_widgets/custom_expansion_panel.dart';
 
 class ProfilePage extends StatelessWidget {
