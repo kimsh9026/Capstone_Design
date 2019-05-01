@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:capstone/custom_widgets/custom_expansion_panel.dart';
 
 class ProfilePage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     print("Profile Build") ;
@@ -20,19 +19,18 @@ class ProfilePage extends StatelessWidget {
         <Widget>[
           IconButton(
             icon: Icon(Icons.edit, color:Color.fromRGBO(61,174,218,1)),
-
           )
         ],
       ),
       body: Column(
         children: <Widget>[
           Expanded(
+            //gradation이 적용된 배경..
             child: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin:Alignment.topCenter,
                   end:Alignment.bottomCenter,
-
                   stops:[0.0, 0.18],
                   colors: [
                     Color.fromRGBO(61,174,218,1),
@@ -41,12 +39,14 @@ class ProfilePage extends StatelessWidget {
                 )
               ),
 
+              //사용자 프로필
               child: Container(
                 margin: EdgeInsets.only(top: 20),
                 child: Center(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
+                      //사용자 사진
                       Container(
                         width:160,
                         height:160,
@@ -60,6 +60,7 @@ class ProfilePage extends StatelessWidget {
                                 color: Colors.grey,
                               )
                             ),
+                            //사용자 사진 추가
                             Container(
                                 alignment: Alignment.topRight,
                                 child: Container(
@@ -76,7 +77,7 @@ class ProfilePage extends StatelessWidget {
                                   )
                                 )
                             ),
-
+                            //사용자에게 메세지 보내기
                             Container(
                                 alignment: Alignment.bottomRight,
                                 child: Container(
@@ -94,13 +95,61 @@ class ProfilePage extends StatelessWidget {
                                 )
                             ),
 
-
                           ]
                         ),
-                      )
+                      ),
+                      //사용자 이름
+                      Container(
+                        margin: EdgeInsets.only(top:10),
+                        child: Text(
+                          //사용자 이름.. DB에서 뽑아오기~
+                          'User',
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontSize: 30),
+                        )
+                      ),
+
+                      //사용자 상태메세지
+                      Container(
+                          child: Text(
+                            'I think I\'m in hell',
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(color:Colors.grey),//fontSize: 30),
+                          )
+                      ),
+
+                      //사용자 정보
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        margin: EdgeInsets.fromLTRB(15,5,0,0),
+                          child: Text(
+                            'User\'s Information',
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(color:Colors.black),//fontSize: 30),
+                          )
+                      ),
+                      //Stream Builder로 사용자 정보 받아와야해!!
+
+                      //여행 일정
+                      Container(
+                          alignment: Alignment.centerLeft,
+                          margin: EdgeInsets.fromLTRB(15,5,0,0),
+                          child: Text(
+                            'Travel Schedule',
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(color:Colors.black),//fontSize: 30),
+                          )
+                      ),
+                      //Stream Builder로 여행 정보 받아와야해!!
+
+
                     ]
                   )
-                )
+                ),
               ),
             ),
           )
