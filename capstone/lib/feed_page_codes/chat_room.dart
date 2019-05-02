@@ -22,14 +22,19 @@ class ChatRoom extends StatelessWidget{
   }
 
   Future<void> _getUsersInfo(BuildContext context) async {
-    BlocProvider.of(context).roomBloc.setDidGetUserSnapshot(false) ;
+    int index = 1 ;
     _roomInfo.users.forEach((uid) async {
       var result = await FirestoreProvider().getUserSnapshot(uid);
-      print(result.data['photoUrl']) ;
       _usersUID.add(result.data['id']) ;
       _usersDisplayName.add(result.data['nickname']) ;
       _usersImageURL.add(result.data['photoUrl']) ;
+      if(_roomInfo.users.length == index){
+        BlocProvider.of(context).roomBloc.setDidGetUserSnapshot(true) ;
+      }
+      index++ ;
     });
+
+
   }
 
   Widget _chatBody(BuildContext context, DocumentSnapshot document){
@@ -101,6 +106,40 @@ class ChatRoom extends StatelessWidget{
     BlocProvider.of(context).roomBloc.sendMessage(_roomInfo, msg) ;
   }
 
+  Widget _messageBox(BuildContext context){
+    return new Container(decoration: new BoxDecoration(
+      color: Colors.white,
+    ),
+        child: Row(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(10),
+            ),
+            Expanded(
+              flex: 5,
+              child: TextField(
+                controller: _textEditingController,
+//                              onChanged: (str) => _textEditingController.text = str,
+                decoration: InputDecoration(
+                  hintText: '메세지를 입력해주세요',
+                ),
+              ) ,
+            ),
+            Expanded(
+                flex: 1,
+                child:
+                IconButton(icon: Icon(Icons.send), onPressed: () {
+                  if(_textEditingController.text.trim() != ''){
+                    _sendMessage(context, _textEditingController.text) ;
+                    _textEditingController.clear() ;
+                  }
+                })
+            )
+          ],
+        )
+    ) ;
+  }
+
   Widget _createChatRoomBody(context){
     return StreamBuilder(
         stream: BlocProvider.of(context).roomBloc.roomMessages,
@@ -139,37 +178,7 @@ class ChatRoom extends StatelessWidget{
                       color: Colors.black,
                       height: 3.0,
                     ),
-                    new Container(decoration: new BoxDecoration(
-                      color: Colors.white,
-                    ),
-                      child: Row(
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                          ),
-                          Expanded(
-                            flex: 5,
-                            child: TextField(
-                              controller: _textEditingController,
-//                              onChanged: (str) => _textEditingController.text = str,
-                              decoration: InputDecoration(
-                                hintText: '메세지를 입력해주세요',
-                              ),
-                            ) ,
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child:
-                            IconButton(icon: Icon(Icons.send), onPressed: () {
-                              if(_textEditingController.text.trim() != ''){
-                                _sendMessage(context, _textEditingController.text) ;
-                                _textEditingController.clear() ;
-                              }
-                            })
-                          )
-                        ],
-                      )
-                    ),
+                    _messageBox(context),
                   ],
                 ),
               )
@@ -210,17 +219,13 @@ class ChatRoom extends StatelessWidget{
             );
           }
           else{
-            print('in the else') ;
+            BlocProvider.of(context).roomBloc.setDidGetUserSnapshot(false) ;
             _roomInfo.setDocument(snapshot.data) ;
-            _getUsersInfo(context)
-                .whenComplete(() {
-              BlocProvider.of(context).roomBloc.setDidGetUserSnapshot(true) ;
-            }) ;
+            _getUsersInfo(context) ;
             return StreamBuilder(
               stream: BlocProvider.of(context).roomBloc.didGetUserSnapshot,
               builder: (context, snapshot){
                 if(!snapshot.hasData || !snapshot.data){
-                  print('no data') ;
                   return Scaffold(
                     appBar: PreferredSize(
                       preferredSize: Size.fromHeight(45),
@@ -245,7 +250,6 @@ class ChatRoom extends StatelessWidget{
                   );
                 }
                 else{
-                  print('data: ${snapshot.data}') ;
                   return Scaffold(
                     appBar: PreferredSize(
                       preferredSize: Size.fromHeight(45),
