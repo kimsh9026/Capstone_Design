@@ -63,6 +63,7 @@ class FirestoreProvider {
   }
 
   Future<DocumentSnapshot> getUserSnapshot(String uid){
+
     return _firestore.collection('userInfo')
         .document(uid).get() ;
   }
@@ -80,6 +81,7 @@ class FirestoreProvider {
       'currentNumber' : 1,
 //        'currentnumber' : roomInfo.currentNumber,
       'totalNumber' : 4,
+      'users' : FieldValue.arrayUnion([FireAuthProvider.user.uid]),
 //        'totalnumber' : roomInfo.totalNumber,
 //      'roomPurpose' : roomInfo.roomPurpose,
 //      'contents' : roomInfo.contents,

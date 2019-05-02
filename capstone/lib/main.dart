@@ -30,7 +30,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("My App Build") ;
     return MaterialApp(
       title: 'Trabuddy',
       theme: new ThemeData(
@@ -54,8 +53,8 @@ class MyApp extends StatelessWidget {
       home: new StreamBuilder(
         stream: BlocProvider.of(context).authBloc.isLoggedIn,
         builder: (context, authSnapshot){
-          print("streambuilder get") ;
-          BottomNavigation().stateClear;
+
+          if(!authSnapshot.hasData) botNavBar.stateClear;
           return Scaffold(
             body: !authSnapshot.hasData ? logInPage :
             (
@@ -73,7 +72,6 @@ class MyApp extends StatelessWidget {
                         return feedPage ;
                       }
                       else if(snapshot.data == 3){
-                        print('here is main, and change scaffold to chatRoomPage') ;
                         return chatRoomPage ;
                       }
                     }

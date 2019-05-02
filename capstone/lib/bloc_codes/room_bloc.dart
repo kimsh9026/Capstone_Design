@@ -20,6 +20,7 @@ class RoomBloc extends Object{
   final _chatRoomList = FirestoreProvider().chatRoomList ;
   final _feedRoomList = FirestoreProvider().feedRoomList;
   final _getRoomSnapshot = FirestoreProvider().getRoomSnapshot;
+  final _didGetUserSnapshot = StreamController<bool>.broadcast() ;
 
   RoomInfo feedPageRoomInfo;
   RoomInfo chatRoomInfo;
@@ -34,6 +35,7 @@ class RoomBloc extends Object{
   Stream<QuerySnapshot> get roomList => _feedRoomList(feedPageRoomInfo) ;
   Stream<QuerySnapshot> get chatRoomList => _chatRoomList() ;
   Stream<DocumentSnapshot> get getRoomSnapshot => _getRoomSnapshot(chatRoomInfo) ;
+  Stream<bool> get didGetUserSnapshot => _didGetUserSnapshot.stream ;
 /*
 searching stream 만들어서 searching block icon 눌렸을 때 list block stream 바꿔줌
  */
@@ -46,7 +48,10 @@ searching stream 만들어서 searching block icon 눌렸을 때 list block stre
   Function(RoomInfo) get registerRoom => FirestoreProvider().registerRoom;
   Function(RoomInfo) get addUserInRoom => FirestoreProvider().addUserInRoom;
   Function(RoomInfo, String) get sendMessage => FirestoreProvider().sendMessage ;
+  Function(bool) get setDidGetUserSnapshot => _didGetUserSnapshot.add ;
+
   RoomBloc(){
+
     roomEntering.listen((RoomInfo roomInfo){
       print('here is enterRoom.listen ${roomInfo.roomName}') ;
       chatRoomInfo = roomInfo ;
@@ -92,6 +97,7 @@ searching stream 만들어서 searching block icon 눌렸을 때 list block stre
     _roomEntering.close() ;
     _isRoomFinding.close() ;
     _isRoomEntered.close() ;
+    _didGetUserSnapshot.close() ;
   }
 
 }

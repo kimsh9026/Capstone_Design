@@ -11,23 +11,25 @@ class ChatRoom extends StatelessWidget{
   //future error 뭐라는겨
   RoomInfo _roomInfo = RoomInfo();
   List<String> _usersDisplayName = List<String>() ;
+  List<String> _usersUID = List<String>() ;
   List<String> _usersImageURL = List<String>() ;
   String _currentUserName = FireAuthProvider.user.displayName ;
   String _currentUserUID = FireAuthProvider.user.uid ;
   TextEditingController _textEditingController = TextEditingController() ;
-  ChatRoom(){
+
+  ChatRoom() {
 
   }
 
-  void _getUsersInfo() {
+  Future<void> _getUsersInfo(BuildContext context) async {
+    BlocProvider.of(context).roomBloc.setDidGetUserSnapshot(false) ;
     _roomInfo.users.forEach((uid) async {
       var result = await FirestoreProvider().getUserSnapshot(uid);
-      print(result.data['nickname']) ;
       print(result.data['photoUrl']) ;
-      print(_currentUserUID.length) ;
+      _usersUID.add(result.data['id']) ;
       _usersDisplayName.add(result.data['nickname']) ;
       _usersImageURL.add(result.data['photoUrl']) ;
-    }) ;
+    });
   }
 
   Widget _chatBody(BuildContext context, DocumentSnapshot document){
@@ -78,7 +80,7 @@ class ChatRoom extends StatelessWidget{
             new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                new Text(_currentUserName),
+                new Text(_usersDisplayName.elementAt(_usersUID.indexOf(document['uid']))),
                 new Card(
                     color: Colors.white70,
                     margin: const EdgeInsets.all(10),
@@ -179,9 +181,10 @@ class ChatRoom extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+
     return StreamBuilder(
         stream: BlocProvider.of(context).roomBloc.getRoomSnapshot,
-        builder: (context, snapshot){
+        builder: (context, snapshot) {
           if(!snapshot.hasData){
             return Scaffold(
                 appBar: PreferredSize(
@@ -207,32 +210,68 @@ class ChatRoom extends StatelessWidget{
             );
           }
           else{
+            print('in the else') ;
             _roomInfo.setDocument(snapshot.data) ;
-            _getUsersInfo() ;
-            return Scaffold(
-              appBar: PreferredSize(
-                preferredSize: Size.fromHeight(45),
-                child: AppBar(
-                  actions: <Widget>[
-                    IconButton(icon: Icon(Icons.menu)),
-                  ],
-                  elevation: 0.1,
-                  centerTitle: true,
-                  backgroundColor: Colors.white,
-                  title: Text(
-                    _roomInfo.roomName,
-                    style: Theme.of(context).textTheme.title,
-                  ),
-                  iconTheme: IconThemeData(
-                    color: Color.fromRGBO(47, 146, 217, 0.9),
-                  ),
-                ),
-              ),
-              backgroundColor: Colors.white,
-              body: _createChatRoomBody(context),
+            _getUsersInfo(context)
+                .whenComplete(() {
+              BlocProvider.of(context).roomBloc.setDidGetUserSnapshot(true) ;
+            }) ;
+            return StreamBuilder(
+              stream: BlocProvider.of(context).roomBloc.didGetUserSnapshot,
+              builder: (context, snapshot){
+                if(!snapshot.hasData || !snapshot.data){
+                  print('no data') ;
+                  return Scaffold(
+                    appBar: PreferredSize(
+                      preferredSize: Size.fromHeight(45),
+                      child: AppBar(
+                        actions: <Widget>[
+                          IconButton(icon: Icon(Icons.menu)),
+                        ],
+                        elevation: 0.1,
+                        centerTitle: true,
+                        backgroundColor: Colors.white,
+                        title: Text(
+                          _roomInfo.roomName,
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                        iconTheme: IconThemeData(
+                          color: Color.fromRGBO(47, 146, 217, 0.9),
+                        ),
+                      ),
+                    ),
+                    backgroundColor: Colors.white,
+                    body: Center(child: CircularProgressIndicator()),
+                  );
+                }
+                else{
+                  print('data: ${snapshot.data}') ;
+                  return Scaffold(
+                    appBar: PreferredSize(
+                      preferredSize: Size.fromHeight(45),
+                      child: AppBar(
+                        actions: <Widget>[
+                          IconButton(icon: Icon(Icons.menu)),
+                        ],
+                        elevation: 0.1,
+                        centerTitle: true,
+                        backgroundColor: Colors.white,
+                        title: Text(
+                          _roomInfo.roomName,
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                        iconTheme: IconThemeData(
+                          color: Color.fromRGBO(47, 146, 217, 0.9),
+                        ),
+                      ),
+                    ),
+                    backgroundColor: Colors.white,
+                    body: _createChatRoomBody(context),
+                  );
+                }
+              }
             );
           }
-
         }
     ) ;
   }
