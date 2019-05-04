@@ -17,7 +17,7 @@
         android:label="capstone"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
-                   android:value="AIzaSyB2KhGUfF7oEsNkUbJZTIzHkM7FkrJ3R_g"/>
+                   android:value="AIzaSyCWiFLiauFZv-cMSqXX_f4mRTn9rYd6ssw"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
