@@ -3,12 +3,9 @@ import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
-//import 'package:capstone/test/chat_room_info.dart' ;
-import 'package:capstone/bottom_navigation.dart';
 import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as LocationManager;
-import 'package:flutter/services.dart';
 
 const kGoogleApiKey = "AIzaSyCWiFLiauFZv-cMSqXX_f4mRTn9rYd6ssw";
 GoogleMapsPlaces _places = GoogleMapsPlaces(apiKey: kGoogleApiKey);
@@ -47,7 +44,7 @@ class MapApiState extends State<MapApi> {
     return Scaffold(
         key: homeScaffoldKey,
         appBar: AppBar(
-          title: const Text("PlaceZ"),
+          title: const Text("Trabuddying"),
           actions: <Widget>[
             isLoading
                 ? IconButton(
