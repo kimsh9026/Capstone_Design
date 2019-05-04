@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:capstone/bottom_navigation.dart';
 import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-
+import 'package:location/location.dart';
+import 'package:flutter/services.dart';
 
 class MatchingPage extends StatelessWidget {
   @override
@@ -23,30 +23,37 @@ class MapApi extends StatefulWidget {
 
 class MapApiState extends State<MapApi> {
   Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController mapController;
+  bool isLoading = false;
 
-  static const LatLng _center = const LatLng(45.521563, -122.677433);
 
-  LatLng _lastMapPosition = _center;
-
-  final Set<Marker> _markers = {};
-
-  void _onMapCreated(GoogleMapController controller) {
-    _controller.complete(controller);
+  void _onMapCreated(GoogleMapController controller) async {
+    mapController = controller;
+    refresh();
   }
 
-  void _onAddMarkerButtonPressed() {
-    setState(() {
-      _markers.add(Marker(
-        // This marker id can be anything that uniquely identifies each marker.
-        markerId: MarkerId(_lastMapPosition.toString()),
-        position: _lastMapPosition,
-        infoWindow: InfoWindow(
-          title: 'Really cool place',
-          snippet: '5 Star Rating',
-        ),
-        icon: BitmapDescriptor.defaultMarker,
-      ));
-    });
+  void refresh() async {
+    final center = await getUserLocation();
+
+    mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: center == null ? LatLng(0, 0) : center, zoom: 15.0)));
+  }
+
+  Future<LatLng> getUserLocation() async {
+    var currentLocation = <String, double>{};
+    var location = new Location();
+    try {
+      currentLocation = await location.getLocation();
+      final lat = currentLocation["latitude"];
+      final lng = currentLocation["longitude"];
+      print(lat);
+      print(lng);
+      final center = LatLng(lat, lng);
+      return center;
+    } on Exception {
+      currentLocation = null;
+      return null;
+    }
   }
 
   @override
@@ -54,15 +61,27 @@ class MapApiState extends State<MapApi> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Trabuddying'),
-          backgroundColor: Colors.white,
+          title: const Text("Trabuddying"),
+          actions: <Widget>[
+            isLoading
+                ? IconButton(
+              icon: Icon(Icons.timer),
+              onPressed: () {},
+            )
+                : IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: () {
+                refresh();
+              },
+            ),
+          ],
         ),
+
         body: GoogleMap(
           onMapCreated: _onMapCreated,
-          markers: _markers,
-          initialCameraPosition: CameraPosition(
-            target: _center,
-            zoom: 11.0,
+          options: GoogleMapOptions(
+            myLocationEnabled: true,
+            cameraPosition: const CameraPosition(target: LatLng(0.0, 0.0))
           ),
         ),
       ),
