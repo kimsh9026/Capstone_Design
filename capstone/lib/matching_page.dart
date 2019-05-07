@@ -1,4 +1,5 @@
 import 'package:capstone/bloc_codes/bloc_provider.dart';
+import 'package:capstone/custom_widgets/matching_page_ui.dart';
 import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/places.dart';
@@ -17,7 +18,7 @@ class MatchingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("MatchingPage Build") ;
-    return MapApi();
+    return MatchingPageUI();
   }
 }
 
@@ -46,72 +47,81 @@ class MapApiState extends State<MapApi> {
       );
     }
 
-    return Scaffold(
-        key: homeScaffoldKey,
-        appBar: AppBar(
-          title: const Text("Trabuddying"),
-          actions: <Widget>[
-            isLoading
-                ? IconButton(
-              icon: Icon(Icons.timer),
-              onPressed: () {},
-            )
-                : IconButton(
-              icon: Icon(Icons.refresh),
-              onPressed: () {
-                refresh();
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {
-                _handlePressButton();
-              },
-            ),
-          ],
-        ),
-        body: Stack(
-            children: <Widget>[
-              GoogleMap(
-                  onMapCreated: _onMapCreated,
-                  initialCameraPosition: CameraPosition(
-                  target: _center,
-                  zoom: 11.0,
-                ),
-              ),
-              Positioned(
-                  top: 30.0,
-                  right: 15.0,
-                  left: 15.0,
-                  child: Container(
-                    height: 50.0,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        color: Colors.white
-                    ),
-                    child: TextField(
-                        decoration: InputDecoration(
-                            hintText: 'Enter Address',
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.only(left: 15.0, top: 15.0),
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons.search),
-                              onPressed: searchandNavigate,
-                              iconSize: 30.0,
-                            )
-                        ),
-                        onChanged: (val) {
-                          setState(() {
-                            searchAddr = val;
-                          });
-                        }
-                    ),
-                  )
-              ),
-            ]
+    return GoogleMap(
+        onMapCreated: _onMapCreated,
+        initialCameraPosition: CameraPosition(
+          target: _center,
+          zoom: 11.0,
         )
     );
+
+
+//      Scaffold(
+//        key: homeScaffoldKey,
+//        appBar: AppBar(
+//          title: const Text("Trabuddying"),
+//          actions: <Widget>[
+//            isLoading
+//                ? IconButton(
+//              icon: Icon(Icons.timer),
+//              onPressed: () {},
+//            )
+//                : IconButton(
+//              icon: Icon(Icons.refresh),
+//              onPressed: () {
+//                refresh();
+//              },
+//            ),
+//            IconButton(
+//              icon: Icon(Icons.search),
+//              onPressed: () {
+//                _handlePressButton();
+//              },
+//            ),
+//          ],
+//        ),
+//        body: Stack(
+//            children: <Widget>[
+//              GoogleMap(
+//                  onMapCreated: _onMapCreated,
+//                  initialCameraPosition: CameraPosition(
+//                  target: _center,
+//                  zoom: 11.0,
+//                ),
+//              ),
+//              Positioned(
+//                  top: 30.0,
+//                  right: 15.0,
+//                  left: 15.0,
+//                  child: Container(
+//                    height: 50.0,
+//                    width: double.infinity,
+//                    decoration: BoxDecoration(
+//                        borderRadius: BorderRadius.circular(10.0),
+//                        color: Colors.white
+//                    ),
+//                    child: TextField(
+//                        decoration: InputDecoration(
+//                            hintText: 'Enter Address',
+//                            border: InputBorder.none,
+//                            contentPadding: EdgeInsets.only(left: 15.0, top: 15.0),
+//                            suffixIcon: IconButton(
+//                              icon: Icon(Icons.search),
+//                              onPressed: searchandNavigate,
+//                              iconSize: 30.0,
+//                            )
+//                        ),
+//                        onChanged: (val) {
+//                          setState(() {
+//                            searchAddr = val;
+//                          });
+//                        }
+//                    ),
+//                  )
+//              ),
+//            ]
+//        )
+//    );
   }
 
   void searchandNavigate() {
@@ -141,8 +151,8 @@ class MapApiState extends State<MapApi> {
     final location = LocationManager.Location();
     try {
       currentLocation = await location.getLocation();
-      final lat = currentLocation["latitude"];
-      final lng = currentLocation["longitude"];
+      final lat = currentLocation.latitude;
+      final lng = currentLocation.longitude;
       final center = LatLng(lat, lng);
       return center;
     } on Exception {
