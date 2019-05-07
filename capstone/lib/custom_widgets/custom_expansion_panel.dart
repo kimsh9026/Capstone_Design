@@ -10,10 +10,11 @@ class ExpansionBlock extends StatefulWidget{
 }
 class _ExpansionBlockState extends State<ExpansionBlock> {
   bool isExpanded = false;
+  int _clickedIndex = 0;
 
   Widget expansionDateTime(context, String string, child){
     return Container(
-      color: Colors.yellow,
+      color: Colors.white,
         width: double.infinity,
         padding: EdgeInsets.only(left: 10),
         child: Row(
@@ -96,18 +97,83 @@ class _ExpansionBlockState extends State<ExpansionBlock> {
                 flex: 1,
                 child: expansionDateTime(context,'날짜',CustomDatePicker())
             ),
+//            Expanded(
+//              flex: 1,
+//              child: expansionDateTime(context,'시간',CustomTimePicker()),
+//            ),
             Expanded(
-              flex: 1,
-              child: expansionDateTime(context,'시간',CustomTimePicker()),
-            ),
-            Expanded(
-              flex: 4,
-              child: expansionDateTime(context,'목적',CustomTimePicker()),
+              flex: 3,
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: expansionDateTime(context,'목적', Container()),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: purposeContainer(),
+                  )
+                ],
+              )
             ),
           ],
         ),
       ),
     ) ;
+  }
+
+  Widget purposeIconButton(String path, String name, bool isActive, int index){
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            height: 60,
+            child: FlatButton(
+                shape: CircleBorder(),
+                onPressed: () => _clickedIndex = index,
+                padding: EdgeInsets.all(0.0),
+                child: Image.asset(path)
+            )
+          ),
+          Text(
+            name,
+            style: TextStyle(
+                color: !isActive ? Colors.grey : Colors.orange,
+            ),
+          ),
+        ],
+      )
+    );
+  }
+
+  Widget purposeIconAnimation(String path, String activePath, String name, int index){
+    return AnimatedCrossFade(
+      firstChild: purposeIconButton(path, name, false, index),
+      secondChild: purposeIconButton(activePath, name, true, index),
+      firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
+      secondCurve: const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
+      sizeCurve: Curves.fastOutSlowIn,
+      crossFadeState: _clickedIndex == index ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+      duration: Duration(milliseconds: 200),
+    ) ;
+  }
+
+  Widget purposeContainer(){
+    return Container(
+      color: Colors.white,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          purposeIconAnimation('Images/category_ui/buddy.png', 'Images/category_ui/buddy_active.png', '동행', 1),
+          purposeIconAnimation('Images/category_ui/meal.png','Images/category_ui/meal_active.png', '식사', 2),
+          purposeIconAnimation('Images/category_ui/stay.png', 'Images/category_ui/stay_active.png', '숙소', 3),
+          purposeIconAnimation('Images/category_ui/tran.png','Images/category_ui/tran_active.png', '교통', 4),
+        ],
+      )
+    );
   }
 
   @override

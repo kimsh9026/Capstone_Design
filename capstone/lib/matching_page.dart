@@ -9,6 +9,7 @@ import 'package:location/location.dart' as LocationManager;
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 
+
 const kGoogleApiKey = "AIzaSyCWiFLiauFZv-cMSqXX_f4mRTn9rYd6ssw";
 GoogleMapsPlaces _places = GoogleMapsPlaces(apiKey: kGoogleApiKey);
 
@@ -48,7 +49,7 @@ class MapApiState extends State<MapApi> {
     return Scaffold(
         key: homeScaffoldKey,
         appBar: AppBar(
-          title: const Text("PlaceZ"),
+          title: const Text("Trabuddying"),
           actions: <Widget>[
             isLoading
                 ? IconButton(
