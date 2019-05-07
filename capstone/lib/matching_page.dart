@@ -3,12 +3,11 @@ import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
-//import 'package:capstone/test/chat_room_info.dart' ;
-import 'package:capstone/bottom_navigation.dart';
 import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as LocationManager;
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 
 const kGoogleApiKey = "AIzaSyCWiFLiauFZv-cMSqXX_f4mRTn9rYd6ssw";
 GoogleMapsPlaces _places = GoogleMapsPlaces(apiKey: kGoogleApiKey);
@@ -32,6 +31,8 @@ class MapApiState extends State<MapApi> {
   List<PlacesSearchResult> places = [];
   bool isLoading = false;
   String errorMessage;
+  String searchAddr;
+  static const LatLng _center = const LatLng(45.521563, -122.677433);
 
   @override
   Widget build(BuildContext context) {
@@ -68,22 +69,62 @@ class MapApiState extends State<MapApi> {
             ),
           ],
         ),
-        body: Container(
-                  child: GoogleMap(
-                      onMapCreated: _onMapCreated,
-                      options: GoogleMapOptions(
-                          myLocationEnabled: true,
-                          cameraPosition:
-                          const CameraPosition(target: LatLng(0.0, 0.0))
-                      )
+        body: Stack(
+            children: <Widget>[
+              GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  initialCameraPosition: CameraPosition(
+                  target: _center,
+                  zoom: 11.0,
+                ),
+              ),
+              Positioned(
+                  top: 30.0,
+                  right: 15.0,
+                  left: 15.0,
+                  child: Container(
+                    height: 50.0,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Colors.white
+                    ),
+                    child: TextField(
+                        decoration: InputDecoration(
+                            hintText: 'Enter Address',
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.only(left: 15.0, top: 15.0),
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.search),
+                              onPressed: searchandNavigate,
+                              iconSize: 30.0,
+                            )
+                        ),
+                        onChanged: (val) {
+                          setState(() {
+                            searchAddr = val;
+                          });
+                        }
+                    ),
                   )
-        ),
+              ),
+            ]
+        )
     );
+  }
+
+  void searchandNavigate() {
+    Geolocator().placemarkFromAddress(searchAddr).then((result) {
+      mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+          target:
+          LatLng(result[0].position.latitude, result[0].position.longitude),
+          zoom: 10.0
+      )));
+    });
   }
 
   void refresh() async {
     final center = await getUserLocation();
-
     mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: center == null ? LatLng(0, 0) : center, zoom: 15.0)));
     getNearbyPlaces(center);
@@ -95,7 +136,7 @@ class MapApiState extends State<MapApi> {
   }
 
   Future<LatLng> getUserLocation() async {
-    var currentLocation = <String, double>{};
+    var currentLocation;
     final location = LocationManager.Location();
     try {
       currentLocation = await location.getLocation();

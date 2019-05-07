@@ -35,11 +35,11 @@ class FireAuthProvider {
     final GoogleSignInAuthentication googleAuth =
     await googleUser.authentication;
     print('GoogleSignInAuthentication : ${googleAuth.toString()}') ;
-    final FirebaseUser user = await
-    _fireAuth.signInWithGoogle(
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
+    final FirebaseUser user = await _fireAuth.signInWithCredential(credential);
 
     //if there is no info about current user in our fire base, add it.
     final QuerySnapshot result =
