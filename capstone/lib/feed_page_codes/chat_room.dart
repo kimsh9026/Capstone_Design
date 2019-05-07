@@ -52,14 +52,15 @@ class ChatRoom extends StatelessWidget{
             new Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                new Text('Me'),
+                //new Text('Me'),
                 new Card(
-                  color: Colors.white70,
-                  margin: const EdgeInsets.all(10),
+                  color: Colors.yellow,
+                  margin: const EdgeInsets.only(left: 5, right:15),
                   child: Container(
-                    height: 30,
+                    height: 40,
+                    padding: EdgeInsets.only(left:15, right:15),
                     alignment: Alignment.center,
-                    child: Text(document['message']),
+                    child: Text(document['message'], style:TextStyle(fontSize:20)),
                   )
                 )
               ],
@@ -86,14 +87,19 @@ class ChatRoom extends StatelessWidget{
             new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                new Text(_usersDisplayName.elementAt(_usersUID.indexOf(document['uid']))),
+                Container(
+                  padding: EdgeInsets.only(left:10),
+                  child: new Text(_usersDisplayName.elementAt(_usersUID.indexOf(document['uid'])), style: TextStyle(fontSize:15)),
+                ),
+
                 new Card(
-                    color: Colors.white70,
-                    margin: const EdgeInsets.all(10),
+                    color: Colors.white,
+                    margin: const EdgeInsets.only(left: 15, top:5),
                     child: Container(
-                      height: 30,
+                      height: 40,
+                      padding: EdgeInsets.fromLTRB(15,0,15,0),
                       alignment: Alignment.center,
-                      child: Text(document['message']),
+                      child: Text(document['message'], style:TextStyle(fontSize:20)),
                     )
                 )
               ],
@@ -149,7 +155,7 @@ class ChatRoom extends StatelessWidget{
                 child: CircularProgressIndicator());
           } else {
             return Container(
-              color: Colors.blueGrey,
+              color: Color.fromRGBO(61, 174, 218, 150),
               child: Center(
                 child: Column(
                   children: <Widget>[
@@ -201,7 +207,7 @@ class ChatRoom extends StatelessWidget{
                   preferredSize: Size.fromHeight(45),
                   child: AppBar(
                     actions: <Widget>[
-                      IconButton(icon: Icon(Icons.menu)),
+                      IconButton(icon: Icon(Icons.menu), color:Color.fromRGBO(47, 146, 217, 0.9)),
                     ],
                     elevation: 0.1,
                     centerTitle: true,
