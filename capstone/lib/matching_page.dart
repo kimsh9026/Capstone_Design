@@ -1,4 +1,5 @@
 import 'package:capstone/bloc_codes/bloc_provider.dart';
+import 'package:capstone/custom_widgets/matching_page_ui.dart';
 import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/places.dart';
@@ -14,7 +15,7 @@ class MatchingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("MatchingPage Build") ;
-    return MapApi();
+    return MatchingPageUI();
   }
 }
 
