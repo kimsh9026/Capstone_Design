@@ -145,9 +145,6 @@ class _BottomNavigationState extends State<BottomNavigation>
           type: _type,
           onTap: (int index) {
             BlocProvider.of(context).bottomBarBloc.setBottomBarPressed(index) ;
-//        setState((){
-//          animate(index) ;
-//        }) ;
           },
         ) ;
       }

@@ -27,6 +27,7 @@ class ChatRoom extends StatelessWidget{
       var result = await FirestoreProvider().getUserSnapshot(uid);
       _usersUID.add(result.data['id']) ;
       _usersDisplayName.add(result.data['nickname']) ;
+      print(_usersDisplayName.last) ;
       _usersImageURL.add(result.data['photoUrl']) ;
       if(_roomInfo.users.length == index){
         BlocProvider.of(context).roomBloc.setDidGetUserSnapshot(true) ;
@@ -119,7 +120,6 @@ class ChatRoom extends StatelessWidget{
               flex: 5,
               child: TextField(
                 controller: _textEditingController,
-//                              onChanged: (str) => _textEditingController.text = str,
                 decoration: InputDecoration(
                   hintText: '메세지를 입력해주세요',
                 ),
@@ -190,10 +190,11 @@ class ChatRoom extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-
+    print('1') ;
     return StreamBuilder(
         stream: BlocProvider.of(context).roomBloc.getRoomSnapshot,
         builder: (context, snapshot) {
+          print('2') ;
           if(!snapshot.hasData){
             return Scaffold(
                 appBar: PreferredSize(
@@ -219,13 +220,21 @@ class ChatRoom extends StatelessWidget{
             );
           }
           else{
-            BlocProvider.of(context).roomBloc.setDidGetUserSnapshot(false) ;
-            _roomInfo.setDocument(snapshot.data) ;
-            _getUsersInfo(context) ;
+            print('3') ;
+            print(snapshot.data['users'].length) ;
+            print(_usersUID.length) ;
+            if(snapshot.data['users'].length != _usersUID.length){
+              print('4') ;
+              BlocProvider.of(context).roomBloc.setDidGetUserSnapshot(false) ;
+              _roomInfo.setDocument(snapshot.data) ;
+              _getUsersInfo(context) ;
+            }
             return StreamBuilder(
               stream: BlocProvider.of(context).roomBloc.didGetUserSnapshot,
               builder: (context, snapshot){
+                print('5') ;
                 if(!snapshot.hasData || !snapshot.data){
+                  print('6') ;
                   return Scaffold(
                     appBar: PreferredSize(
                       preferredSize: Size.fromHeight(45),
@@ -250,6 +259,7 @@ class ChatRoom extends StatelessWidget{
                   );
                 }
                 else{
+                  print('7') ;
                   return Scaffold(
                     appBar: PreferredSize(
                       preferredSize: Size.fromHeight(45),
