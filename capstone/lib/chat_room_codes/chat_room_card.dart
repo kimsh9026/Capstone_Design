@@ -24,23 +24,26 @@ class ChatRoomCardState extends State<ChatRoomCard> {
 
   Widget get _roomImage {
 
-    var roomImage = new Hero(
-      tag: widget.document,
-      child: new Container(
-        width: 50.0,
-        height: 50.0,
-        decoration: new BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.yellow,
-          image: new DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage('Images/sample.png'),
+    String buddy = 'Images/category_ui/buddy_active.png' ;
+    String meal = 'Images/category_ui/meal_active.png' ;
+    String stay = 'Images/category_ui/stay_active.png' ;
+    String tran = 'Images/category_ui/tran_active.png' ;
+
+    return Container(
+      width: 60.0,
+      height: 60.0,
+      decoration: new BoxDecoration(
+        shape: BoxShape.circle,
+        image: new DecorationImage(
+          fit: BoxFit.cover,
+          image: AssetImage(
+              _roomInfo.roomPurpose == '동행' ? buddy :
+              (_roomInfo.roomPurpose == '식사' ? meal :
+              (_roomInfo.roomPurpose == '숙소' ? stay : tran))
           ),
         ),
       ),
-    );
-
-    return roomImage ;
+    ) ;
   }
 
   Widget get _titleText{

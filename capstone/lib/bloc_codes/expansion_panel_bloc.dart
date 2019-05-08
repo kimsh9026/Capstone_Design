@@ -4,14 +4,18 @@ import 'package:flutter/material.dart' ;
 
 class ExpansionPanelBloc extends Object{
 
-  final _ExpansionPanelPressed = StreamController<bool>.broadcast() ;
+  final _expansionPanelPressed = StreamController<bool>.broadcast() ;
+  final _pressedButtonIndex = StreamController<int>.broadcast() ;
 
-  Stream<bool> get expansionBarPressed => _ExpansionPanelPressed.stream ;
+  Stream<bool> get expansionBarPressed => _expansionPanelPressed.stream ;
+  Stream<int> get pressedButtonIndex => _pressedButtonIndex.stream ;
 
-  Function(bool) get setExpansionBarPressed => _ExpansionPanelPressed.sink.add ;
+  Function(bool) get setExpansionBarPressed => _expansionPanelPressed.sink.add ;
+  Function(int) get setPressedButtonIndex => _pressedButtonIndex.sink.add ;
 
   dispose(){
-    _ExpansionPanelPressed.close() ;
+    _expansionPanelPressed.close() ;
+    _pressedButtonIndex.close() ;
   }
 
 }
