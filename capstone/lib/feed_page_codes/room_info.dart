@@ -41,7 +41,7 @@ class RoomInfo {
     _meetingTime = DateTime(0,0,0,date.hour,date.minute,date.second,0);
     _totalNumber = document['totalNumber'];
     _currentNumber = document['currentNumber'];
-//    _roomPurpose = document['roomPurpose'];
+    _roomPurpose = document['roomPurpose'];
     _meetingLocation = document['meetingLocation'];
 //    _contents = document['contents'] ;
     _roomCreatedTime = document['roomCreatedTime'].toDate() ;

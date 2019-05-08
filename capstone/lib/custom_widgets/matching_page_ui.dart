@@ -23,7 +23,8 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
   String _stepMessage1 = '원하는 장소를 검색을 통해 찾으세요.' ;
   String _stepMessage2 = '설정한 장소로부터 친구를 찾을 반경을 정해주세요' ;
   String _stepMessage3 = '사람들을 만나 무엇을 하고 싶나요?' ;
-  String _stepMessage4 = '매칭을 시작하려면 완료를 눌러주세요' ;
+  String _stepMessage4 = '최대 인원을 설정해주세요' ;
+  String _stepMessage5 = '매칭을 시작하려면 완료를 눌러주세요' ;
   double _width = 350 ;
   double _fixedHeight = 80 ;
   double _changingHeight2 = 80 ;
@@ -426,13 +427,14 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
                   flex: 5,
                   child: Text(
                     _step == 1 ? _stepMessage1 :
-                    (_step == 2 ? _stepMessage2 : (_step == 3 ? _stepMessage3 : _stepMessage4)),
+                    (_step == 2 ? _stepMessage2 : (_step == 3 ? _stepMessage3 :
+                    (_step == 4 ? _stepMessage4 : _stepMessage5))),
                     style: TextStyle(color: Colors.white),
                   )
               ),
               Expanded(
                 flex: 1,
-                child: Text(_step == 4 ? '완료' : '다음', style: TextStyle(color: Colors.white)),
+                child: Text(_step > 4 ? '완료' : '다음', style: TextStyle(color: Colors.white)),
               )
             ],
           )

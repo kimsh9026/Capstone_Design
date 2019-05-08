@@ -4,6 +4,7 @@ import 'package:capstone/custom_widgets/custom_datetime_form_field.dart';
 import 'package:capstone/feed_page_codes/feed_room_card.dart';
 import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 /*
 
@@ -15,6 +16,8 @@ class RoomList extends StatelessWidget {
 
   final formKey = GlobalKey<FormState>() ;
   RoomInfo roomInfo = RoomInfo();
+  int _purposeIndex = 1 ;
+  int _numberOfMembers = 3 ;
 
   Widget _buildList(context) {
     return StreamBuilder(
@@ -131,7 +134,7 @@ class RoomList extends StatelessWidget {
 
   Widget _createRoomTimeContainer(BuildContext context){
     return Container(
-        height: 50,
+        height: 40,
         child: Row(
           children: <Widget>[
             Expanded(
@@ -160,8 +163,185 @@ class RoomList extends StatelessWidget {
     ) ;
   }
 
+  Widget purposeIconButton(BuildContext context, String path, String name, bool isActive, int index){
+    return Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+                height: 60,
+                child: FlatButton(
+                    shape: CircleBorder(),
+                    onPressed: (){
+                      _purposeIndex = index ;
+                      BlocProvider.of(context).createRoomBloc.setPressedButtonIndex(index) ;
+                    },
+                    padding: EdgeInsets.all(0.0),
+                    child: Image.asset(path)
+                )
+            ),
+            Text(
+              name,
+              style: TextStyle(
+                color: !isActive ? Colors.grey :
+                (index == 1 ? Colors.green : (index == 2 ? Colors.orange :
+                (index == 3 ? Colors.purpleAccent : Colors.blueAccent))),
+              ),
+            ),
+          ],
+        )
+    );
+  }
+
+  Widget purposeIconAnimation(BuildContext context, String path, String activePath, String name, int index){
+    return AnimatedCrossFade(
+      firstChild: purposeIconButton(context, path, name, false, index),
+      secondChild: purposeIconButton(context, activePath, name, true, index),
+      firstCurve: const Interval(0.0, 0.6, curve: Curves.easeOut),
+      secondCurve: const Interval(0.4, 1.0, curve: Curves.easeOut),
+      sizeCurve: Curves.fastOutSlowIn,
+      crossFadeState: _purposeIndex == index ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+      duration: Duration(milliseconds: 200),
+    ) ;
+  }
+
+  Widget purposeContainer(BuildContext context) {
+    return StreamBuilder(
+        stream: BlocProvider.of(context).createRoomBloc.pressedButtonIndex,
+        builder: (context, snapshot) {
+          return Container(
+              color: Colors.white,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  purposeIconAnimation(context, 'Images/category_ui/buddy.png',
+                      'Images/category_ui/buddy_active.png', '동행', 1),
+                  purposeIconAnimation(context, 'Images/category_ui/meal.png',
+                      'Images/category_ui/meal_active.png', '식사', 2),
+                  purposeIconAnimation(context, 'Images/category_ui/stay.png',
+                      'Images/category_ui/stay_active.png', '숙소', 3),
+                  purposeIconAnimation(context, 'Images/category_ui/tran.png',
+                      'Images/category_ui/tran_active.png', '교통', 4),
+                ],
+              )
+          );
+        }
+    );
+  }
+
+  Widget _createRoomPurposeContainer(context){
+    return Container(
+      height: 140,
+      child: Column(
+        children: <Widget>[
+
+          Expanded(
+            flex: 1,
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                      padding: EdgeInsets.only(top: 2),
+                      alignment: Alignment.bottomCenter,
+                      child: Text(
+                        '목적',
+                        style: Theme.of(context).textTheme.body1,
+                        textAlign: TextAlign.center,
+                      )
+                  ),
+                ),
+                Expanded(
+                  flex: 5,
+                  child: Container(),
+                ),
+              ],
+            )
+          ),
+          Expanded(
+            flex: 5,
+            child: purposeContainer(context),
+          )
+        ],
+      ),
+    ) ;
+  }
+  void _showNumberDialog(context) {
+    showDialog<int>(
+        context: context,
+        builder: (BuildContext context) {
+          return new NumberPickerDialog.integer(
+            minValue: 1,
+            maxValue: 5,
+            title: new Text("인원"),
+            initialIntegerValue: _numberOfMembers,
+          );
+        }
+    ).then((int value) {
+      if (value != null) {
+        _numberOfMembers = value;
+        BlocProvider.of(context).createRoomBloc.setMemberNumberChanged(true) ;
+      }
+    });
+  }
+
+  Widget _createNumberOfMembersContainer(BuildContext context){
+    return Container(
+        height: 40,
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              flex: 1,
+              child: Container(
+                  padding: EdgeInsets.only(top: 2),
+                  alignment: Alignment.center,
+                  child: Text(
+                    '인원',
+                    style: Theme.of(context).textTheme.body1,
+                    textAlign: TextAlign.center,
+                  )
+              ),
+            ),
+            Expanded(
+              flex: 5,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: StreamBuilder(
+                      stream: BlocProvider.of(context).createRoomBloc.memberNumberChanged,
+                      builder: (context, snapshot){
+                        return  FlatButton(
+                          padding: EdgeInsets.only(top: 2, right: 25),
+                            onPressed: () => _showNumberDialog(context),
+                            child: Text(
+                              '${_numberOfMembers} 명',
+                              style: TextStyle(color: Colors.blueAccent),
+                              textAlign: TextAlign.left,
+                            )
+                        ) ;
+                      },
+                    )
+                  ),
+                  Expanded(
+                    flex: 5,
+                    child: Container(),
+                  )
+                ],
+              )
+
+            ),
+          ],
+        )
+    ) ;
+  }
+
+
   Widget _createRoomBody(BuildContext context){
     roomInfo.clear() ;
+    _numberOfMembers = 3 ;
     return Container(
         child: Form(
             key: formKey,
@@ -176,6 +356,14 @@ class RoomList extends StatelessWidget {
                   padding: EdgeInsets.only(top:5),
                 ),
                 _createRoomTimeContainer(context),
+                Padding(
+                  padding: EdgeInsets.only(top:5),
+                ),
+                _createRoomPurposeContainer(context),
+                Padding(
+                  padding: EdgeInsets.only(top:5),
+                ),
+                _createNumberOfMembersContainer(context),
               ],
             )
         )
@@ -186,6 +374,10 @@ class RoomList extends StatelessWidget {
     final form = formKey.currentState ;
     if(form.validate()){
       form.save() ;
+      print(_numberOfMembers) ;
+      roomInfo.totalNumber = _numberOfMembers ;
+      roomInfo.roomPurpose = _purposeIndex == 1 ? '동행' :
+      (_purposeIndex == 2 ? '식사' : (_purposeIndex == 3 ? '숙소' : '교통')) ;
       roomInfo.roomLeaderUID = FireAuthProvider.user.uid ;
       BlocProvider.of(context).roomBloc.registerRoom(roomInfo);
       Navigator.pop(context) ;
@@ -197,6 +389,7 @@ class RoomList extends StatelessWidget {
   // meetingDateTime이 하루 지난 날짜로 등록된다!
   Widget createNewRoom(BuildContext context){
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45),
         child: AppBar(
@@ -231,6 +424,7 @@ class RoomList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _purposeIndex = 1;
     return _buildList(context);
   }
 }

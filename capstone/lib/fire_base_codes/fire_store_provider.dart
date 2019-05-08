@@ -75,15 +75,12 @@ class FirestoreProvider {
       'roomLeaderUID' : roomInfo.roomLeaderUID,
       'roomCreatedTime' : Timestamp.fromDate(date),
       'meetingDateTime' : roomInfo.meetingDateTime,
-
       'meetingLocation' : '경상북도 포항시 북구 흥해읍',
 //      'meetingLocation' : roomInfo.meetingLocation,
       'currentNumber' : 1,
-//        'currentnumber' : roomInfo.currentNumber,
-      'totalNumber' : 4,
       'users' : FieldValue.arrayUnion([FireAuthProvider.user.uid]),
-//        'totalnumber' : roomInfo.totalNumber,
-//      'roomPurpose' : roomInfo.roomPurpose,
+      'totalNumber' : roomInfo.totalNumber,
+      'roomPurpose' : roomInfo.roomPurpose,
 //      'contents' : roomInfo.contents,
     }) ;
   }

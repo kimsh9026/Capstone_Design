@@ -1,3 +1,4 @@
+import 'package:capstone/bloc_codes/create_room_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:capstone/bloc_codes/auth_bloc.dart';
 import 'package:capstone/bloc_codes/room_bloc.dart';
@@ -11,6 +12,7 @@ class BlocProvider extends InheritedWidget {
     roomBloc: RoomBloc(),
     bottomBarBloc: BottomBarBloc(),
     expansionPanelBloc: ExpansionPanelBloc(),
+    createRoomBloc : CreateRoomBloc(),
   );
 
   BlocProvider({Key key, Widget child}) : super(key: key, child: child);
@@ -28,11 +30,13 @@ class _BlocState {
   final RoomBloc roomBloc;
   final BottomBarBloc bottomBarBloc;
   final ExpansionPanelBloc expansionPanelBloc;
+  final CreateRoomBloc createRoomBloc ;
 
   _BlocState({
     this.authBloc,
     this.roomBloc,
     this.bottomBarBloc,
     this.expansionPanelBloc,
+    this.createRoomBloc,
   });
 }
