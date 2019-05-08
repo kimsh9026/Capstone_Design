@@ -155,7 +155,7 @@ class ChatRoom extends StatelessWidget{
                 child: CircularProgressIndicator());
           } else {
             return Container(
-              color: Color.fromRGBO(61, 174, 218, 150),
+              color: Color.fromRGBO(61, 174, 218, 200),
               child: Center(
                 child: Column(
                   children: <Widget>[
