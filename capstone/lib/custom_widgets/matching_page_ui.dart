@@ -1,6 +1,8 @@
 
+import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/changing_box.dart';
-import 'package:capstone/matching_page.dart';
+//import 'package:capstone/matching_page.dart';
+import 'google_map.dart' ;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart' ;
@@ -32,8 +34,8 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
   double _changingHeight4 = 80 ;
   double _messageBoxHeight = 50 ;
   int _step = 1 ;
-  String _simpleLocation = '경주 시청' ;
-  String _detailLocation = '경북 경주시 양정로 260(동천동)' ;
+  String _simpleLocation = ' ' ;
+  String _detailLocation = ' ' ;
   double _sliderValue = 5.0 ;
   String _pressedButtonName = '식사' ;
   int _numberOfPeople = 4;
@@ -69,7 +71,7 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
    )  ;
   }
 
-  Widget _stepContainer1(){
+  Widget _stepContainer1(BuildContext context){
     return Container(
       child: Row(
         children: <Widget>[
@@ -84,8 +86,22 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
               children: <Widget>[
                 Text('기준 장소', textAlign: TextAlign.left, style: TextStyle(color: Colors.blue, fontSize: 10),),
                 Padding(padding: EdgeInsets.only(top: 3)),
-                Text(_simpleLocation, textAlign: TextAlign.left, style: TextStyle(fontSize: 15), ),
-                Text(_detailLocation, textAlign: TextAlign.left, style: TextStyle(color: Colors.grey, fontSize: 11),)
+                StreamBuilder(
+                  stream: BlocProvider.of(context).mapBloc.simpleAddress,
+                  builder: (context, snapshot){
+                    return Text(
+                      snapshot.hasData ? snapshot.data : _simpleLocation,
+                      textAlign: TextAlign.left, style: TextStyle(fontSize: 15)) ;
+                  }
+                ),
+                StreamBuilder(
+                    stream: BlocProvider.of(context).mapBloc.detailAddress,
+                    builder: (context, snapshot){
+                      return Text(
+                          snapshot.hasData ? snapshot.data : _detailLocation,
+                          textAlign: TextAlign.left, style: TextStyle(color: Colors.grey, fontSize: 11)) ;
+                    }
+                ),
               ],
             )
           ),
@@ -287,7 +303,7 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
     ) ;
   }
 
-  Widget _fixedBox(Animation<Offset> offset, int index){
+  Widget _fixedBox(Animation<Offset> offset, int index, BuildContext context){
     return Container(
         height: double.infinity,
         width: double.infinity,
@@ -306,7 +322,7 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
                   height: _fixedHeight,
                   width: _width,
                   child: InkWell(
-                    child: _stepContainer1(),
+                    child: _stepContainer1(context),
                     onTap: () {_step = index ;  _stepController() ;},
                   ),
                 ),
@@ -460,7 +476,7 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
               _changingBox(offset4, 4),
               _changingBox(offset3, 3),
               _changingBox(offset2, 2),
-              _fixedBox(offset1, 1),
+              _fixedBox(offset1, 1, context),
             ],
           )
         ),

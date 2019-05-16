@@ -1,5 +1,4 @@
 import 'dart:async';
-//import 'package:capstone/feed_page_codes/chat_room.dart';
 import 'package:capstone/feed_page_codes/users_Info_communicator.dart';
 
 import 'chatting_room.dart' ;

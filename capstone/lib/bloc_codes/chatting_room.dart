@@ -224,8 +224,7 @@ class _ChatBodyState extends State<ChatBody> {
                 } else {
                   return Container(
                       color: Color.fromRGBO(61, 174, 218, 200),
-                      child: Center(
-                          child: ListView.builder(
+                      child: ListView.builder(
                             reverse: true,
                             shrinkWrap: true,
                             padding: const EdgeInsets.only(
@@ -244,7 +243,6 @@ class _ChatBodyState extends State<ChatBody> {
                               return _chatMessage(context, snapshot.data.documents[int]);
                             },
                           )
-                      )
                   ) ;
                 }
               }
