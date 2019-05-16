@@ -1,5 +1,8 @@
 import 'dart:async';
-import 'package:capstone/feed_page_codes/chat_room.dart';
+//import 'package:capstone/feed_page_codes/chat_room.dart';
+import 'package:capstone/feed_page_codes/users_Info_communicator.dart';
+
+import 'chatting_room.dart' ;
 import 'package:flutter/material.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' ;
@@ -65,8 +68,9 @@ searching stream 만들어서 searching block icon 눌렸을 때 list block stre
     );
 
     isRoomEntered.listen((BuildContext context){
+      UsersInfoCommunicator.roomInfo = chatRoomInfo ;
       Navigator.push(context, MaterialPageRoute(
-        builder: (context) => ChatRoom()
+        builder: (context) => ChatRoom(chatRoomInfo)
       )) ;
       print('here is isRoomEntered.listen') ;
     },onError: (error) {

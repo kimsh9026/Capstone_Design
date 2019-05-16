@@ -16,7 +16,7 @@ class ChatRoom extends StatelessWidget{
   String _currentUserName = FireAuthProvider.user.displayName ;
   String _currentUserUID = FireAuthProvider.user.uid ;
   TextEditingController _textEditingController = TextEditingController() ;
-
+  StreamBuilder _streamBuilder ;
   ChatRoom() {
 
   }
@@ -25,17 +25,13 @@ class ChatRoom extends StatelessWidget{
     int index = 1 ;
     _roomInfo.users.forEach((uid) async {
       var result = await FirestoreProvider().getUserSnapshot(uid);
-      _usersUID.add(result.data['id']) ;
       _usersDisplayName.add(result.data['nickname']) ;
-      print(_usersDisplayName.last) ;
       _usersImageURL.add(result.data['photoUrl']) ;
       if(_roomInfo.users.length == index){
         BlocProvider.of(context).roomBloc.setDidGetUserSnapshot(true) ;
       }
       index++ ;
     });
-
-
   }
 
   Widget _chatBody(BuildContext context, DocumentSnapshot document){
@@ -44,6 +40,7 @@ class ChatRoom extends StatelessWidget{
   }
 
   Widget _myMessage(DocumentSnapshot document){
+    print(_usersImageURL.elementAt(_roomInfo.users.indexOf(document['uid']))) ;
     return new Container(
         margin: const EdgeInsets.symmetric(vertical: 10.0),
         child: new Row(
@@ -65,25 +62,26 @@ class ChatRoom extends StatelessWidget{
                 )
               ],
             ),
-//            _usersImageURL.length == 0 ? Container(color: Colors.white30) :
-//            CircleAvatar(
-//                child: Image.network(_usersImageURL.elementAt(_roomInfo.users.indexOf(_currentUserUID)))
-//            ),
+            _usersImageURL.length == 0 ? Container(color: Colors.white30) :
+            CircleAvatar(
+                child: Image.network(_usersImageURL.elementAt(_roomInfo.users.indexOf(document['uid'])))
+            ),
           ],
         )
     );
   }
 
   Widget _othersMessage(DocumentSnapshot document){
+    print(_currentUserUID) ;
     return new Container(
         margin: const EdgeInsets.symmetric(vertical: 10.0),
         child: new Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-//            _usersImageURL.length == 0 ? Container(color: Colors.white30) :
-//            CircleAvatar(
-//                child: Image.network(_usersImageURL.elementAt(_roomInfo.users.indexOf(_currentUserUID)))
-//            ),
+            _usersImageURL.length == 0 ? Container(color: Colors.white30) :
+            CircleAvatar(
+                child: Image.network(_usersImageURL.elementAt(_roomInfo.users.indexOf(document['uid'])))
+            ),
             new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -197,103 +195,105 @@ class ChatRoom extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     print('1') ;
-    return StreamBuilder(
-        stream: BlocProvider.of(context).roomBloc.getRoomSnapshot,
-        builder: (context, snapshot) {
-          print('2') ;
-          if(!snapshot.hasData){
-            return Scaffold(
-                appBar: PreferredSize(
-                  preferredSize: Size.fromHeight(45),
-                  child: AppBar(
-                    actions: <Widget>[
-                      IconButton(icon: Icon(Icons.menu), color:Color.fromRGBO(47, 146, 217, 0.9)),
-                    ],
-                    elevation: 0.1,
-                    centerTitle: true,
-                    backgroundColor: Colors.white,
-                    title: Text(
-                      '',
-                      style: Theme.of(context).textTheme.title,
-                    ),
-                    iconTheme: IconThemeData(
-                      color: Color.fromRGBO(47, 146, 217, 0.9),
+    if(_streamBuilder == null)
+      _streamBuilder = StreamBuilder(
+          stream: BlocProvider.of(context).roomBloc.getRoomSnapshot,
+          builder: (context, snapshot) {
+            print('2') ;
+            if(!snapshot.hasData){
+              return Scaffold(
+                  appBar: PreferredSize(
+                    preferredSize: Size.fromHeight(45),
+                    child: AppBar(
+                      actions: <Widget>[
+                        IconButton(icon: Icon(Icons.menu), color:Color.fromRGBO(47, 146, 217, 0.9)),
+                      ],
+                      elevation: 0.1,
+                      centerTitle: true,
+                      backgroundColor: Colors.white,
+                      title: Text(
+                        '',
+                        style: Theme.of(context).textTheme.title,
+                      ),
+                      iconTheme: IconThemeData(
+                        color: Color.fromRGBO(47, 146, 217, 0.9),
+                      ),
                     ),
                   ),
-                ),
-                backgroundColor: Colors.white,
-                body: Container()
-            );
-          }
-          else{
-            print('3') ;
-            print(snapshot.data['users'].length) ;
-            print(_usersUID.length) ;
-            if(snapshot.data['users'].length != _usersUID.length){
-              print('4') ;
-              BlocProvider.of(context).roomBloc.setDidGetUserSnapshot(false) ;
-              _roomInfo.setDocument(snapshot.data) ;
-              _getUsersInfo(context) ;
+                  backgroundColor: Colors.white,
+                  body: Container()
+              );
             }
-            return StreamBuilder(
-              stream: BlocProvider.of(context).roomBloc.didGetUserSnapshot,
-              builder: (context, snapshot){
-                print('5') ;
-                if(!snapshot.hasData || !snapshot.data){
-                  print('6') ;
-                  return Scaffold(
-                    appBar: PreferredSize(
-                      preferredSize: Size.fromHeight(45),
-                      child: AppBar(
-                        actions: <Widget>[
-                          IconButton(icon: Icon(Icons.menu)),
-                        ],
-                        elevation: 0.1,
-                        centerTitle: true,
-                        backgroundColor: Colors.white,
-                        title: Text(
-                          _roomInfo.roomName,
-                          style: Theme.of(context).textTheme.title,
-                        ),
-                        iconTheme: IconThemeData(
-                          color: Color.fromRGBO(47, 146, 217, 0.9),
-                        ),
-                      ),
-                    ),
-                    backgroundColor: Colors.white,
-                    body: Center(child: CircularProgressIndicator()),
-                  );
-                }
-                else{
-                  print('7') ;
-                  return Scaffold(
-                    appBar: PreferredSize(
-                      preferredSize: Size.fromHeight(45),
-                      child: AppBar(
-                        actions: <Widget>[
-                          IconButton(icon: Icon(Icons.menu)),
-                        ],
-                        elevation: 0.1,
-                        centerTitle: true,
-                        backgroundColor: Colors.white,
-                        title: Text(
-                          _roomInfo.roomName,
-                          style: Theme.of(context).textTheme.title,
-                        ),
-                        iconTheme: IconThemeData(
-                          color: Color.fromRGBO(47, 146, 217, 0.9),
-                        ),
-                      ),
-                    ),
-                    backgroundColor: Colors.white,
-                    body: _createChatRoomBody(context),
-                  );
-                }
+            else{
+              print('3') ;
+              print(snapshot.data['users'].length) ;
+              print(_usersUID.length) ;
+              if(snapshot.data['users'].length != _usersUID.length){
+                print('4') ;
+                BlocProvider.of(context).roomBloc.setDidGetUserSnapshot(false) ;
+                _roomInfo.setDocument(snapshot.data) ;
+                _getUsersInfo(context) ;
               }
-            );
+              return StreamBuilder(
+                  stream: BlocProvider.of(context).roomBloc.didGetUserSnapshot,
+                  builder: (context, snapshot){
+                    print('5') ;
+                    if(!snapshot.hasData || !snapshot.data){
+                      print('6') ;
+                      return Scaffold(
+                        appBar: PreferredSize(
+                          preferredSize: Size.fromHeight(45),
+                          child: AppBar(
+                            actions: <Widget>[
+                              IconButton(icon: Icon(Icons.menu)),
+                            ],
+                            elevation: 0.1,
+                            centerTitle: true,
+                            backgroundColor: Colors.white,
+                            title: Text(
+                              _roomInfo.roomName,
+                              style: Theme.of(context).textTheme.title,
+                            ),
+                            iconTheme: IconThemeData(
+                              color: Color.fromRGBO(47, 146, 217, 0.9),
+                            ),
+                          ),
+                        ),
+                        backgroundColor: Colors.white,
+                        body: Center(child: CircularProgressIndicator()),
+                      );
+                    }
+                    else{
+                      print('7') ;
+                      return Scaffold(
+                        appBar: PreferredSize(
+                          preferredSize: Size.fromHeight(45),
+                          child: AppBar(
+                            actions: <Widget>[
+                              IconButton(icon: Icon(Icons.menu)),
+                            ],
+                            elevation: 0.1,
+                            centerTitle: true,
+                            backgroundColor: Colors.white,
+                            title: Text(
+                              _roomInfo.roomName,
+                              style: Theme.of(context).textTheme.title,
+                            ),
+                            iconTheme: IconThemeData(
+                              color: Color.fromRGBO(47, 146, 217, 0.9),
+                            ),
+                          ),
+                        ),
+                        backgroundColor: Colors.white,
+                        body: _createChatRoomBody(context),
+                      );
+                    }
+                  }
+              );
+            }
           }
-        }
-    ) ;
+      ) ;
+    return _streamBuilder ;
   }
 
 }

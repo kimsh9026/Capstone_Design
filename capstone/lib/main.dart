@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Feed Page build') ;
     return MaterialApp(
       title: 'Trabuddy',
       theme: new ThemeData(
