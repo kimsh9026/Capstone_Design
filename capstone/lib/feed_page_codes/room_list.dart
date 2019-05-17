@@ -6,12 +6,6 @@ import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
 import 'package:numberpicker/numberpicker.dart';
 
-/*
-
-* createRoom과 분리 필요?
-
-*/
-
 class RoomList extends StatelessWidget {
 
   final formKey = GlobalKey<FormState>() ;

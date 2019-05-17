@@ -4,7 +4,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:capstone/bloc_codes/bloc_provider.dart';
-import 'package:capstone/feed_page_codes/feed_page.dart';
 
 class NavigationIconView {
   NavigationIconView({
@@ -23,8 +22,7 @@ class NavigationIconView {
         controller = AnimationController(
           duration: kThemeAnimationDuration,
           vsync: vsync,
-        ) {
-  }
+        ) ;
 
   final BottomNavigationBarItem item;
   final AnimationController controller;
@@ -44,8 +42,6 @@ class BottomNavigation extends StatefulWidget {
     _botNavBarState = _BottomNavigationState() ;
     return _botNavBarState ;
   }
-//  _BottomNavigationState createState() => _BottomNavigationState() ;
-
 }
 
 class _BottomNavigationState extends State<BottomNavigation>
@@ -70,8 +66,6 @@ class _BottomNavigationState extends State<BottomNavigation>
           height: 30,
           image: AssetImage('Images/bottom_bar_UI/person.PNG'),
         ),
-//        const Icon(Icons.access_alarm),
-//        title: 'ProfilePage',
         color: Colors.deepPurple,
         vsync: this,
       ),
@@ -86,7 +80,6 @@ class _BottomNavigationState extends State<BottomNavigation>
           height: 30,
           image: AssetImage('Images/bottom_bar_UI/matching.PNG'),
         ),
-//        title: 'MatchingPage',
         color: Colors.teal,
         vsync: this,
       ),
@@ -101,7 +94,6 @@ class _BottomNavigationState extends State<BottomNavigation>
           height: 30,
           image: AssetImage('Images/bottom_bar_UI/feed.PNG'),
         ),
-//        title: 'FeedPage',
         color: Colors.indigo,
         vsync: this,
       ),
@@ -116,7 +108,6 @@ class _BottomNavigationState extends State<BottomNavigation>
           height: 30,
           image: AssetImage('Images/bottom_bar_UI/chat.PNG'),
         ),
-//        title: 'Event',
         color: Colors.pink,
         vsync: this,
       )

@@ -1,11 +1,9 @@
 import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:location/location.dart' as LocationManager;
 
 const kGoogleApiKey = "AIzaSyCWiFLiauFZv-cMSqXX_f4mRTn9rYd6ssw";
 GoogleMapsPlaces _places = GoogleMapsPlaces(apiKey: kGoogleApiKey);
@@ -21,11 +19,7 @@ class MapApiState extends State<MapApi> {
   Position _currentLocation ;
   LatLng _center = LatLng(0,0) ;
   bool isLoading = true;
-//  final homeScaffoldKey = GlobalKey<ScaffoldState>();
-//  List<PlacesSearchResult> places = [];
-//  String errorMessage;
   String searchAddr;
-//  static const LatLng _center = const LatLng(45.521563, -122.677433);
 
   @override
   void initState() {
@@ -97,13 +91,6 @@ class MapApiState extends State<MapApi> {
       BlocProvider.of(context).mapBloc.setSimpleAddress(value.results[0].name);
       BlocProvider.of(context).mapBloc.setDetailAddress(value.results[0].vicinity) ;
     });
-//    Geolocator().placemarkFromCoordinates(_currentLocation.latitude, _currentLocation.longitude)
-//    .then(
-//        (result) {
-//          BlocProvider.of(context).mapBloc.setSimpleAddress(result[0].name) ;
-//          BlocProvider.of(context).mapBloc.setDetailAddress(result[0].locality) ;
-//        }
-//    );
     setState(() {
       _center = LatLng(_currentLocation.latitude, _currentLocation.longitude);
       mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
@@ -134,9 +121,6 @@ class MapApiState extends State<MapApi> {
         BlocProvider.of(context).mapBloc.setDetailAddress(value.results[1].vicinity) ;
       });
 
-
-//      BlocProvider.of(context).mapBloc.setSimpleAddress(result[0].name) ;
-//      BlocProvider.of(context).mapBloc.setDetailAddress(result[0].locality) ;
       mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
           target:
           LatLng(result[0].position.latitude, result[0].position.longitude),

@@ -1,9 +1,6 @@
 import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/chat_room_codes/chat_room_card.dart';
-import 'package:capstone/feed_page_codes/feed_room_card.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:capstone/feed_page_codes/room_info.dart' ;
 
 class MyChatRoomPage extends StatelessWidget {
 

@@ -1,7 +1,6 @@
 import 'dart:async';
-import 'package:capstone/feed_page_codes/users_Info_communicator.dart';
-
-import 'chatting_room.dart' ;
+import 'package:capstone/chat_room_codes/users_Info_communicator.dart';
+import 'package:capstone/chat_room_codes/chatting_room.dart';
 import 'package:flutter/material.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' ;

@@ -4,14 +4,6 @@ import 'package:capstone/feed_page_codes/room_info.dart';
 
 class FirestoreProvider {
 
-  /*
-  roomInfo에 operator 선언해서
-  roomInfo == null ?
-  => roomInfo.name == '', roomInfo.date == ... 등
-
-  * stream들 future로 안보내줘도 되나.. 로딩은?
-   */
-
   Firestore _firestore = Firestore.instance ;
 
   FirestoreProvider(){
@@ -75,7 +67,7 @@ class FirestoreProvider {
       'roomLeaderUID' : roomInfo.roomLeaderUID,
       'roomCreatedTime' : Timestamp.fromDate(date),
       'meetingDateTime' : roomInfo.meetingDateTime,
-      'meetingLocation' : '경상북도 포항시 북구 흥해읍',
+      'meetingLocation' : '경상북도 포항시 북구 양덕동',
 //      'meetingLocation' : roomInfo.meetingLocation,
       'currentNumber' : 1,
       'users' : FieldValue.arrayUnion([FireAuthProvider.user.uid]),

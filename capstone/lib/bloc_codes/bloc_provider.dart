@@ -1,5 +1,5 @@
 import 'package:capstone/bloc_codes/create_room_bloc.dart';
-import 'package:capstone/custom_widgets/map_bloc.dart';
+import 'package:capstone/bloc_codes/map_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:capstone/bloc_codes/auth_bloc.dart';
 import 'package:capstone/bloc_codes/room_bloc.dart';

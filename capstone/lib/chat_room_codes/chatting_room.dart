@@ -1,6 +1,6 @@
 import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
-import 'package:capstone/feed_page_codes/users_Info_communicator.dart';
+import 'package:capstone/chat_room_codes/users_Info_communicator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 

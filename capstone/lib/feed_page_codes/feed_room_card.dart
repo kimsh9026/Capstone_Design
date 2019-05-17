@@ -1,9 +1,6 @@
-//import 'package:capstone/chat_room_codes/chat_room_info.dart';
 import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
 import 'package:flutter/material.dart';
-//import 'profie_page.dart' ;
-import 'package:capstone/feed_page_codes/detail_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' ;
 /*
 * 이미지 UI 그리는 부분 수정 필요
@@ -252,27 +249,4 @@ class FeedRoomCardState extends State<FeedRoomCard> {
       ),
     );
   }
-
-
-
-  showRoomDetailPage() {
-//    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-//      return DetailPage(chatRoom);
-//    }));
-
-    return showDialog(
-        context: context,
-        builder: (BuildContext context){
-          return DetailPage(roomCard) ;
-        }
-    );
-
-  }
-
-
-
-
-
-
-
 }

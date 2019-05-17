@@ -1,13 +1,10 @@
-
 import 'package:capstone/bloc_codes/bloc_provider.dart';
-import 'package:capstone/changing_box.dart';
-//import 'package:capstone/matching_page.dart';
-import 'google_map.dart' ;
+import 'package:capstone/custom_widgets/google_map.dart' ;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart' ;
-class MatchingPageUI extends StatefulWidget {
 
+class MatchingPageUI extends StatefulWidget {
   @override
   _MatchingPageUIState createState() => _MatchingPageUIState() ;
 }
@@ -39,6 +36,7 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
   double _sliderValue = 5.0 ;
   String _pressedButtonName = '식사' ;
   int _numberOfPeople = 4;
+
   @override
   initState(){
     super.initState() ;

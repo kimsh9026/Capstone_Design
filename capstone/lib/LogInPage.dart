@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class LogInPage extends StatelessWidget {

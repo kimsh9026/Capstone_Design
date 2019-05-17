@@ -1,24 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:capstone/feed_page_codes/room_list.dart';
 import 'package:capstone/custom_widgets/custom_expansion_panel.dart';
 import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
-/*
-1. 방추가 기능
-- image Firebase 연동 필요
-- 위치 정보 Firebase 연동 필요
-- 해쉬태그 Firebase 연동 필요
-
-* room이 tap 됐을 때 동작 처리
-
-* ExpansionPanel - 검색 적용
-* ListBlock - Room tap 시 Detail 정보들
- 
-*/
-
-
-
 
 class FeedPage extends StatelessWidget {
 
