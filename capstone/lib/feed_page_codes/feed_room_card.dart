@@ -99,9 +99,15 @@ class FeedRoomCardState extends State<FeedRoomCard> {
   }
 
   Widget _titleText(){
-    return Text(
-      '${widget.document['roomName']}',
-      style: Theme.of(context).textTheme.headline,
+    return Flexible(
+      child: Container(
+        padding: EdgeInsets.only(right: 50),
+        child: Text(
+          '${widget.document['roomName']}',
+          style: Theme.of(context).textTheme.headline,
+          overflow: TextOverflow.ellipsis,
+        ),
+      )
     ) ;
   }
 
@@ -110,7 +116,7 @@ class FeedRoomCardState extends State<FeedRoomCard> {
     return Row(
         children: <Widget>[
           new Icon(Icons.calendar_today, size: 12),
-          new Text(' ${date.year}년 ${date.month}월 ${date.day}일',
+          new Text('${date.year}년 ${date.month}월 ${date.day}일',
               style: Theme.of(context).textTheme
                   .body1
           ),
@@ -132,9 +138,17 @@ class FeedRoomCardState extends State<FeedRoomCard> {
     return Row(
       children: <Widget>[
         new Icon(Icons.location_on, size: 12),
-        new Text('${widget.document['meetingLocation']}',
-            style: Theme.of(context).textTheme.body1
+        Flexible(
+            child: Container(
+                padding: EdgeInsets.only(right: 50),
+                child: new Text('${widget.document['meetingLocation']}',
+                  style: Theme.of(context).textTheme.body1,
+                  overflow: TextOverflow.ellipsis,
+                )
+            )
         ),
+
+
       ],
     ) ;
   }

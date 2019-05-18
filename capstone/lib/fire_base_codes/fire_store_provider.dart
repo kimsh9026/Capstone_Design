@@ -67,7 +67,7 @@ class FirestoreProvider {
       'roomLeaderUID' : roomInfo.roomLeaderUID,
       'roomCreatedTime' : Timestamp.fromDate(date),
       'meetingDateTime' : roomInfo.meetingDateTime,
-      'meetingLocation' : '경상북도 포항시 북구 양덕동',
+      'meetingLocation' : '경상북도 포항시 북구 흥해읍 한동대학교 로뎀관에 사는 사람 모여라',
 //      'meetingLocation' : roomInfo.meetingLocation,
       'currentNumber' : 1,
       'users' : FieldValue.arrayUnion([FireAuthProvider.user.uid]),

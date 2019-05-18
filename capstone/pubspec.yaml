@@ -56,7 +56,11 @@ flutter:
     - Images/logo image.png
     - Images/sample.png
     - Images/category_ui/
-
+  fonts:
+    - family: NotoSansCJKkr
+      fonts:
+        - asset: fonts/NotoSansCJKkr-DemiLight.otf
+        - asset: fonts/NotoSansCJKkr-Medium.otf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

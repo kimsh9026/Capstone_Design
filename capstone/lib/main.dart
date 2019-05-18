@@ -25,14 +25,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Trabuddy',
       theme: new ThemeData(
+        fontFamily: 'NotoSansCJKkr',
           brightness: Brightness.light,
           textTheme: TextTheme(
               title: TextStyle(
+                fontFamily: 'NotoSansCJKkr',
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Color.fromRGBO(47, 146, 217, 0.9),
               ),
               headline: TextStyle(
+                fontFamily: 'NotoSansCJKkr',
                 fontWeight: FontWeight.w400,
                 fontSize: 17.0,
               ),

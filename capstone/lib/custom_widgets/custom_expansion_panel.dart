@@ -1,3 +1,4 @@
+import 'package:capstone/feed_page_codes/room_info.dart';
 import 'package:flutter/material.dart' ;
 import 'package:capstone/custom_widgets/custom_datetime_pickers.dart';
 import 'package:capstone/bloc_codes/bloc_provider.dart';
@@ -9,9 +10,11 @@ class ExpansionBlock extends StatefulWidget{
   _ExpansionBlockState createState() => _ExpansionBlockState() ;
 }
 class _ExpansionBlockState extends State<ExpansionBlock> {
-  bool isExpanded = false;
-  int _purposeIndex = 1;
 
+  bool isExpanded = false;
+  bool _switchValue = false ;
+  int _purposeIndex = 1;
+  RoomInfo _roomInfo = RoomInfo() ;
 
   Widget expansionDateTime(context, String string, child){
     return Container(
@@ -63,16 +66,24 @@ class _ExpansionBlockState extends State<ExpansionBlock> {
               child: Row(
                 children: <Widget>[
                   Expanded(
-                    flex:2,
+                    flex:3,
                     child: Container(
                       width: double.infinity,
                     ),
                   ),
                   Expanded(
-                      flex: 1,
+                      flex: 2,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
+                          Text('적용'),
+                          Switch(
+                            onChanged: (bool value){
+                              _switchValue = value ;
+                              //bloc으로 정보 전달
+                            },
+                            value: _switchValue,
+                          ),
                           txt,
                           ExpandIcon(
                             isExpanded: isExpanded,
@@ -199,7 +210,7 @@ class _ExpansionBlockState extends State<ExpansionBlock> {
             secondChild: Column(
               children: <Widget>[
                 expansionChild(),
-                expansionHeader(context,Text('적용')),
+                expansionHeader(context,Text('닫기')),
               ],
             ),
             firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
