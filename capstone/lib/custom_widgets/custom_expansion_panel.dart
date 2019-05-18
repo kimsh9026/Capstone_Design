@@ -66,20 +66,23 @@ class _ExpansionBlockState extends State<ExpansionBlock> {
               child: Row(
                 children: <Widget>[
                   Expanded(
-                    flex:3,
+                    flex:5,
                     child: Container(
                       width: double.infinity,
                     ),
                   ),
                   Expanded(
-                      flex: 2,
+                      flex: 4,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
                           Text('적용'),
                           Switch(
+
                             onChanged: (bool value){
-                              _switchValue = value ;
+                              setState(() {
+                                _switchValue = value ;
+                              });
                               //bloc으로 정보 전달
                             },
                             value: _switchValue,
