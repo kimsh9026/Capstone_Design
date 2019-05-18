@@ -44,27 +44,27 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
     step2 = AnimationController(vsync: this, duration: Duration(milliseconds: 200)) ;
     step3 = AnimationController(vsync: this, duration: Duration(milliseconds: 200)) ;
     step4 = AnimationController(vsync: this, duration: Duration(milliseconds: 200)) ;
-    offset1 = Tween<Offset> (begin: Offset(0.0, 4.4), end: Offset(0.0, 0.03)).animate(step1) ;
-    offset2 = Tween<Offset> (begin: Offset(0.0, 4.4), end: Offset(0.0, 1.6)).animate(step2) ;
-    offset3 = Tween<Offset> (begin: Offset(0.0, 4.4), end: Offset(0.0, 2.7)).animate(step3) ;
-    offset4 = Tween<Offset> (begin: Offset(0.0, 4.4), end: Offset(0.0, 3.8)).animate(step4) ;
+    offset1 = Tween<Offset> (begin: Offset(0.0, 4.9), end: Offset(0.0, 0.03)).animate(step1) ;
+    offset2 = Tween<Offset> (begin: Offset(0.0, 4.9), end: Offset(0.0, 1.6)).animate(step2) ;
+    offset3 = Tween<Offset> (begin: Offset(0.0, 4.9), end: Offset(0.0, 2.7)).animate(step3) ;
+    offset4 = Tween<Offset> (begin: Offset(0.0, 4.9), end: Offset(0.0, 3.8)).animate(step4) ;
   }
 
   Widget build(BuildContext context){
    return Scaffold(
      backgroundColor: Color.fromRGBO(215, 238, 247, 0.9),
-     appBar: AppBar(
-         toolbarOpacity: 1,
-         elevation: 0.1,
-         bottomOpacity: 1,
-         title: Text(
-           '트레버딩',
-           textAlign: TextAlign.center,
-           style: Theme.of(context).textTheme.title,
-         ),
-         centerTitle: true,
-         backgroundColor: Colors.white,
-     ),
+//     appBar: AppBar(
+//         toolbarOpacity: 1,
+//         elevation: 0.1,
+//         bottomOpacity: 1,
+//         title: Text(
+//           '트레버딩',
+//           textAlign: TextAlign.center,
+//           style: Theme.of(context).textTheme.title,
+//         ),
+//         centerTitle: true,
+//         backgroundColor: Colors.white,
+//     ),
      body: _matchingBody(context),
    )  ;
   }

@@ -18,7 +18,7 @@ class MapApiState extends State<MapApi> {
   GoogleMapController mapController;
   Position _currentLocation ;
   LatLng _center = LatLng(0,0) ;
-//  bool isLoading = true;
+  bool isLoading = false;
   bool isSearching = false ;
   String _searchAddr;
   static Widget _searchBar ;
@@ -103,7 +103,17 @@ class MapApiState extends State<MapApi> {
                       top: BorderSide(color: Colors.black, width: 0.1)
                   )
               ),
-              child: Scrollbar(
+              child: !isSearching ?
+                  Container() :
+              (isLoading ?
+                  Center(
+                    child: CircularProgressIndicator(),
+                  ) :
+              (_placeList.length == 0 ?
+              Center(
+                child: Text('검색 결과가 없습니다.'),
+              ) :
+              Scrollbar(
                   child:  ListView.builder(
                       shrinkWrap: true,
                       itemCount: _placeList.length,
@@ -117,6 +127,8 @@ class MapApiState extends State<MapApi> {
                         );
                       }
                   )
+              )
+              )
               )
           ),
         ],
@@ -200,12 +212,19 @@ class MapApiState extends State<MapApi> {
 
   void searchAndNavigate() {
 
+    setState(() {
+      isLoading = true ;
+      print('loading') ;
+    });
+
     _placeList = List<PlacesSearchResult>() ;
 
     _places.searchByText(_searchAddr).then((result) {
       result.results.forEach((f) { print('hi ${f.name}'); setState(() {
         _placeList.add(f) ;
-      }); });
+      });
+      isLoading = false ;
+      });
     }) ;
     
 //    Geolocator().placemarkFromAddress(_searchAddr).then((result) {
