@@ -44,10 +44,10 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
     step2 = AnimationController(vsync: this, duration: Duration(milliseconds: 200)) ;
     step3 = AnimationController(vsync: this, duration: Duration(milliseconds: 200)) ;
     step4 = AnimationController(vsync: this, duration: Duration(milliseconds: 200)) ;
-    offset1 = Tween<Offset> (begin: Offset(0.0, 4.9), end: Offset(0.0, 0.03)).animate(step1) ;
-    offset2 = Tween<Offset> (begin: Offset(0.0, 4.9), end: Offset(0.0, 1.6)).animate(step2) ;
-    offset3 = Tween<Offset> (begin: Offset(0.0, 4.9), end: Offset(0.0, 2.7)).animate(step3) ;
-    offset4 = Tween<Offset> (begin: Offset(0.0, 4.9), end: Offset(0.0, 3.8)).animate(step4) ;
+    offset1 = Tween<Offset> (begin: Offset(0.0, 4.9), end: Offset(0.0, 0.5)).animate(step1) ;
+    offset2 = Tween<Offset> (begin: Offset(0.0, 4.9), end: Offset(0.0, 2.4)).animate(step2) ;
+    offset3 = Tween<Offset> (begin: Offset(0.0, 4.9), end: Offset(0.0, 3.5)).animate(step3) ;
+    offset4 = Tween<Offset> (begin: Offset(0.0, 4.9), end: Offset(0.0, 4.6)).animate(step4) ;
   }
 
   Widget build(BuildContext context){
@@ -95,9 +95,11 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
                 StreamBuilder(
                     stream: BlocProvider.of(context).mapBloc.detailAddress,
                     builder: (context, snapshot){
-                      return Text(
+                      return snapshot.hasData ?
+                        Text(
                           snapshot.hasData ? snapshot.data : _detailLocation,
-                          textAlign: TextAlign.left, style: TextStyle(color: Colors.grey, fontSize: 11)) ;
+                          textAlign: TextAlign.left, style: TextStyle(color: Colors.grey, fontSize: 11))
+                          : Container() ;
                     }
                 ),
               ],
@@ -264,17 +266,21 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
                 )
             ),
             Expanded(
-                flex: 3,
+                flex: 8,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    NumberPicker.integer(
-                      itemExtent: 20,
-                      listViewWidth: 20,
-                      initialValue: _numberOfPeople,
-                      minValue: 1,
-                      maxValue: 5,
-                      onChanged: (value) => setState(() => _numberOfPeople = value),
+                    Container(
+                      child: NumberPicker.integer(
+                        infiniteLoop: true,
+                        itemExtent: 22,
+                        listViewWidth: 20,
+                        initialValue: _numberOfPeople,
+                        minValue: 2,
+                        maxValue: 5,
+                        onChanged: (value) => setState(() => _numberOfPeople = value),
+                      ),
                     ),
                     Text('명'),
                   ],
@@ -386,6 +392,7 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
 
     }
     else if(_step == 2){
+      BlocProvider.of(context).mapBloc.setMapOff(true) ;
       animateContainer(2, false) ;
       animateContainer(3, false) ;
       animateContainer(4, false) ;
@@ -471,6 +478,11 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
           child: Stack(
             children: <Widget>[
               MapApi(),
+              _step > 1 ? Container(
+                width: double.infinity,
+                height: double.infinity,
+                color: Color.fromRGBO(255, 255, 255, 0.1),
+              ):Container(),
               _changingBox(offset4, 4),
               _changingBox(offset3, 3),
               _changingBox(offset2, 2),

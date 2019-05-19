@@ -20,15 +20,20 @@ class MapApiState extends State<MapApi> {
   LatLng _center = LatLng(0,0) ;
   bool isLoading = false;
   bool isSearching = false ;
-  String _searchAddr;
-  static Widget _searchBar ;
+  String _searchAddr = '';
   List<PlacesSearchResult> _placeList  = List<PlacesSearchResult>();
   double _searchingListHeight = 0 ;
+  BuildContext _context ;
+//  TextEditingController _textEditingController = TextEditingController() ;
 
   @override
   void initState() {
     super.initState();
-    _searchBar = TextField(
+  }
+
+  Widget _searchBar(){
+    return TextField(
+//        controller: _textEditingController,
         decoration: InputDecoration(
             hintText: 'Enter Address',
             border: InputBorder.none,
@@ -39,7 +44,6 @@ class MapApiState extends State<MapApi> {
               iconSize: 30.0,
             )
         ),
-
         onChanged: (val) {
           setState(() {
             _searchAddr = val ;
@@ -48,52 +52,44 @@ class MapApiState extends State<MapApi> {
     );
   }
 
-//  Widget _searchBar(){
-//    return TextField(
-//        decoration: InputDecoration(
-//            hintText: 'Enter Address',
-//            border: InputBorder.none,
-//            contentPadding: EdgeInsets.only(left: 15.0, top: 15.0),
-//            suffixIcon: IconButton(
-//              icon: Icon(Icons.search),
-//              onPressed: searchAndNavigate,
-//              iconSize: 30.0,
-//            )
-//        ),
-//        onChanged: (val) {
-//          setState(() {
-//            _searchAddr = val;
-//          });
-//        }
-//    );
-//  }
-
-  void _placeSelected(PlacesSearchResult result){
-
-    BlocProvider.of(context).mapBloc.setSimpleAddress(result.name);
-    BlocProvider.of(context).mapBloc.setDetailAddress(result.vicinity) ;
-
+  void _goToCenter(){
     mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target:
-        LatLng(result.geometry.location.lat, result.geometry.location.lng),
+        LatLng(_center.latitude, _center.longitude),
         zoom: 16.0
     )));
+  }
+
+  void _mapNavigate(double lat, double lng){
+    mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target:
+        LatLng(lat, lng),
+        zoom: 16.0
+    )));
+    mapController.clearMarkers() ;
     mapController.addMarker(
         MarkerOptions(
-          position: LatLng(result.geometry.location.lat, result.geometry.location.lng),
+          position: LatLng(lat, lng),
         )
     ) ;
+  }
+
+  void _placeSelected(PlacesSearchResult result){
+    BlocProvider.of(context).mapBloc.setSimpleAddress(result.name);
+    BlocProvider.of(context).mapBloc.setDetailAddress(result.vicinity) ;
+    _center = LatLng(result.geometry.location.lat, result.geometry.location.lng) ;
+    _mapNavigate(result.geometry.location.lat, result.geometry.location.lng) ;
     setState(() {
       isSearching = false ;
       _searchingListHeight = 0 ;
     });
   }
 
-  Widget _expandingSearchBar(Widget child){
+  Widget _expandingSearchBar(){
     return Container(
       child: Column(
         children: <Widget>[
-          child,
+          _searchBar(),
           AnimatedContainer(
               curve: Curves.linear,
               duration: Duration(milliseconds: 100),
@@ -136,20 +132,9 @@ class MapApiState extends State<MapApi> {
     ) ;
   }
 
-  Widget _searchBarAnimation(){
-    return AnimatedCrossFade(
-      firstChild: _searchBar,
-      secondChild: _expandingSearchBar(_searchBar),
-      firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
-      secondCurve: const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
-      sizeCurve: Curves.fastOutSlowIn,
-      crossFadeState: isSearching ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-      duration: Duration(milliseconds: 200),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    _context = context ;
     return Stack(
       children: <Widget>[
         GoogleMap(
@@ -160,27 +145,35 @@ class MapApiState extends State<MapApi> {
           ),
         ),
         Positioned(
-            top: 30.0,
-            right: 15.0,
-            left: 15.0,
+            top: 50.0,
+            right: 30.0,
+            left: 30.0,
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
                   color: Colors.white
               ),
-              child: _expandingSearchBar(_searchBar),
+              child: _expandingSearchBar(),
             )
         )
       ],
     );
-
-
   }
 
   void _onMapCreated(controller){
     mapController = controller ;
     getUserLocation() ;
+    BlocProvider.of(context).mapBloc.mapOff.listen((value){
+      if(value){
+        _goToCenter() ;
+        if(isSearching){
+          isSearching = false ;
+          _searchingListHeight = 0 ;
+        }
+        FocusScope.of(context).requestFocus(FocusNode()) ;
+      }
+    }) ;
   }
 
   Future<Position> locateUser() async {
@@ -209,50 +202,44 @@ class MapApiState extends State<MapApi> {
   }
 
 
-
+// 만약 '밥' 이라고 검색하면 결과가 너무 많이 나와서 infinite loading.
   void searchAndNavigate() {
-
-    setState(() {
-      isLoading = true ;
-      print('loading') ;
-    });
-
-    _placeList = List<PlacesSearchResult>() ;
-
-    _places.searchByText(_searchAddr).then((result) {
-      result.results.forEach((f) { print('hi ${f.name}'); setState(() {
-        _placeList.add(f) ;
+    if(_searchAddr != ''){
+      FocusScope.of(context).requestFocus(FocusNode()) ;
+      setState(() {
+        isLoading = true ;
+        print('loading') ;
       });
-      isLoading = false ;
-      });
-    }) ;
-    
-//    Geolocator().placemarkFromAddress(_searchAddr).then((result) {
-//      print(result[0].position.toString()) ;
-//      _places.searchNearbyWithRadius(Location(result[0].position.latitude, result[0].position.longitude), 100)
-//          .then((value){
-//            value.results.forEach((f) {print(f.name); }) ;
-//        BlocProvider.of(context).mapBloc.setSimpleAddress(value.results[1].name);
-//        BlocProvider.of(context).mapBloc.setDetailAddress(value.results[1].vicinity) ;
+
+      _placeList = List<PlacesSearchResult>() ;
+
+// 이름기반 (이름이 유사한 순으로 리스트가 나옴)
+//    _places.searchByText(_searchAddr).then((result) {
+//      result.results.forEach((f) { print('hi ${f.name}'); setState(() {
+//        _placeList.add(f) ;
 //      });
+//      isLoading = false ;
+//      });
+//    }) ;
 //
-//      mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-//          target:
-//          LatLng(result[0].position.latitude, result[0].position.longitude),
-//          zoom: 16.0
-//      )));
-//      mapController.addMarker(
-//          MarkerOptions(
-//            position: LatLng(result[0].position.latitude, result[0].position.longitude),
-//          )
-//      ) ;
-//    });
 
-    setState(() {
-      isSearching = true ;
-      _searchingListHeight = 300 ;
-    });
+// 장소기반 (상세주소가 자세히 나옴)
+      Geolocator().placemarkFromAddress(_searchAddr).then((result) {
+        _places.searchNearbyWithRadius(Location(result[0].position.latitude, result[0].position.longitude), 100)
+            .then((value){
+          value.results.forEach((f) {print(f.name); setState(() {
+            _placeList.add(f) ;
+          });
+          isLoading = false ;
+          }) ;
+        });
+      });
 
+      setState(() {
+        isSearching = true ;
+        _searchingListHeight = 300 ;
+      });
+
+    }
   }
-
 }
