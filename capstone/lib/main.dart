@@ -5,7 +5,8 @@ import 'package:capstone/profile_page.dart';
 import 'package:capstone/feed_page_codes/feed_page.dart';
 import 'package:capstone/matching_page_codes/matching_page.dart';
 import 'package:capstone/chat_room_codes/my_chat_room_page.dart';
-import 'LogInPage.dart' ;
+import 'package:capstone/LogInPage.dart' ;
+import 'package:capstone/FriendList.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';
 
 void main() => runApp(BlocProvider(child : MyApp())) ;
@@ -13,6 +14,7 @@ void main() => runApp(BlocProvider(child : MyApp())) ;
 class MyApp extends StatelessWidget {
 
   static BottomNavigation botNavBar = BottomNavigation() ;
+  FriendListPage friendListPage = new FriendListPage();
   ProfilePage profilePage = new ProfilePage() ;
   FeedPage feedPage = new FeedPage() ;
   MatchingPage matchingPage = new MatchingPage() ;
@@ -59,7 +61,7 @@ class MyApp extends StatelessWidget {
                     stream : BlocProvider.of(context).bottomBarBloc.bottomBarPressed,
                     builder: (context, snapshot) {
                       if(!snapshot.hasData || snapshot.data == 0){
-                        return profilePage ;
+                        return friendListPage ;
                       }
                       else if(snapshot.data == 1){
                         return matchingPage ;
