@@ -8,8 +8,6 @@ import 'package:capstone/fire_base_codes/fire_store_provider.dart';
 
 class RoomBloc extends Object{
 
-  //FirestoreProvider는 계속 생성? or variable 만들어서 ..?
-
   BuildContext _context ;
   final _roomPressed = StreamController<int>.broadcast() ;
   final _addedRoom = StreamController<RoomInfo>.broadcast() ;
@@ -37,9 +35,6 @@ class RoomBloc extends Object{
   Stream<QuerySnapshot> get chatRoomList => _chatRoomList() ;
   Stream<DocumentSnapshot> get getRoomSnapshot => _getRoomSnapshot(chatRoomInfo) ;
   Stream<bool> get didGetUserSnapshot => _didGetUserSnapshot.stream ;
-/*
-searching stream 만들어서 searching block icon 눌렸을 때 list block stream 바꿔줌
- */
 
   Function(int) get setRoomPressed => _roomPressed.sink.add ;
   Function(RoomInfo) get setRoomFinding => _roomFinding.sink.add ;
