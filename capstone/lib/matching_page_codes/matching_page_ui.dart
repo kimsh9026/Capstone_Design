@@ -33,13 +33,19 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
   int _step = 1 ;
   String _simpleLocation = ' ' ;
   String _detailLocation = ' ' ;
-  double _sliderValue = 5.0 ;
+  double _sliderValue = 0.4 ;
   String _pressedButtonName = '식사' ;
   int _numberOfPeople = 4;
 
   @override
   initState(){
     super.initState() ;
+    _step = 1 ;
+    _simpleLocation = ' ' ;
+    _detailLocation =  ' ' ;
+    _sliderValue = 0.4 ;
+    _pressedButtonName = '식사' ;
+    _numberOfPeople = 4 ;
     step1 = AnimationController(vsync: this, duration: Duration(milliseconds: 200)) ;
     step2 = AnimationController(vsync: this, duration: Duration(milliseconds: 200)) ;
     step3 = AnimationController(vsync: this, duration: Duration(milliseconds: 200)) ;
@@ -119,6 +125,7 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
   void _sliderOnChanged(double value){
     setState((){
       _sliderValue = value ;
+      BlocProvider.of(context).mapBloc.setRadius(value*1000) ;
     }) ;
   }
 
@@ -139,10 +146,10 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
                 flex: 3,
                 child: Column(
                   children: <Widget>[
-                    Text('${_sliderValue.toInt()} km', style: TextStyle(color: Colors.blue, fontSize: 15),),
+                    Text('${_sliderValue.toStringAsFixed(1)} km', style: TextStyle(color: Colors.blue, fontSize: 15),),
                     Slider(
-                      min: 0,
-                      max : 10,
+                      min: 0.1,
+                      max : 1.5,
                       value: _sliderValue,
                       onChanged: _sliderOnChanged,
                     )
@@ -163,7 +170,7 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
             ),
             Expanded(
                 flex: 5,
-                child: Text('${_sliderValue.toInt()} km', style: TextStyle(color: Colors.black, fontSize: 14),),
+                child: Text('${_sliderValue.toStringAsFixed(1)} km', style: TextStyle(color: Colors.black, fontSize: 14),),
             )
           ],
         )
@@ -382,6 +389,7 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
 
   void _stepController(){
     if(_step == 1){
+      BlocProvider.of(context).mapBloc.setMapOff(false) ;
       animateContainer(2, false) ;
       animateContainer(3, false) ;
       animateContainer(4, false) ;
@@ -463,12 +471,10 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
       ),
       onTap: (){
         _step++ ;
-        print(_step) ;
         _stepController() ;
       }
     ) ;
   }
-
 
   Widget _matchingBody(BuildContext context){
     return Column(

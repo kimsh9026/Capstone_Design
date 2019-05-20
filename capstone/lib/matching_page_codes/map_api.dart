@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +17,7 @@ class MapApi extends StatefulWidget {
 
 class MapApiState extends State<MapApi> {
 
-  GoogleMapController mapController;
+  GoogleMapController _mapController;
   Position _currentLocation ;
   LatLng _center = LatLng(0,0) ;
   bool isLoading = false;
@@ -23,189 +25,61 @@ class MapApiState extends State<MapApi> {
   String _searchAddr = '';
   List<PlacesSearchResult> _placeList  = List<PlacesSearchResult>();
   double _searchingListHeight = 0 ;
+  Set<Marker> _markers = Set<Marker>();
+  Set<Circle> _circles = Set<Circle>();
+  double _circleRadius = 400 ;
+  double _cameraZoom = 16 ;
   BuildContext _context ;
-//  TextEditingController _textEditingController = TextEditingController() ;
+  StreamSubscription<bool> _mapOffSubscription ;
+  StreamSubscription<double> _radiusChangeSubscription;
 
   @override
   void initState() {
     super.initState();
+    _mapController = null ;
+    _currentLocation = null ;
+    _center = LatLng(0,0) ;
+    isLoading = false ;
+    isSearching = false ;
+    _searchAddr = '';
+    _placeList  = List<PlacesSearchResult>();
+    _searchingListHeight = 0 ;
+    _markers = Set<Marker>();
+    _circles = Set<Circle>();
+    _circleRadius = 400 ;
+    _cameraZoom = 16 ;
+    _context = null ;
+    _markers.add(Marker(markerId: MarkerId('default'))) ;
   }
 
-  Widget _searchBar(){
-    return TextField(
-//        controller: _textEditingController,
-        decoration: InputDecoration(
-            hintText: 'Enter Address',
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.only(left: 15.0, top: 15.0),
-            suffixIcon: IconButton(
-              icon: Icon(Icons.search),
-              onPressed: searchAndNavigate,
-              iconSize: 30.0,
-            )
-        ),
-        onChanged: (val) {
-          setState(() {
-            _searchAddr = val ;
-          });
-        }
-    );
-  }
 
   void _goToCenter(){
-    mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target:
-        LatLng(_center.latitude, _center.longitude),
-        zoom: 16.0
+    _mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(_center.latitude, _center.longitude),
+        zoom: _cameraZoom,
     )));
   }
 
   void _mapNavigate(double lat, double lng){
-    mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+    _mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target:
         LatLng(lat, lng),
-        zoom: 16.0
+        zoom: _cameraZoom
     )));
-    mapController.clearMarkers() ;
-    mapController.addMarker(
-        MarkerOptions(
-          position: LatLng(lat, lng),
-        )
+    _markers.clear() ;
+    _markers.add(
+      Marker(
+        markerId: MarkerId('marking location'),
+        position: LatLng(lat, lng),
+      )
     ) ;
-  }
-
-  void _placeSelected(PlacesSearchResult result){
-    BlocProvider.of(context).mapBloc.setSimpleAddress(result.name);
-    BlocProvider.of(context).mapBloc.setDetailAddress(result.vicinity) ;
-    _center = LatLng(result.geometry.location.lat, result.geometry.location.lng) ;
-    _mapNavigate(result.geometry.location.lat, result.geometry.location.lng) ;
-    setState(() {
-      isSearching = false ;
-      _searchingListHeight = 0 ;
-    });
-  }
-
-  Widget _expandingSearchBar(){
-    return Container(
-      child: Column(
-        children: <Widget>[
-          _searchBar(),
-          AnimatedContainer(
-              curve: Curves.linear,
-              duration: Duration(milliseconds: 100),
-              height: _searchingListHeight,
-              decoration: BoxDecoration(
-                  border: Border(
-                      top: BorderSide(color: Colors.black, width: 0.1)
-                  )
-              ),
-              child: !isSearching ?
-                  Container() :
-              (isLoading ?
-                  Center(
-                    child: CircularProgressIndicator(),
-                  ) :
-              (_placeList.length == 0 ?
-              Center(
-                child: Text('검색 결과가 없습니다.'),
-              ) :
-              Scrollbar(
-                  child:  ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: _placeList.length,
-                      itemBuilder: (context, int,
-                          {
-                            shrinkWrap: true,
-                          }) {
-                        return ListTile(
-                          title: Text(_placeList[int].name),
-                          onTap: () => _placeSelected(_placeList[int]),
-                        );
-                      }
-                  )
-              )
-              )
-              )
-          ),
-        ],
-      ),
-    ) ;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _context = context ;
-    return Stack(
-      children: <Widget>[
-        GoogleMap(
-          onMapCreated: _onMapCreated,
-          initialCameraPosition: CameraPosition(
-            target: _center,
-            zoom: 16.0,
-          ),
-        ),
-        Positioned(
-            top: 50.0,
-            right: 30.0,
-            left: 30.0,
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  color: Colors.white
-              ),
-              child: _expandingSearchBar(),
-            )
-        )
-      ],
-    );
-  }
-
-  void _onMapCreated(controller){
-    mapController = controller ;
-    getUserLocation() ;
-    BlocProvider.of(context).mapBloc.mapOff.listen((value){
-      if(value){
-        _goToCenter() ;
-        if(isSearching){
-          isSearching = false ;
-          _searchingListHeight = 0 ;
-        }
-        FocusScope.of(context).requestFocus(FocusNode()) ;
-      }
-    }) ;
-  }
-
-  Future<Position> locateUser() async {
-    return Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-  }
-
-  getUserLocation() async {
-    _currentLocation = await locateUser();
-    _places.searchNearbyWithRadius(Location(_currentLocation.latitude, _currentLocation.longitude), 2500)
-    .then((value){
-      value.results.forEach((f) => print(f.name)) ;
-      BlocProvider.of(context).mapBloc.setSimpleAddress(value.results[0].name);
-      BlocProvider.of(context).mapBloc.setDetailAddress(value.results[0].vicinity) ;
-    });
-    setState(() {
-      _center = LatLng(_currentLocation.latitude, _currentLocation.longitude);
-      mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-          target:_center, zoom: 16.0)));
-      mapController.addMarker(
-        MarkerOptions(
-          position: _center,
-        )
-      ) ;
-    });
   }
 
 
 // 만약 '밥' 이라고 검색하면 결과가 너무 많이 나와서 infinite loading.
-  void searchAndNavigate() {
+  void search() {
     if(_searchAddr != ''){
-      FocusScope.of(context).requestFocus(FocusNode()) ;
+      FocusScope.of(_context).detach() ;
       setState(() {
         isLoading = true ;
         print('loading') ;
@@ -234,7 +108,6 @@ class MapApiState extends State<MapApi> {
           }) ;
         });
       });
-
       setState(() {
         isSearching = true ;
         _searchingListHeight = 300 ;
@@ -242,4 +115,198 @@ class MapApiState extends State<MapApi> {
 
     }
   }
+
+  void _placeSelected(PlacesSearchResult result){
+    BlocProvider.of(_context).mapBloc.setSimpleAddress(result.name);
+    BlocProvider.of(_context).mapBloc.setDetailAddress(result.vicinity) ;
+    _center = LatLng(result.geometry.location.lat, result.geometry.location.lng) ;
+    _mapNavigate(_center.latitude, _center.longitude) ;
+    setState(() {
+      isSearching = false ;
+      _searchingListHeight = 0 ;
+    });
+  }
+
+  Widget _searchBar(){
+    return TextField(
+        decoration: InputDecoration(
+            hintText: 'Enter Address',
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.only(left: 15.0, top: 15.0),
+            suffixIcon: IconButton(
+              icon: Icon(Icons.search),
+              onPressed: search,
+              iconSize: 30.0,
+            )
+        ),
+        onChanged: (val) {
+          setState(() {
+            _searchAddr = val ;
+          });
+        }
+    );
+  }
+
+  Widget _expandingSearchBar(){
+    return Container(
+      child: Column(
+        children: <Widget>[
+          _searchBar(),
+          AnimatedContainer(
+              curve: Curves.linear,
+              duration: Duration(milliseconds: 100),
+              height: _searchingListHeight,
+              decoration: BoxDecoration(
+                  border: Border(
+                      top: BorderSide(color: Colors.black, width: 0.1)
+                  )
+              ),
+              child: !isSearching ?
+              Container() :
+              (isLoading ?
+              Center(
+                child: CircularProgressIndicator(),
+              ) :
+              (_placeList.length == 0 ?
+              Center(
+                child: Text('검색 결과가 없습니다.'),
+              ) :
+              Scrollbar(
+                  child:  ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: _placeList.length,
+                      itemBuilder: (context, int,
+                          {
+                            shrinkWrap: true,
+                          }) {
+                        return ListTile(
+                          title: Text(_placeList[int].name),
+                          onTap: () => _placeSelected(_placeList[int]),
+                        );
+                      }
+                  )
+              )
+              )
+              )
+          ),
+        ],
+      ),
+    ) ;
+  }
+
+  Future<Position> locateUser() async {
+    return Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  }
+
+  getUserLocation() async {
+    _currentLocation = await locateUser();
+    _places.searchNearbyWithRadius(Location(_currentLocation.latitude, _currentLocation.longitude), 2500)
+        .then((value){
+      BlocProvider.of(_context).mapBloc.setSimpleAddress(value.results[0].name);
+      BlocProvider.of(_context).mapBloc.setDetailAddress(value.results[0].vicinity) ;
+    });
+    setState(() {
+      _center = LatLng(_currentLocation.latitude, _currentLocation.longitude);
+      _mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+          target:_center, zoom: _cameraZoom)));
+      _markers.clear() ;
+      _markers.add(
+          Marker(
+            markerId: MarkerId('marking location'),
+            position: _center,
+          )
+      ) ;
+//      mapController.addMarker(
+//        MarkerOptions(
+//          position: _center,
+//        )
+//      ) ;
+    });
+  }
+
+  void _removeBoundary(){
+    _circles.clear() ;
+  }
+  void _showBoundary(){
+    _goToCenter() ;
+    _circles.clear() ;
+    _circles.add(Circle(
+      strokeColor: Color.fromRGBO(47, 146, 217, 0.9),
+      fillColor: Color.fromRGBO(30, 100, 200, 0.2),
+      circleId: CircleId('radius'),
+      center: _center,
+      radius: _circleRadius,
+    ));
+  }
+
+  void _onMapCreated(controller){
+    print('create Map') ;
+    _mapController = controller ;
+    getUserLocation() ;
+    _mapOffSubscription = BlocProvider.of(_context).mapBloc.mapOff.listen((value){
+      if(value){
+        if(isSearching){
+          print('isSearching?') ;
+          isSearching = false ;
+          _searchingListHeight = 0 ;
+          FocusScope.of(_context).detach() ;
+        }
+        _showBoundary() ;
+      }
+      else{
+        _removeBoundary() ;
+      }
+    }) ;
+    _radiusChangeSubscription = BlocProvider.of(_context).mapBloc.radius.listen((radius){
+      _circleRadius = radius ;
+      _cameraZoom = radius <= 200 ? 17 : (
+          radius <= 400 ? 16 : (
+              radius <= 800 ? 15 : 14
+          )) ;
+      _showBoundary() ;
+    }) ;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _context = context ;
+    return Stack(
+      children: <Widget>[
+        GoogleMap(
+//          myLocationEnabled: true,
+//          trackCameraPosition: true,
+        circles: _circles,
+        markers: _markers,
+          onMapCreated: _onMapCreated,
+          initialCameraPosition: CameraPosition(
+            target: _center,
+            zoom: 16.0,
+          ),
+        ),
+        Positioned(
+            top: 50.0,
+            right: 30.0,
+            left: 30.0,
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: Colors.white
+              ),
+              child: _expandingSearchBar(),
+            )
+        )
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    _mapOffSubscription.cancel() ;
+    _radiusChangeSubscription.cancel() ;
+    super.dispose();
+  }
+
+
 }
