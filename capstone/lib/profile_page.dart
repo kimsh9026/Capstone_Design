@@ -1,5 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:capstone/fire_base_codes/fire_store_provider.dart';
+import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
+import 'package:capstone/chat_room_codes/users_Info_communicator.dart';
+
+/*
+class ProfilePage extends StatefulWidget {
+  @override
+  _ProfilePageState createState() {
+    return _ProfilePageState();
+  }
+}
+
+class _ProfilePageState extends State<ProfilePage>{
+  UsersInfoCommunicator _userInfoCommunicator ;
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_userInfoCommunicator.usersDisplayName[document['uid']], style: TextStyle(fontSize:13)),
+      )
+    );
+    
+    /*return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text('Profile', textAlign : TextAlign.center, style : TextStyle(color: Color.fromRGBO(61, 174, 218, 1))),
+        centerTitle: true,
+      ),
+    );
+    */
+  }
+}
+*/
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -15,6 +49,7 @@ class ProfilePage extends StatelessWidget {
         backgroundColor: Colors.white,
         title: Text('Profile', textAlign : TextAlign.center, style : TextStyle(color: Color.fromRGBO(61, 174, 218, 1))),
         centerTitle: true,
+        elevation: 0.0,
         actions:
         <Widget>[
           IconButton(

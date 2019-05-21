@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/bottom_navigation.dart';
-import 'package:capstone/profile_page.dart';
 import 'package:capstone/feed_page_codes/feed_page.dart';
 import 'package:capstone/matching_page_codes/matching_page.dart';
 import 'package:capstone/chat_room_codes/my_chat_room_page.dart';
@@ -15,7 +14,6 @@ class MyApp extends StatelessWidget {
 
   static BottomNavigation botNavBar = BottomNavigation() ;
   FriendListPage friendListPage = new FriendListPage();
-  ProfilePage profilePage = new ProfilePage() ;
   FeedPage feedPage = new FeedPage() ;
   MatchingPage matchingPage = new MatchingPage() ;
   MyChatRoomPage chatRoomPage = new MyChatRoomPage() ;
@@ -62,6 +60,7 @@ class MyApp extends StatelessWidget {
                     builder: (context, snapshot) {
                       if(!snapshot.hasData || snapshot.data == 0){
                         return friendListPage ;
+                        //return profilePage;
                       }
                       else if(snapshot.data == 1){
                         return matchingPage ;
