@@ -10,6 +10,11 @@ class FirestoreProvider {
     _firestore.settings(timestampsInSnapshotsEnabled: true) ;
   }
 
+  Stream<DocumentSnapshot> getCurrentUserInfo(){
+    return _firestore.collection('userInfo')
+        .document(FireAuthProvider.user.uid).snapshots() ;
+  }
+
   void sendMessage(RoomInfo roomInfo, String msg){
     _firestore.collection('roomInfo')
         .document(roomInfo.documentID)
