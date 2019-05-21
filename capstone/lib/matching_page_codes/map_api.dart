@@ -32,7 +32,7 @@ class MapApiState extends State<MapApi> {
   BuildContext _context ;
   StreamSubscription<bool> _mapOffSubscription ;
   StreamSubscription<double> _radiusChangeSubscription;
-
+  String _infoText ;
   @override
   void initState() {
     super.initState();
@@ -49,6 +49,7 @@ class MapApiState extends State<MapApi> {
     _circleRadius = 400 ;
     _cameraZoom = 16 ;
     _context = null ;
+    _infoText = '검색 결과가 없습니다.' ;
     _markers.add(Marker(markerId: MarkerId('default'))) ;
   }
 
@@ -81,6 +82,7 @@ class MapApiState extends State<MapApi> {
     if(_searchAddr != ''){
       FocusScope.of(_context).detach() ;
       setState(() {
+        _infoText = '' ;
         isLoading = true ;
         print('loading') ;
       });
@@ -98,15 +100,45 @@ class MapApiState extends State<MapApi> {
 //
 
 // 장소기반 (상세주소가 자세히 나옴)
-      Geolocator().placemarkFromAddress(_searchAddr).then((result) {
-        _places.searchNearbyWithRadius(Location(result[0].position.latitude, result[0].position.longitude), 100)
-            .then((value){
-          value.results.forEach((f) {print(f.name); setState(() {
-            _placeList.add(f) ;
-          });
-          isLoading = false ;
-          }) ;
-        });
+      Geolocator().placemarkFromAddress(_searchAddr)
+          .catchError((value) => null)
+          .then((result) {
+            if(result != null){
+              if(result.length == 0 ) {_infoText = '검색 결과가 없습니다.' ;}
+              else {
+                _places.searchNearbyWithRadius(
+                    Location(result[0].position.latitude, result[0].position.longitude), 100
+                )
+                    .then((value) {
+                  value.results.forEach((f) { print(f.name);
+                    setState(() {
+                      _placeList.add(f);
+                    });
+
+                  });
+                });
+              }
+              isLoading = false;
+            }
+            else{
+              Future.delayed(Duration(seconds: 4),(){
+                _infoText = '검색량이 너무 많습니다. 자세히 검색해주세요.' ;
+                setState(() {
+                  isLoading = false ;
+                });
+              }) ;
+              _places.searchByText(_searchAddr)
+              .then((result) {
+                  if(result.results.length == 0 ) {_infoText = '검색 결과가 없습니다.' ;}
+                  else{
+                    result.results.forEach((f) { print('hi ${f.name}'); setState(() {
+                      _placeList.add(f) ;
+                    });
+                    });
+                  }
+                  isLoading = false ;
+              }) ;
+            }
       });
       setState(() {
         isSearching = true ;
@@ -169,7 +201,7 @@ class MapApiState extends State<MapApi> {
               ) :
               (_placeList.length == 0 ?
               Center(
-                child: Text('검색 결과가 없습니다.'),
+                child: Text(_infoText),
               ) :
               Scrollbar(
                   child:  ListView.builder(

@@ -142,26 +142,35 @@ class _ChatBodyState extends State<ChatBody> {
             CircleAvatar(
                 child: Image.network(_userInfoCommunicator.usersImageURL[document['uid']])
             ),
-            new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(left:10),
-                  child: new Text(_userInfoCommunicator.usersDisplayName[document['uid']], style: TextStyle(fontSize:15)),
-                ),
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.only(left:10),
+                    child: new Text(_userInfoCommunicator.usersDisplayName[document['uid']], style: TextStyle(fontSize:13)),
+                  ),
+                  Container(
+                    constraints: BoxConstraints(
+                      minHeight: 30,
+                    ),
+                    child: new Card(
+                        color: Colors.white,
+                        margin: const EdgeInsets.only(left: 10, top:5, right: 10),
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(10,6,6,6),
+                          child: Text(
+                            document['message'],
+                            style:TextStyle(fontSize:15),
+                            softWrap: true,
+                            maxLines: 10,
+                          ),)
+                    ),
+                  )
 
-                new Card(
-                    color: Colors.white,
-                    margin: const EdgeInsets.only(left: 15, top:5),
-                    child: Container(
-                      height: 40,
-                      padding: EdgeInsets.fromLTRB(15,0,15,0),
-                      alignment: Alignment.center,
-                      child: Text(document['message'], style:TextStyle(fontSize:20)),
-                    )
-                )
-              ],
-            ),
+                ],
+              ),
+            )
           ],
         )
     );
@@ -173,21 +182,25 @@ class _ChatBodyState extends State<ChatBody> {
         child: new Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            new Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                //new Text('Me'),
-                new Card(
-                    color: Colors.yellow,
-                    margin: const EdgeInsets.only(left: 5, right:15),
-                    child: Container(
-                      height: 40,
-                      padding: EdgeInsets.only(left:15, right:15),
-                      alignment: Alignment.center,
-                      child: Text(document['message'], style:TextStyle(fontSize:20)),
-                    )
+            Flexible(
+                child:
+                Container(
+                  constraints: BoxConstraints(
+                    minHeight: 30,
+                  ),
+                  child: Card(
+                      color: Colors.yellow,
+                      margin: const EdgeInsets.only(left: 10, right:10),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(10,6,6,6),
+                      child: Text(
+                        document['message'],
+                        style:TextStyle(fontSize:15),
+                        softWrap: true,
+                        maxLines: 10,
+                      ),)
+                  ),
                 )
-              ],
             ),
             _userInfoCommunicator.usersImageURL.length == 0 ? Container(color: Colors.white30) :
             CircleAvatar(
