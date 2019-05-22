@@ -1,23 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class USER {
-  String email;
-  DateTime id;
-  DateTime nickname;
+  String id;
   String photoUrl;
+  String nickname;
   String status;
-  String hobby;
+  int age;
+  String gender;
+  String language;
+  String contact;
   String intro;
 
   USER();
 
   USER.fromSnapshot(DocumentSnapshot snapshot) {
-    email = snapshot.data['email'];
     id = snapshot.data['id'];
-    nickname = snapshot.data['nickname'];
     photoUrl = snapshot.data['photoUrl'];
+    nickname = snapshot.data['nickname'];
     status = snapshot.data['status'];
-    hobby = snapshot.data['hobby'];
+    age = snapshot.data['age'];
+    gender = snapshot.data['gender'];
+    language = snapshot.data['language'];
+    contact= snapshot.data['contact'];
     intro = snapshot.data['intro'];
   }
 }
