@@ -21,7 +21,7 @@ class MatchingScreenState extends State<MatchingScreen> {
             flex: 3,
             child: Container(
               alignment: Alignment.bottomCenter,
-              child: Text('Trabuddying', style: Theme.of(context).textTheme.title,),
+              child: Text('매칭중입니다', style: Theme.of(context).textTheme.title,),
             ),
           ),
           Expanded(

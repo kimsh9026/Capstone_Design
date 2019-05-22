@@ -1,4 +1,5 @@
 import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
+import 'package:capstone/main.dart';
 import 'package:capstone/matching_page_codes/matching_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' ;
 import 'package:capstone/feed_page_codes/room_info.dart';
@@ -40,6 +41,13 @@ class FirestoreProvider {
       'startTime' : Timestamp.now(),
     }) ;
   }
+
+  void checkMatching() async {
+    bool result = await _firestore.collection('matchingInfo').where('uid', isEqualTo: FireAuthProvider.user).snapshots().isEmpty ;
+    MyApp.isMatching = !result ;
+    print(result) ;
+  }
+
 
   Stream<QuerySnapshot> feedRoomList(RoomInfo roomInfo) {
 

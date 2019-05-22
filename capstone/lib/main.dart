@@ -1,3 +1,4 @@
+import 'package:capstone/fire_base_codes/fire_store_provider.dart';
 import 'package:capstone/matching_page_codes/matching_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:capstone/bloc_codes/bloc_provider.dart';
@@ -21,9 +22,14 @@ class MyApp extends StatelessWidget {
   MyChatRoomPage chatRoomPage = new MyChatRoomPage() ;
   LogInPage logInPage = new LogInPage() ;
 
+  void _checkMatching(){
+    FirestoreProvider().checkMatching() ;
+  }
+
   @override
   Widget build(BuildContext context) {
     print('Feed Page build') ;
+    _checkMatching() ;
     return MaterialApp(
       title: 'Trabuddy',
       theme: new ThemeData(
