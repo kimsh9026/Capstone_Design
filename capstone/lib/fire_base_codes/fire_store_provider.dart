@@ -43,11 +43,24 @@ class FirestoreProvider {
   }
 
   void checkMatching() async {
-    bool result = await _firestore.collection('matchingInfo').where('uid', isEqualTo: FireAuthProvider.user).snapshots().isEmpty ;
-    MyApp.isMatching = !result ;
-    print(result) ;
+    if(FireAuthProvider.user != null){
+      QuerySnapshot result = await _firestore.collection('matchingInfo').where('uid', isEqualTo: FireAuthProvider.user.uid).getDocuments() ;
+      bool matching = result.documents.length == 0 ? false : true;
+      MyApp.isMatching = matching ;
+      print('checkmatchig : ${matching}') ;
+    }
   }
 
+  Stream<QuerySnapshot> matchingStream(){
+    print('matching stream call') ;
+    if(FireAuthProvider.user != null){
+      print('matching stream!') ;
+      return _firestore.collection('matchingInfo')
+          .where('uid', isEqualTo:FireAuthProvider.user.uid)
+          .snapshots() ;
+    }
+
+  }
 
   Stream<QuerySnapshot> feedRoomList(RoomInfo roomInfo) {
 
@@ -73,7 +86,6 @@ class FirestoreProvider {
           .orderBy('timestamp',descending: true)
           .limit(20)
           .snapshots() ;
-
   }
 
   Stream<DocumentSnapshot> getRoomSnapshot(RoomInfo roomInfo) {
