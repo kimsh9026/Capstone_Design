@@ -1,3 +1,4 @@
+import 'package:capstone/matching_page_codes/matching_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/bottom_navigation.dart';
@@ -12,6 +13,7 @@ void main() => runApp(BlocProvider(child : MyApp())) ;
 
 class MyApp extends StatelessWidget {
 
+  static bool isMatching = false ;
   static BottomNavigation botNavBar = BottomNavigation() ;
   FriendListPage friendListPage = new FriendListPage();
   FeedPage feedPage = new FeedPage() ;
@@ -63,7 +65,7 @@ class MyApp extends StatelessWidget {
                         //return profilePage;
                       }
                       else if(snapshot.data == 1){
-                        return matchingPage ;
+                        return isMatching ? MatchingScreen() : matchingPage ;
                       }
                       else if(snapshot.data == 2){
                         return feedPage ;

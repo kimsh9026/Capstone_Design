@@ -1,5 +1,8 @@
 import 'package:capstone/bloc_codes/bloc_provider.dart';
+import 'package:capstone/fire_base_codes/fire_store_provider.dart';
 import 'package:capstone/matching_page_codes/map_api.dart';
+import 'package:capstone/matching_page_codes/matching_info.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart' ;
@@ -31,21 +34,24 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
   double _changingHeight4 = 80 ;
   double _messageBoxHeight = 50 ;
   int _step = 1 ;
-  String _simpleLocation = ' ' ;
-  String _detailLocation = ' ' ;
+  String _locationName = ' ' ;
+  String _locationNameDetail = ' ' ;
   double _sliderValue = 0.4 ;
   String _pressedButtonName = '식사' ;
   int _numberOfPeople = 4;
+  MatchingInfo _matchingInfo ;
 
   @override
   initState(){
     super.initState() ;
     _step = 1 ;
-    _simpleLocation = ' ' ;
-    _detailLocation =  ' ' ;
+    _locationName = ' ' ;
+    _locationNameDetail =  ' ' ;
     _sliderValue = 0.4 ;
     _pressedButtonName = '식사' ;
     _numberOfPeople = 4 ;
+    _matchingInfo = MatchingInfo() ;
+
     step1 = AnimationController(vsync: this, duration: Duration(milliseconds: 200)) ;
     step2 = AnimationController(vsync: this, duration: Duration(milliseconds: 200)) ;
     step3 = AnimationController(vsync: this, duration: Duration(milliseconds: 200)) ;
@@ -91,10 +97,13 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
                 Text('기준 장소', textAlign: TextAlign.left, style: TextStyle(color: Colors.blue, fontSize: 10),),
                 Padding(padding: EdgeInsets.only(top: 3)),
                 StreamBuilder(
-                  stream: BlocProvider.of(context).mapBloc.simpleAddress,
+                  stream: BlocProvider.of(context).mapBloc.searchResponse,
                   builder: (context, snapshot){
+                    if(snapshot.hasData){
+                      _matchingInfo = snapshot.data ;
+                    }
                     return Text(
-                      snapshot.hasData ? snapshot.data : _simpleLocation,
+                      snapshot.hasData ? snapshot.data.locationName : _locationName,
                       textAlign: TextAlign.left, style: TextStyle(fontSize: 15)) ;
                   }
                 ),
@@ -103,7 +112,7 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
                     builder: (context, snapshot){
                       return snapshot.hasData ?
                         Text(
-                          snapshot.hasData ? snapshot.data : _detailLocation,
+                          snapshot.hasData ? snapshot.data : _locationNameDetail,
                           textAlign: TextAlign.left, style: TextStyle(color: Colors.grey, fontSize: 11))
                           : Container() ;
                     }
@@ -191,7 +200,7 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
         color: Colors.white,
         textColor: Colors.grey,
         child: Text(name),
-        onPressed: () => setState(() => _pressedButtonName = name),
+        onPressed: () => setState(() {_pressedButtonName = name;}),
       ) ;
   }
 
@@ -429,7 +438,7 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
       step3.forward() ;
       step4.reverse() ;
     }
-    else{
+    else if(_step == 5){
       animateContainer(2, true) ;
       animateContainer(3, true) ;
       animateContainer(4, true) ;
@@ -437,6 +446,19 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
       step2.forward() ;
       step3.forward() ;
       step4.forward() ;
+      _matchingInfo.purpose = _pressedButtonName ;
+      _matchingInfo.boundary = _sliderValue ;
+      _matchingInfo.number = _numberOfPeople ;
+    }
+    else{
+      print(_matchingInfo.location.toString()) ;
+      print(_matchingInfo.country) ;
+      print(_matchingInfo.locationName) ;
+      print(_matchingInfo.boundary) ;
+      print(_matchingInfo.purpose) ;
+      print(_matchingInfo.number) ;
+      FirestoreProvider().startMatching(_matchingInfo) ;
+      BlocProvider.of(context).bottomBarBloc.setMatchingStart(true) ;
     }
 
 
