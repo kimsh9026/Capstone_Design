@@ -55,6 +55,7 @@ flutter:
     - Images/LoginUI/
     - Images/logo image.png
     - Images/sample.png
+    - Images/gps_icon.jpg
     - Images/category_ui/
   fonts:
     - family: NotoSans

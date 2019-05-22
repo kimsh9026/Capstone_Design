@@ -147,6 +147,8 @@ class _BottomNavigationState extends State<BottomNavigation>
   }
 
   void animate(int index){
+    if(index == 4)
+      index = 1 ;
     _navigationViews[_currentIndex].controller.reverse();
     _currentIndex = index;
     _navigationViews[_currentIndex].controller.forward();

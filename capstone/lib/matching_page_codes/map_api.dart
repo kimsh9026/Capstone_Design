@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:capstone/bloc_codes/bloc_provider.dart';
+import 'package:capstone/matching_page_codes/matching_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -33,6 +34,8 @@ class MapApiState extends State<MapApi> {
   StreamSubscription<bool> _mapOffSubscription ;
   StreamSubscription<double> _radiusChangeSubscription;
   String _infoText ;
+  MatchingInfo _matchingInfo ;
+
   @override
   void initState() {
     super.initState();
@@ -51,8 +54,8 @@ class MapApiState extends State<MapApi> {
     _context = null ;
     _infoText = '검색 결과가 없습니다.' ;
     _markers.add(Marker(markerId: MarkerId('default'))) ;
+    _matchingInfo = MatchingInfo() ;
   }
-
 
   void _goToCenter(){
     _mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
@@ -114,7 +117,6 @@ class MapApiState extends State<MapApi> {
                     setState(() {
                       _placeList.add(f);
                     });
-
                   });
                 });
               }
@@ -149,7 +151,12 @@ class MapApiState extends State<MapApi> {
   }
 
   void _placeSelected(PlacesSearchResult result){
-    BlocProvider.of(_context).mapBloc.setSimpleAddress(result.name);
+    Geolocator().placemarkFromCoordinates(result.geometry.location.lat, result.geometry.location.lng)
+    .then((result) {
+      _matchingInfo.country = result[0].country ;
+    });
+    _matchingInfo.placesSearchResult = result ;
+    BlocProvider.of(_context).mapBloc.setSearchResponse(_matchingInfo);
     BlocProvider.of(_context).mapBloc.setDetailAddress(result.vicinity) ;
     _center = LatLng(result.geometry.location.lat, result.geometry.location.lng) ;
     _mapNavigate(_center.latitude, _center.longitude) ;
@@ -235,7 +242,12 @@ class MapApiState extends State<MapApi> {
     _currentLocation = await locateUser();
     _places.searchNearbyWithRadius(Location(_currentLocation.latitude, _currentLocation.longitude), 2500)
         .then((value){
-      BlocProvider.of(_context).mapBloc.setSimpleAddress(value.results[0].name);
+      Geolocator().placemarkFromCoordinates(value.results[0].geometry.location.lat, value.results[0].geometry.location.lng)
+          .then((result) {
+        _matchingInfo.country = result[0].country ;
+      });
+      _matchingInfo.placesSearchResult = value.results[0] ;
+      BlocProvider.of(_context).mapBloc.setSearchResponse(_matchingInfo);
       BlocProvider.of(_context).mapBloc.setDetailAddress(value.results[0].vicinity) ;
     });
     setState(() {
@@ -249,11 +261,6 @@ class MapApiState extends State<MapApi> {
             position: _center,
           )
       ) ;
-//      mapController.addMarker(
-//        MarkerOptions(
-//          position: _center,
-//        )
-//      ) ;
     });
   }
 
