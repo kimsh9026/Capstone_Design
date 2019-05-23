@@ -1,3 +1,4 @@
+import 'package:capstone/bloc_codes/MatchingBloc.dart';
 import 'package:capstone/bloc_codes/create_room_bloc.dart';
 import 'package:capstone/bloc_codes/map_bloc.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class BlocProvider extends InheritedWidget {
     expansionPanelBloc: ExpansionPanelBloc(),
     createRoomBloc : CreateRoomBloc(),
     mapBloc : MapBloc(),
+    matchingBloc : MatchingBloc(),
   );
 
   BlocProvider({Key key, Widget child}) : super(key: key, child: child);
@@ -34,6 +36,7 @@ class _BlocState {
   final ExpansionPanelBloc expansionPanelBloc;
   final CreateRoomBloc createRoomBloc ;
   final MapBloc mapBloc ;
+  final MatchingBloc matchingBloc ;
 
   _BlocState({
     this.authBloc,
@@ -42,5 +45,6 @@ class _BlocState {
     this.expansionPanelBloc,
     this.createRoomBloc,
     this.mapBloc,
+    this.matchingBloc,
   });
 }

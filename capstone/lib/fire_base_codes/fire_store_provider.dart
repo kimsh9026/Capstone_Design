@@ -1,4 +1,5 @@
 import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
+import 'package:capstone/main.dart';
 import 'package:capstone/matching_page_codes/matching_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' ;
 import 'package:capstone/feed_page_codes/room_info.dart';
@@ -41,6 +42,26 @@ class FirestoreProvider {
     }) ;
   }
 
+  void checkMatching() async {
+    if(FireAuthProvider.user != null){
+      QuerySnapshot result = await _firestore.collection('matchingInfo').where('uid', isEqualTo: FireAuthProvider.user.uid).getDocuments() ;
+      bool matching = result.documents.length == 0 ? false : true;
+      MyApp.isMatching = matching ;
+      print('checkmatchig : ${matching}') ;
+    }
+  }
+
+  Stream<QuerySnapshot> matchingStream(){
+    print('matching stream call') ;
+    if(FireAuthProvider.user != null){
+      print('matching stream!') ;
+      return _firestore.collection('matchingInfo')
+          .where('uid', isEqualTo:FireAuthProvider.user.uid)
+          .snapshots() ;
+    }
+
+  }
+
   Stream<QuerySnapshot> feedRoomList(RoomInfo roomInfo) {
 
     if(roomInfo == null || roomInfo.roomName == ''){
@@ -65,7 +86,6 @@ class FirestoreProvider {
           .orderBy('timestamp',descending: true)
           .limit(20)
           .snapshots() ;
-
   }
 
   Stream<DocumentSnapshot> getRoomSnapshot(RoomInfo roomInfo) {

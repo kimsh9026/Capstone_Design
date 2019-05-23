@@ -1,3 +1,5 @@
+import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
+import 'package:capstone/fire_base_codes/fire_store_provider.dart';
 import 'package:capstone/matching_page_codes/matching_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:capstone/bloc_codes/bloc_provider.dart';
@@ -20,10 +22,13 @@ class MyApp extends StatelessWidget {
   MatchingPage matchingPage = new MatchingPage() ;
   MyChatRoomPage chatRoomPage = new MyChatRoomPage() ;
   LogInPage logInPage = new LogInPage() ;
+  FireAuthProvider auth = new FireAuthProvider() ;
+  void _checkMatching(){
+    FirestoreProvider().checkMatching() ;
+  }
 
   @override
   Widget build(BuildContext context) {
-    print('Feed Page build') ;
     return MaterialApp(
       title: 'Trabuddy',
       theme: new ThemeData(
@@ -51,7 +56,7 @@ class MyApp extends StatelessWidget {
       home: new StreamBuilder(
         stream: BlocProvider.of(context).authBloc.isLoggedIn,
         builder: (context, authSnapshot){
-
+          _checkMatching() ;
           if(!authSnapshot.hasData) botNavBar.stateClear;
           return Scaffold(
             body: !authSnapshot.hasData ? logInPage :

@@ -11,7 +11,7 @@ class FireAuthProvider {
   );
 
   FirebaseAuth _fireAuth = FirebaseAuth.instance ;
-  static FirebaseUser _user ;
+  static FirebaseUser _user;
 
   FireAuthProvider() {
     if(_user == null){
@@ -26,6 +26,7 @@ class FireAuthProvider {
 
   void _getCurrentUser() async {
     _user = await _fireAuth.currentUser() ;
+    print('get user Info') ;
   }
   // error case to be solved: sometimes (may be when try log-in first time) google User is null.
   // temp solution : re-boot the emulator
