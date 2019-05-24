@@ -1,4 +1,5 @@
 import 'package:capstone/bloc_codes/bloc_provider.dart';
+import 'package:capstone/chat_room_codes/custom_drawer.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
 import 'package:capstone/chat_room_codes/users_Info_communicator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -72,8 +73,6 @@ class ChatRoom extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
-    print('build chat room') ;
-//    _userInfoCommunicator.context = context ;
     return StreamBuilder(
       stream: BlocProvider.of(context).roomBloc.getRoomSnapshot,
       builder: (context, snapshot){
@@ -81,9 +80,9 @@ class ChatRoom extends StatelessWidget{
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(45),
             child: AppBar(
-              actions: <Widget>[
-                IconButton(icon: Icon(Icons.menu)),
-              ],
+//              actions: <Widget>[
+//                IconButton(icon: Icon(Icons.menu), onPressed: () => CustomDrawer(_roomInfo),),
+//              ],
               elevation: 0.1,
               centerTitle: true,
               backgroundColor: Colors.white,
@@ -99,6 +98,7 @@ class ChatRoom extends StatelessWidget{
           ),
           backgroundColor: Colors.white,
           body: _chatRoomBody(context),
+          endDrawer: CustomDrawer(_roomInfo, context),
         );
       },
     ) ;
@@ -219,7 +219,6 @@ class _ChatBodyState extends State<ChatBody> {
 
   @override
   Widget build(BuildContext context) {
-    print('chat body buid') ;
     return StreamBuilder(
       stream: BlocProvider.of(context).roomBloc.didGetUserSnapshot,
       builder: (context, snapshot){
@@ -265,4 +264,11 @@ class _ChatBodyState extends State<ChatBody> {
     );
   }
 
+  @override
+  void dispose() {
+    _userInfoCommunicator.close() ;
+    super.dispose();
+  }
+
 }
+

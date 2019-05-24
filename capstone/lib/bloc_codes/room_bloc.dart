@@ -41,10 +41,11 @@ class RoomBloc extends Object{
   Function(RoomInfo) get setRoomEntering => _roomEntering.sink.add ;
   Function(bool) get setIsRoomFinding => _isRoomFinding.sink.add ;
   Function(BuildContext) get setIsRoomEntered => _isRoomEntered.sink.add ;
+  Function(bool) get setDidGetUserSnapshot => _didGetUserSnapshot.add ;
   Function(RoomInfo) get registerRoom => FirestoreProvider().registerRoom;
   Function(RoomInfo) get addUserInRoom => FirestoreProvider().addUserInRoom;
   Function(RoomInfo, String) get sendMessage => FirestoreProvider().sendMessage ;
-  Function(bool) get setDidGetUserSnapshot => _didGetUserSnapshot.add ;
+  Function(RoomInfo) get exitRoom => FirestoreProvider().exitRoom ;
 
   RoomBloc(){
 

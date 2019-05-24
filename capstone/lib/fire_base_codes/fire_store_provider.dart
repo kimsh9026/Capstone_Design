@@ -160,4 +160,48 @@ class FirestoreProvider {
         .snapshots() ;
   }
 
+  Future<void> exitRoom(RoomInfo roomInfo) async {
+
+    var doc = _firestore.collection('roomInfo').document(roomInfo.documentID);
+    bool delete;
+    await doc.get().then((DocumentSnapshot snapshot) async {
+      delete = await snapshot.data['users'].contains(FireAuthProvider.user.uid);
+    }) ;
+
+    if(delete == false)
+      return delete ;
+
+    final TransactionHandler handler = (Transaction tran) async {
+      await tran.get(doc).then((DocumentSnapshot snapshot) async {
+        if(snapshot.exists) {
+          if(snapshot.data['roomLeaderUID'] == FireAuthProvider.user.uid){
+            await tran.delete(doc) ;
+            print('uid same, room deleted') ;
+            delete = true ;
+          }
+          else if(snapshot.data['currentNumber'] > 1){
+            await tran.update(doc, { 'currentNumber' : snapshot.data['currentNumber'] - 1}).whenComplete((){});
+            print('add number') ;
+            delete = false ;
+          }
+          else {
+            print('room deleted') ;
+            delete = true ;
+            await tran.delete(doc) ;
+          }
+        }
+      }) ;
+    } ;
+    await _firestore.runTransaction(handler)
+        .whenComplete((){
+      if(!delete) {
+        _firestore.collection('roomInfo').document(roomInfo.documentID)
+            .updateData({
+          'users' : FieldValue.arrayRemove([FireAuthProvider.user.uid])
+        }).whenComplete((){}) ;
+      }
+    }) ;
+//    return result ;
+  }
+
 }

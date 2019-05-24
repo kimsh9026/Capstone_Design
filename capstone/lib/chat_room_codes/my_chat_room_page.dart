@@ -25,6 +25,7 @@ class MyChatRoomPage extends StatelessWidget {
                     bottom: 30.0,
                   ),
                 }) {
+              print('new') ;
               return ChatRoomCard(context, snapshot.data.documents[int]);
             },
           );

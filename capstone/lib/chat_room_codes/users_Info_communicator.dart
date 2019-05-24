@@ -1,8 +1,11 @@
 
+import 'dart:async';
+
 import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
 import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
 import 'package:capstone/fire_base_codes/fire_store_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
 class UsersInfoCommunicator {
@@ -14,14 +17,21 @@ class UsersInfoCommunicator {
   Map<String, String> _usersImageURL = Map<String, String>() ;
   final String _currentUserUID = FireAuthProvider.user.uid ;
   final String _currentUserDisplayName = FireAuthProvider.user.displayName ;
+  StreamSubscription<DocumentSnapshot> _subscription ;
 
   UsersInfoCommunicator(BuildContext context){
     _roomInfo = roomInfo ;
     _context = context ;
-    FirestoreProvider().getRoomSnapshot(_roomInfo).listen((data){
-      _roomInfo.setDocument(data) ;
-      _setUserInfo() ;
+    _subscription = FirestoreProvider().getRoomSnapshot(_roomInfo).listen((data){
+      if(data.exists){
+        _roomInfo.setDocument(data) ;
+        _setUserInfo() ;
+      }
     }) ;
+  }
+
+  void close(){
+    _subscription.cancel() ;
   }
 
   Future<void> _setUserInfo() {
@@ -33,7 +43,6 @@ class UsersInfoCommunicator {
       _usersDisplayName.putIfAbsent(uid, () => result.data['nickname']) ;
       _usersImageURL.putIfAbsent(uid, () => result.data['photoUrl']) ;
       if(_roomInfo.users.length == index){
-        print('User Info collecting ended') ;
         BlocProvider.of(_context).roomBloc.setDidGetUserSnapshot(true) ;
       }
       index++ ;

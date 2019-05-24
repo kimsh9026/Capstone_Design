@@ -96,6 +96,7 @@ class ChatRoomCardState extends State<ChatRoomCard> {
 
   @override
   Widget build(BuildContext context) {
+    _roomInfo.setDocument(widget.document) ;
     return new InkWell(
       onTap: () {
         BlocProvider.of(context).roomBloc.setRoomEntering(_roomInfo) ;
