@@ -102,10 +102,7 @@ class ChatRoom extends StatelessWidget{
         );
       },
     ) ;
-
-
   }
-
 }
 
 class ChatBody extends StatefulWidget {

@@ -20,6 +20,7 @@ class RoomBloc extends Object{
   final _feedRoomList = FirestoreProvider().feedRoomList;
   final _getRoomSnapshot = FirestoreProvider().getRoomSnapshot;
   final _didGetUserSnapshot = StreamController<bool>.broadcast() ;
+  final _didGetFriendsSnapshot = StreamController<bool>.broadcast() ;
 
   RoomInfo feedPageRoomInfo;
   RoomInfo chatRoomInfo;
@@ -35,13 +36,15 @@ class RoomBloc extends Object{
   Stream<QuerySnapshot> get chatRoomList => _chatRoomList() ;
   Stream<DocumentSnapshot> get getRoomSnapshot => _getRoomSnapshot(chatRoomInfo) ;
   Stream<bool> get didGetUserSnapshot => _didGetUserSnapshot.stream ;
+  Stream<bool> get didGetFriendsSnapshot => _didGetFriendsSnapshot.stream ;
 
   Function(int) get setRoomPressed => _roomPressed.sink.add ;
   Function(RoomInfo) get setRoomFinding => _roomFinding.sink.add ;
   Function(RoomInfo) get setRoomEntering => _roomEntering.sink.add ;
   Function(bool) get setIsRoomFinding => _isRoomFinding.sink.add ;
   Function(BuildContext) get setIsRoomEntered => _isRoomEntered.sink.add ;
-  Function(bool) get setDidGetUserSnapshot => _didGetUserSnapshot.add ;
+  Function(bool) get setDidGetUserSnapshot => _didGetUserSnapshot.sink.add ;
+  Function(bool) get setDidGetFriendsSnapshot => _didGetFriendsSnapshot.sink.add ;
   Function(RoomInfo) get registerRoom => FirestoreProvider().registerRoom;
   Function(RoomInfo) get addUserInRoom => FirestoreProvider().addUserInRoom;
   Function(RoomInfo, String) get sendMessage => FirestoreProvider().sendMessage ;
@@ -96,6 +99,8 @@ class RoomBloc extends Object{
     _isRoomFinding.close() ;
     _isRoomEntered.close() ;
     _didGetUserSnapshot.close() ;
+    _didGetFriendsSnapshot.close() ;
+
   }
 
 }

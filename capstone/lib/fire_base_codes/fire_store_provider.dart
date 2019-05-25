@@ -99,6 +99,10 @@ class FirestoreProvider {
         .document(uid).get() ;
   }
 
+  Stream<DocumentSnapshot> getUserStream(String uid){
+    return _firestore.collection('userInfo').document(uid).snapshots() ;
+  }
+
   Future<void> registerRoom(RoomInfo roomInfo) async {
     DateTime date = DateTime.now() ;
     return _firestore.collection('roomInfo').document().setData({
