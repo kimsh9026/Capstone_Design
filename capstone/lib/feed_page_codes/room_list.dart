@@ -32,25 +32,28 @@ class RoomList extends StatelessWidget {
         return StreamBuilder(
             stream: BlocProvider.of(context).roomBloc.roomList,
             builder: (context, snapshot) {
-              if(!snapshot.hasData) return const Text('Loading..') ;
-              return ListView.builder(
-                shrinkWrap: true,
-                padding: const EdgeInsets.only(
-                  top: 8.0,
-                  bottom: 8.0,
+              if(!snapshot.hasData) return const Text('') ;
+              return Container(
+                child: ListView.builder(
+//                  reverse: true,
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.only(
+                    top: 8.0,
+                    bottom: 8.0,
+                  ),
+                  itemCount: snapshot.data.documents.length,
+                  itemBuilder: (context, int,
+                      {
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.only(
+                          top: 30.0,
+                          bottom: 30.0,
+                        ),
+                      }) {
+                    return FeedRoomCard(context, snapshot.data.documents[int]);
+                  },
                 ),
-                itemCount: snapshot.data.documents.length,
-                itemBuilder: (context, int,
-                    {
-                      shrinkWrap: true,
-                      padding: const EdgeInsets.only(
-                        top: 30.0,
-                        bottom: 30.0,
-                      ),
-                    }) {
-                  return FeedRoomCard(context, snapshot.data.documents[int]);
-                },
-              );
+              ) ;
             }
         ) ;
       }

@@ -59,13 +59,10 @@ class FeedPage extends StatelessWidget {
           ExpansionBlock(),
           new Divider(color: Colors.black45, indent: 0.0, height: 0,),
           Expanded(
-            child: new Center(
-              child: roomList,
-            ),
+            child: roomList,
           ),
         ],
       ),
-
       floatingActionButton: FloatingActionButton(
         onPressed: (){
           Navigator.of(context).push(MaterialPageRoute(builder: (context){

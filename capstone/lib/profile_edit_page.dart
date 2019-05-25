@@ -70,8 +70,9 @@ class _ProfileEditPageState extends State<ProfileEditPage>{
                   elevation: 0.0,
                   actions:
                   <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.save_alt, color:Color.fromRGBO(61,174,218,1)),
+                    FlatButton(
+                      padding: EdgeInsets.only(left: 15),
+                      child: Text('완료', style:TextStyle(color:Color.fromRGBO(61,174,218,1))),
                       onPressed: () async {
                         await _update();
                         print("Updated");

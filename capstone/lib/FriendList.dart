@@ -1,4 +1,5 @@
 import 'package:capstone/bloc_codes/bloc_provider.dart';
+import 'package:capstone/chat_room_codes/profile_drawer.dart';
 import 'package:capstone/fire_base_codes/fire_store_provider.dart';
 import 'package:capstone/friend_info_communicator.dart';
 import 'package:capstone/friend_profile_page.dart';
@@ -52,9 +53,12 @@ class FriendListPageState extends State<FriendListPage>{
                 title: Text('프로필', textAlign : TextAlign.center, style : TextStyle(color: Color.fromRGBO(61, 174, 218, 1))),
                 centerTitle: true,
                 elevation: 0.0,
-
+                iconTheme: IconThemeData(
+                  color: Color.fromRGBO(47, 146, 217, 0.9),
+                ),
               ),
               body: _friendBody(context),
+            endDrawer: ProfileDrawer(context),
           );
         }
       },
