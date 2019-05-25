@@ -1,10 +1,18 @@
 import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
+import 'package:capstone/matching_page_codes/room_add_map_api.dart' ;
 import 'package:flutter/material.dart';
 import 'package:capstone/custom_widgets/custom_datetime_form_field.dart';
 import 'package:capstone/feed_page_codes/feed_room_card.dart';
 import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
+import 'package:google_maps_webservice/places.dart';
 import 'package:numberpicker/numberpicker.dart';
+
+enum DismissDialogAction {
+  cancel,
+  discard,
+  save,
+}
 
 class RoomList extends StatelessWidget {
 
@@ -12,6 +20,10 @@ class RoomList extends StatelessWidget {
   RoomInfo roomInfo = RoomInfo();
   int _purposeIndex = 1 ;
   int _numberOfMembers = 3 ;
+  String country ;
+  String vicinity ;
+  String locationName ;
+  Location location ;
 
   Widget _buildList(context) {
     return StreamBuilder(
@@ -332,6 +344,57 @@ class RoomList extends StatelessWidget {
     ) ;
   }
 
+  Widget _createRoomMapContainer(context){
+    return Container(
+      height: 200,
+      child: Column(
+        children: <Widget>[
+          Expanded(
+              flex: 2,
+              child: Row(
+                children:
+                <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                        padding: EdgeInsets.only(top: 2),
+                        alignment: Alignment.center,
+                        child: Text(
+                          '위치',
+                          style: Theme.of(context).textTheme.body1,
+                          textAlign: TextAlign.center,
+                        )
+                    ),
+                  ),
+                  Expanded(
+                    flex: 5,
+                    child: StreamBuilder(
+                      stream: BlocProvider.of(context).mapBloc.location,
+                      builder: (context, snapshot){
+                        if(!snapshot.hasData){
+                          return Text('위치 정보를 가져오는 중입니다.', style: TextStyle(color: Colors.grey), overflow: TextOverflow.fade,) ;
+                        }
+                        else{
+                          country = snapshot.data['country'] ;
+                          vicinity = snapshot.data['vicinity'] ;
+                          locationName = snapshot.data['name'] ;
+                          location = Location(snapshot.data['center'].latitude, snapshot.data['center'].longitude);
+                          return Text(snapshot.data['name']) ;
+                        }
+                      }
+                    ),
+                  ),
+                ],
+              )
+          ),
+          Expanded(
+            flex: 7,
+            child: RoomAddMapApi(),
+          )
+        ],
+      ),
+    ) ;
+  }
 
   Widget _createRoomBody(BuildContext context){
     roomInfo.clear() ;
@@ -358,6 +421,10 @@ class RoomList extends StatelessWidget {
                   padding: EdgeInsets.only(top:5),
                 ),
                 _createNumberOfMembersContainer(context),
+                Padding(
+                  padding: EdgeInsets.only(top:5),
+                ),
+                _createRoomMapContainer(context),
               ],
             )
         )
@@ -373,6 +440,10 @@ class RoomList extends StatelessWidget {
       roomInfo.roomPurpose = _purposeIndex == 1 ? '동행' :
       (_purposeIndex == 2 ? '식사' : (_purposeIndex == 3 ? '숙소' : '교통')) ;
       roomInfo.roomLeaderUID = FireAuthProvider.user.uid ;
+      roomInfo.meetingLocation = locationName ;
+      roomInfo.country = country ;
+      roomInfo.location = location ;
+      roomInfo.vicinity = vicinity ;
       BlocProvider.of(context).roomBloc.registerRoom(roomInfo);
       Navigator.pop(context) ;
       BlocProvider.of(context).roomBloc.setRoomEntering(roomInfo) ;

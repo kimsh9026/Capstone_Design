@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_maps_webservice/places.dart';
 
 class RoomInfo {
 
@@ -15,6 +16,22 @@ class RoomInfo {
   String _contents = '' ;
   String _documentID = '' ;
   List<String> _users = List<String>();
+  String _country = '' ;
+  String _vicinity = '' ;
+
+  String get vicinity => _vicinity;
+
+  set vicinity(String value) {
+    _vicinity = value;
+  }
+
+  String get country => _country;
+
+  set country(String value) {
+    _country = value;
+  }
+
+  Location _location = Location(0, 0);
 
   void clear(){
     _roomName = '' ;
@@ -29,6 +46,9 @@ class RoomInfo {
     _roomCreatedTime = DateTime(0,0,0,0,0,0,0) ;
     _documentID = '' ;
     _users = List<String>() ;
+    _country = '' ;
+    _location = Location(0,0) ;
+    _vicinity = '' ;
   }
 
   void setDocument(DocumentSnapshot document){
@@ -46,6 +66,8 @@ class RoomInfo {
     _roomCreatedTime = document['roomCreatedTime'].toDate() ;
     _documentID = document.documentID ;
     _users = List.from(document['users']) ;
+    _country = document['country'] ;
+    _location = Location(document['location'].latitude, document['location'].longitude);
   }
 
   List<String> get users => _users;
@@ -126,5 +148,11 @@ class RoomInfo {
 
   set roomCreatedTime(DateTime value) {
     _roomCreatedTime = value;
+  }
+
+  Location get location => _location;
+
+  set location(Location value) {
+    _location = value;
   }
 }
