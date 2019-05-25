@@ -162,6 +162,37 @@ class FirestoreProvider {
         .snapshots() ;
   }
 
+  Future<void> exitMatching() async {
+    DocumentReference doc ;
+    await _firestore.collection('matchingInfo').where('uid', isEqualTo: FireAuthProvider.user.uid)
+      .getDocuments().then((value){
+        print('hi') ;
+        if(value.documents.length != 0){
+          doc = value.documents[0].reference ;
+          print('hello') ;
+        }
+    });
+    if(doc == null){
+      print('null') ;
+      return ;
+    }
+
+    final TransactionHandler handler = (Transaction tran) async {
+      await tran.get(doc).then((DocumentSnapshot snapshot) async {
+        print('ss') ;
+        if(snapshot.exists) {
+          print('get') ;
+          await tran.delete(doc) ;
+        }
+        else{
+          print('no') ;
+//          return ;
+        }
+      }) ;
+    } ;
+    await _firestore.runTransaction(handler) ;
+  }
+
   Future<void> exitRoom(RoomInfo roomInfo) async {
 
     var doc = _firestore.collection('roomInfo').document(roomInfo.documentID);

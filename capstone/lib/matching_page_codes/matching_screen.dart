@@ -41,17 +41,27 @@ class MatchingScreenState extends State<MatchingScreen> {
             child: Column(
               children: <Widget>[
                 Expanded(
-                  flex: 3,
+                  flex: 4,
                   child: Container(
                     alignment: Alignment.bottomCenter,
                     child: Text('매칭중입니다', style: Theme.of(context).textTheme.title,),
                   ),
                 ),
                 Expanded(
-                    flex: 8,
-                    child:  Center(
+                    flex: 6,
+                    child:  Container(
+                      alignment: Alignment.bottomCenter,
                       child: ColorLoader3(radius: 60, dotRadius: 15,) ,
                     )
+                ),
+                Expanded(
+                  flex: 3,
+                  child: FlatButton(
+                    onPressed: (){
+                      FirestoreProvider().exitMatching() ;
+                    },
+                    child: Text('매칭 취소', style: TextStyle(color: Color.fromRGBO(47, 146, 217, 0.9)),),
+                  )
                 )
               ],
             )
