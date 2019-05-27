@@ -67,7 +67,8 @@ class RoomInfo {
     _documentID = document.documentID ;
     _users = List.from(document['users']) ;
     _country = document['country'] ;
-//    _location = Location(document['location'].latitude, document['location'].longitude);
+    _vicinity = document['vicinity'] ;
+    _location = Location(document['location'].latitude, document['location'].longitude);
   }
 
   List<String> get users => _users;

@@ -1,8 +1,10 @@
 import 'package:capstone/bloc_codes/bloc_provider.dart';
+import 'package:capstone/chat_room_codes/chat_room_map_api.dart';
 import 'package:capstone/chat_room_codes/users_Info_communicator.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
 import 'package:capstone/fire_base_codes/fire_store_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class CustomDrawer extends StatefulWidget{
   RoomInfo _roomInfo ;
@@ -207,6 +209,14 @@ class CustomDrawerState extends State<CustomDrawer> with TickerProviderStateMixi
                                ListTile(
                                  title: Text('장소',style: TextStyle(fontSize: 12, color: Colors.grey),),
                                  subtitle: Text(_roomInfo.meetingLocation, style: TextStyle(fontSize: 15, color: Colors.black),),
+                               ),
+                               ListTile(
+                                 title: Text('주소',style: TextStyle(fontSize: 12, color: Colors.grey),),
+                                 subtitle: Text(_roomInfo.vicinity, style: TextStyle(fontSize: 15, color: Colors.black),),
+                               ),
+                               Container(
+                                 height: 100,
+                                 child : ChatRoomMapApi(LatLng(_roomInfo.location.lat, _roomInfo.location.lng)),
                                ),
                                ListTile(
                                  title: Text('목적',style: TextStyle(fontSize: 12, color: Colors.grey),),
