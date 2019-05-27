@@ -36,12 +36,13 @@ class FireAuthProvider {
     final GoogleSignInAuthentication googleAuth =
     await googleUser.authentication;
     print('GoogleSignInAuthentication : ${googleAuth.toString()}') ;
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
+    final AuthCredential credential = await GoogleAuthProvider.getCredential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
     final FirebaseUser user = await _fireAuth.signInWithCredential(credential);
-
+    print(user.uid) ;
+    _user = user ;
     //if there is no info about current user in our fire base, add it.
     final QuerySnapshot result =
     await Firestore.instance.collection('userInfo').where('id', isEqualTo: user.uid).getDocuments();
@@ -51,6 +52,7 @@ class FireAuthProvider {
       Firestore.instance.collection('userInfo').document(user.uid).setData(
           {'nickname': user.displayName, 'photoUrl': user.photoUrl, 'id': user.uid, 'email': user.email});
     }
+    print(user.uid) ;
     _user = user ;
   }
 

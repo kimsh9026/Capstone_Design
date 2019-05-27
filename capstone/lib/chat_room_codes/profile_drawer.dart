@@ -1,6 +1,7 @@
 import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/chat_room_codes/users_Info_communicator.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
+import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
 import 'package:capstone/fire_base_codes/fire_store_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
@@ -58,7 +59,8 @@ class ProfileDrawerState extends State<ProfileDrawer> with TickerProviderStateMi
                             Buttons.Google,
                             text: '로그아웃',
                             onPressed: () {
-
+                              Navigator.of(context).pop() ;
+                              FireAuthProvider().signOut() ;
                             },
                           ),
                         ),

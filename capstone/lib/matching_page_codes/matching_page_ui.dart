@@ -103,7 +103,7 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
                       _matchingInfo = snapshot.data ;
                     }
                     return Text(
-                      snapshot.hasData ? snapshot.data.locationName : _locationName,
+                      snapshot.hasData ? snapshot.data.locationName : '현재 위치를 불러오는 중 입니다.',
                       textAlign: TextAlign.left, style: TextStyle(fontSize: 15)) ;
                   }
                 ),

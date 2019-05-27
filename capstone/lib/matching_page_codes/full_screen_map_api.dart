@@ -12,8 +12,9 @@ GoogleMapsPlaces _places = GoogleMapsPlaces(apiKey: kGoogleApiKey);
 class FullScreenMapApi extends StatefulWidget{
   Set<Marker> _markers = Set<Marker>() ;
   LatLng _center = LatLng(0,0) ;
+  PlacesSearchResult _placeMark ;
 
-  FullScreenMapApi(this._markers, this._center) ;
+  FullScreenMapApi(this._markers, this._center, this._placeMark) ;
 
   @override
   State<FullScreenMapApi> createState() => FullScreenMapApiState();
@@ -44,6 +45,11 @@ class FullScreenMapApiState extends State<FullScreenMapApi>{
     _cameraZoom = 16 ;
     _info = Map<String, dynamic>() ;
     _textEditingController = TextEditingController() ;
+    _info['marker'] = _markers ;
+    _info['center'] = _center ;
+    _info['country'] = _country ;
+    _info['vicinity'] = widget._placeMark.vicinity;
+    _info['name'] = widget._placeMark.name ;
   }
 
   void _onMapCreated(controller){
