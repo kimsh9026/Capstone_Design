@@ -1,3 +1,4 @@
+import 'package:capstone/feed_page_codes/feed_page_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:capstone/feed_page_codes/room_list.dart';
 import 'package:capstone/custom_widgets/custom_expansion_panel.dart';
@@ -38,7 +39,11 @@ class FeedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(215, 238, 247, 0.9),
+      drawer: FeedPageDrawer(),
       appBar: AppBar(
+          iconTheme: IconThemeData(
+            color: Color.fromRGBO(47, 146, 217, 0.9),
+          ),
           toolbarOpacity: 1,
           elevation: 0.1,
           bottomOpacity: 1,
@@ -49,9 +54,6 @@ class FeedPage extends StatelessWidget {
           ),
           centerTitle: true,
           backgroundColor: Colors.white,
-          actions: <Widget>[
-            // might need profile check or something actions...
-          ]
       ),
       body: Column(
         children: <Widget>[
