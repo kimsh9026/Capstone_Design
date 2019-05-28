@@ -3,6 +3,7 @@ import 'package:capstone/chat_room_codes/chat_room_map_api.dart';
 import 'package:capstone/chat_room_codes/users_Info_communicator.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
 import 'package:capstone/fire_base_codes/fire_store_provider.dart';
+import 'package:capstone/friend_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -32,8 +33,10 @@ class CustomDrawerState extends State<CustomDrawer> with TickerProviderStateMixi
   RoomInfo _roomInfo ;
   List<Widget> _image ;
   List<String> _names ;
+  List<String> _uids ;
   Widget _leaderImage ;
   String _leaderName ;
+  String _leaderUID ;
   AnimationController _controller ;
   Animation<double> _drawerContentsOpacity;
   Animation<Offset> _drawerDetailsPosition;
@@ -46,6 +49,7 @@ class CustomDrawerState extends State<CustomDrawer> with TickerProviderStateMixi
     _userInfoCommunicator = UsersInfoCommunicator(widget._context) ;
     _image = List<Widget>() ;
     _names = List<String>() ;
+    _uids = List<String>() ;
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 200),
@@ -67,6 +71,7 @@ class CustomDrawerState extends State<CustomDrawer> with TickerProviderStateMixi
   void _getUsers(){
     _image.clear() ;
     _names.clear() ;
+    _uids.clear() ;
     _userInfoCommunicator.usersImageURL.forEach((key, value) {
       if (key != _roomInfo.roomLeaderUID) {
         _image.add(Image.network(value));
@@ -82,6 +87,14 @@ class CustomDrawerState extends State<CustomDrawer> with TickerProviderStateMixi
         else{
           _leaderName = value ;
         }
+    }) ;
+    _userInfoCommunicator.usersUID.forEach((key, value){
+      if (key != _roomInfo.roomLeaderUID) {
+        _uids.add(value);
+      }
+      else{
+        _leaderUID = value ;
+      }
     }) ;
   }
 
@@ -99,7 +112,20 @@ class CustomDrawerState extends State<CustomDrawer> with TickerProviderStateMixi
           Icon(Icons.grade,color: Colors.deepOrange,)
         ],
       ) : Text(_names.elementAt(userNumber)),
-//      Todo : onTap:
+      onTap: (){
+        if(userNumber == _roomInfo.currentNumber){
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => FriendProfilePage(_leaderUID)),
+          );
+        }
+        else{
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => FriendProfilePage(_uids.elementAt(userNumber))),
+          );
+        }
+      },
     );
   }
 
@@ -132,7 +158,6 @@ class CustomDrawerState extends State<CustomDrawer> with TickerProviderStateMixi
   @override
   Widget build(BuildContext context) {
     _thisContext = context ;
-    print(_roomInfo.roomLeaderUID) ;
     return StreamBuilder(
       stream: BlocProvider.of(context).roomBloc.didGetUserSnapshot,
       builder: (context, snapshot){

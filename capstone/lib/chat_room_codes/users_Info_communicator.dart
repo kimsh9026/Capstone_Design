@@ -15,6 +15,8 @@ class UsersInfoCommunicator {
   BuildContext _context ;
   Map<String, String> _usersDisplayName = Map<String, String>() ;
   Map<String, String> _usersImageURL = Map<String, String>() ;
+  Map<String, String> _usersUID = Map<String, String>() ;
+
   final String _currentUserUID = FireAuthProvider.user.uid ;
   final String _currentUserDisplayName = FireAuthProvider.user.displayName ;
   StreamSubscription<DocumentSnapshot> _subscription ;
@@ -42,11 +44,18 @@ class UsersInfoCommunicator {
       var result = await FirestoreProvider().getUserSnapshot(uid);
       _usersDisplayName.putIfAbsent(uid, () => result.data['nickname']) ;
       _usersImageURL.putIfAbsent(uid, () => result.data['photoUrl']) ;
+      _usersUID.putIfAbsent(uid, () => uid) ;
       if(_roomInfo.users.length == index){
         BlocProvider.of(_context).roomBloc.setDidGetUserSnapshot(true) ;
       }
       index++ ;
     });
+  }
+
+  Map<String, String> get usersUID => _usersUID;
+
+  set usersUID(Map<String, String> value) {
+    _usersUID = value;
   }
 
   Map<String, String> get usersDisplayName => _usersDisplayName;

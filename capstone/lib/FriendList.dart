@@ -37,12 +37,16 @@ class FriendListPageState extends State<FriendListPage>{
       builder: (context, snapshot){
         if(!snapshot.hasData){
           return Scaffold(
-              appBar: AppBar(
+              appBar:AppBar(
                 backgroundColor: Colors.white,
                 title: Text('프로필', textAlign : TextAlign.center, style : TextStyle(color: Color.fromRGBO(61, 174, 218, 1))),
                 centerTitle: true,
                 elevation: 0.0,
+                iconTheme: IconThemeData(
+                  color: Color.fromRGBO(47, 146, 217, 0.9),
+                ),
               ),
+              endDrawer: ProfileDrawer(context),
               body: Container(
                   color: Colors.white,
                   child: Column(
@@ -71,49 +75,53 @@ class FriendListPageState extends State<FriendListPage>{
                 title: Text('프로필', textAlign : TextAlign.center, style : TextStyle(color: Color.fromRGBO(61, 174, 218, 1))),
                 centerTitle: true,
                 elevation: 0.0,
-              ),
-            body: Container(
-                color: Colors.white,
-                child: Column(
-                  children: <Widget>[
-                    Divider(
-                      height: 2,
-                      color: Colors.grey,
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: _myTile(context),
-                    ),
-                    Divider(
-                      height: 22,
-                      color: Colors.grey,
-                    ),
-                    Text('친구'),
-                    Expanded(
-                        flex: 8,
-                        child: Center(
-                          child: Text(
-                              '동행할 친구를 찾아보세요!'
-                          ),
-                        )
-                    ),
-                  ],
-                )
-            )
-          ) ;
-        }
-        else{
-          return Scaffold(
-              appBar: AppBar(
-                backgroundColor: Colors.white,
-                title: Text('프로필', textAlign : TextAlign.center, style : TextStyle(color: Color.fromRGBO(61, 174, 218, 1))),
-                centerTitle: true,
-                elevation: 0.0,
                 iconTheme: IconThemeData(
                   color: Color.fromRGBO(47, 146, 217, 0.9),
                 ),
               ),
-              body: _friendBody(context),
+              endDrawer: ProfileDrawer(context),
+              body: Container(
+                  color: Colors.white,
+                  child: Column(
+                    children: <Widget>[
+                      Divider(
+                        height: 2,
+                        color: Colors.grey,
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: _myTile(context),
+                      ),
+                      Divider(
+                        height: 22,
+                        color: Colors.grey,
+                      ),
+                      Text('친구'),
+                      Expanded(
+                          flex: 8,
+                          child: Center(
+                            child: Text(
+                                '동행할 친구를 찾아보세요!'
+                            ),
+                          )
+                      ),
+                    ],
+                  )
+              )
+          ) ;
+        }
+        else{
+          return Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              title: Text('프로필', textAlign : TextAlign.center, style : TextStyle(color: Color.fromRGBO(61, 174, 218, 1))),
+              centerTitle: true,
+              elevation: 0.0,
+              iconTheme: IconThemeData(
+                color: Color.fromRGBO(47, 146, 217, 0.9),
+              ),
+            ),
+            body: _friendBody(context),
             endDrawer: ProfileDrawer(context),
           );
         }

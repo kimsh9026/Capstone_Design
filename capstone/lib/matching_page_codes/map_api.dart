@@ -169,7 +169,7 @@ class MapApiState extends State<MapApi> {
   Widget _searchBar(){
     return TextField(
         decoration: InputDecoration(
-            hintText: 'Enter Address',
+            hintText: '주소를 입력해주세요',
             border: InputBorder.none,
             contentPadding: EdgeInsets.only(left: 15.0, top: 15.0),
             suffixIcon: IconButton(

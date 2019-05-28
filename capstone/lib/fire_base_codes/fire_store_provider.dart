@@ -118,6 +118,13 @@ class FirestoreProvider {
     }) ;
   }
 
+  Future<void> addFriend(String uid){
+    return _firestore.collection('userInfo').document(FireAuthProvider.user.uid)
+        .updateData({
+      'friend' : FieldValue.arrayUnion([uid])
+    }).whenComplete((){}) ;
+  }
+
   Future<void> eraseFriend(String uid){
     return _firestore.collection('userInfo').document(FireAuthProvider.user.uid)
         .updateData({

@@ -47,35 +47,41 @@ class ProfileDrawerState extends State<ProfileDrawer> with TickerProviderStateMi
                   child: header
               ),
               Expanded(
-                  flex: 10,
+                  flex: 6,
                   child: MediaQuery.removePadding(
                     context: context,
                     removeTop: true,
-                    child: Column(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: SignInButton(
-                            Buttons.Google,
-                            text: '로그아웃',
-                            onPressed: () {
-                              Navigator.of(context).pop() ;
-                              FireAuthProvider().signOut() ;
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          flex: 10,
-                          child: Container(),
-                        )
-                      ],
-                    )
+                    child: Container(),
                   )
+              ),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: Divider(),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: SignInButton(
+                        Buttons.Google,
+                        text: '로그아웃',
+                        onPressed: () {
+                          Navigator.of(context).pop() ;
+                          FireAuthProvider().signOut() ;
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(8),
+                    )
+                  ],
+                )
               ),
             ],
           ) ;
           return Drawer(
-
             child: items,
           ) ;
         }

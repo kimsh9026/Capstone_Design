@@ -23,10 +23,18 @@ class FriendInfoCommunicator {
     friendsStatus = Map<String, String>()  ;
     _subscription = FirestoreProvider().getCurrentUserInfo().listen((data){
       if(data.exists){
-        friendsUID = List.from(data.data['friend']) ;
-        getFriendsInfo(context) ;
-        if(friendsUID.length == 0)
+        if(data.data.containsKey('friend')){
+          friendsUID = List.from(data.data['friend']) ;
+          getFriendsInfo(context) ;
+          if(friendsUID.length == 0)
+            BlocProvider.of(context).roomBloc.setDidGetFriendsSnapshot(false) ;
+        }
+        else{
+          friendsDisplayName.clear() ;
+          friendsImageURL.clear() ;
+          friendsStatus.clear() ;
           BlocProvider.of(context).roomBloc.setDidGetFriendsSnapshot(false) ;
+        }
       }
       else{
         friendsDisplayName.clear() ;

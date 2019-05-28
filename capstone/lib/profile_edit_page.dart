@@ -1,10 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:capstone/fire_base_codes/fire_store_provider.dart';
 import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
-import 'package:capstone/chat_room_codes/users_Info_communicator.dart';
-import 'package:capstone/profile_edit_page.dart';
-import 'package:capstone/USER.dart';
+//import 'package:image_picker_modern/image_picker_modern.dart';
 
 class ProfileEditPage extends StatefulWidget {
 
@@ -22,6 +22,7 @@ class _ProfileEditPageState extends State<ProfileEditPage>{
   TextEditingController languageController;
   TextEditingController contactController;
   TextEditingController aboutMeController;
+  File _galleryFile ;
 
   void initialize(){
     nameController = TextEditingController();
@@ -42,6 +43,13 @@ class _ProfileEditPageState extends State<ProfileEditPage>{
       'intro': aboutMeController.text,
     });
   }
+
+  void _choosePhoto() async {
+//    _galleryFile = await ImagePicker.pickImage(
+//        source: ImageSource.gallery,
+//    ) ;
+  }
+
 
   @override
   Widget build(BuildContext context){
@@ -156,7 +164,7 @@ class _ProfileEditPageState extends State<ProfileEditPage>{
                                               child: IconButton(
                                                 icon:Icon(Icons.add),
                                                 color: Colors.white,
-                                                  onPressed: ()=> print('hello!')
+                                                  onPressed: _choosePhoto,
                                               )
                                           ),
                                         ),
@@ -182,7 +190,10 @@ class _ProfileEditPageState extends State<ProfileEditPage>{
                                     child: TextField(
                                       decoration: InputDecoration.collapsed(
                                           border:InputBorder.none,
-                                          //hintText: snapshot.data['nickname'],
+                                          hintText: statusController.text == '' ? '상태메세지를 입력하세요' : '',
+                                          hintStyle: TextStyle(
+                                            color: Colors.grey,
+                                          )
                                           //fillColor: Color.fromRGBO(246, 246, 256, 1)
                                       ),
                                       controller : statusController,

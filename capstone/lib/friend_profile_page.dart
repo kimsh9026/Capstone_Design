@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:capstone/bloc_codes/bloc_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:capstone/fire_base_codes/fire_store_provider.dart';
 
@@ -18,11 +21,56 @@ class FriendProfilePage extends StatefulWidget {
 class _FriendProfilePageState extends State<FriendProfilePage>{
 
   String _uid ;
+  bool isFriend = false ;
+  StreamSubscription<DocumentSnapshot> _subscription ;
 
   @override
   void initState() {
     super.initState();
     _uid = widget.uid ;
+    _subscription = FirestoreProvider().getCurrentUserInfo().listen((snapshot){
+      if(snapshot.data.containsKey('friend')){
+        if(isFriend != snapshot.data['friend'].contains(_uid)){
+          setState(() {
+            isFriend = !isFriend ;
+          });
+        }
+      }
+      else{
+        isFriend = false ;
+      }
+    }) ;
+  }
+
+  @override
+  void dispose() {
+    _subscription.cancel() ;
+    super.dispose();
+  }
+
+  void addFriend(BuildContext context){
+    showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return AlertDialog(
+              content: Text(
+                '친구로 추가하시겠습니까?',
+              ),
+              actions: <Widget>[
+                FlatButton(
+                    child: const Text('추가', style: TextStyle(color: Colors.blue),),
+                    onPressed: () { Navigator.pop(context, 'agree'); }
+                )
+              ]
+          ) ;
+        }
+    )
+        .then((value){
+      if(value != null){
+        FirestoreProvider().addFriend(_uid) ;
+        Navigator.pop(context) ;
+      }
+    });
   }
 
   void eraseFriend(BuildContext context){
@@ -45,7 +93,7 @@ class _FriendProfilePageState extends State<FriendProfilePage>{
         .then((value){
       if(value != null){
         FirestoreProvider().eraseFriend(_uid) ;
-        Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName)) ;
+        Navigator.pop(context) ;
       }
     });
   }
@@ -71,6 +119,7 @@ class _FriendProfilePageState extends State<FriendProfilePage>{
                   centerTitle: true,
                   elevation: 0.0,
                   actions: <Widget>[
+                    isFriend ?
                     IconButton(
                       icon:Icon(
                         Icons.delete_forever,
@@ -79,7 +128,16 @@ class _FriendProfilePageState extends State<FriendProfilePage>{
                       onPressed: (){
                         eraseFriend(context) ;
                       },
-                    ),
+                    ) : IconButton(
+                      icon:Icon(
+                        Icons.person_add,
+                        color: Color.fromRGBO(47, 146, 217, 0.9),
+                      ),
+                      onPressed: (){
+                        addFriend(context) ;
+                      },
+                    )
+                    ,
                   ],
                 ),
                 body: Column(
