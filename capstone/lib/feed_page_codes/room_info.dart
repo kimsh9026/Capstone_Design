@@ -53,7 +53,6 @@ class RoomInfo {
 
   void setDocument(DocumentSnapshot document){
     DateTime date = document['meetingDateTime'].toDate() ;
-    print('here is room Info, setDocument') ;
     _roomName = document['roomName'] ;
     _roomLeaderUID = document['roomLeaderUID'] ;
     _meetingDate = DateTime(date.year,date.month,date.day,0,0,0,0);

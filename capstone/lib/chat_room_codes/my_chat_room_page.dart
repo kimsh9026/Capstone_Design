@@ -8,7 +8,7 @@ class MyChatRoomPage extends StatelessWidget {
     return StreamBuilder(
         stream: BlocProvider.of(context).roomBloc.chatRoomList,
         builder: (context, snapshot) {
-          if(!snapshot.hasData) return const Text('Loading..') ;
+          if(!snapshot.hasData) return const Text('') ;
           else if(snapshot.data.documents.length == 0) return const Center(child: Text('참여중인 방이 없습니다!')) ;
           return ListView.builder(
             shrinkWrap: true,
@@ -25,7 +25,6 @@ class MyChatRoomPage extends StatelessWidget {
                     bottom: 30.0,
                   ),
                 }) {
-              print('new') ;
               return ChatRoomCard(context, snapshot.data.documents[int]);
             },
           );

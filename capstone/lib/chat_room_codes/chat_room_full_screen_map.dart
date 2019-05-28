@@ -72,12 +72,19 @@ class ChatRoomFullScreenMapState extends State<ChatRoomFullScreenMap> {
               zoom: _cameraZoom,
             ),
           ),
-          RaisedButton(
-
-            color: Colors.white,
-            child: Icon(Icons.location_on, color: Colors.grey,),
-            onPressed: _goToMeetingLocation,
-          )
+          Container(
+            margin: EdgeInsets.all(12),
+            width: 70,
+            height: 40,
+            alignment: Alignment.topLeft,
+            child: RaisedButton(
+              elevation: 1,
+              color: Color.fromRGBO(255, 255, 255, 0.9),
+              child: Icon(Icons.location_on, color: Colors.black54,),
+              onPressed: _goToMeetingLocation,
+              highlightColor: Colors.grey,
+            ),
+          ),
         ],
       )
     ) ;

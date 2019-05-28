@@ -39,6 +39,7 @@ class FirestoreProvider {
       'roomPurpose' : info.purpose,
       'totalNumber' : info.number,
       'startTime' : Timestamp.now(),
+      'vicinity' : info.placesSearchResult.vicinity,
     }) ;
   }
 
@@ -47,14 +48,11 @@ class FirestoreProvider {
       QuerySnapshot result = await _firestore.collection('matchingInfo').where('uid', isEqualTo: FireAuthProvider.user.uid).getDocuments() ;
       bool matching = result.documents.length == 0 ? false : true;
       MyApp.isMatching = matching ;
-      print('checkmatchig : ${matching}') ;
     }
   }
 
   Stream<QuerySnapshot> matchingStream(){
-    print('matching stream call') ;
     if(FireAuthProvider.user != null){
-      print('matching stream!') ;
       return _firestore.collection('matchingInfo')
           .where('uid', isEqualTo:FireAuthProvider.user.uid)
           .snapshots() ;
@@ -65,11 +63,9 @@ class FirestoreProvider {
   Stream<QuerySnapshot> feedRoomList(RoomInfo roomInfo) {
 
     if(roomInfo == null || roomInfo.roomName == ''){
-      print('here is firestore, room list, FindingRoomName is null') ;
       return _firestore.collection('roomInfo').snapshots() ;
     }
     else{
-      print('here is firestore, room list, FindingRoomName is ${roomInfo.roomName}') ;
       return _firestore.collection('roomInfo').where('roomName', isEqualTo: roomInfo.roomName).getDocuments().asStream() ;
     }
   }
@@ -138,7 +134,6 @@ class FirestoreProvider {
         if(snapshot.exists) {
           if(snapshot.data['currentNumber'] < snapshot.data['totalNumber']){
             await tran.update(doc, { 'currentNumber' : snapshot.data['currentNumber'] + 1}).whenComplete((){});
-            print('number added') ;
             result = true ;
           }
           else {
@@ -170,26 +165,20 @@ class FirestoreProvider {
     DocumentReference doc ;
     await _firestore.collection('matchingInfo').where('uid', isEqualTo: FireAuthProvider.user.uid)
       .getDocuments().then((value){
-        print('hi') ;
         if(value.documents.length != 0){
           doc = value.documents[0].reference ;
-          print('hello') ;
         }
     });
     if(doc == null){
-      print('null') ;
       return ;
     }
 
     final TransactionHandler handler = (Transaction tran) async {
       await tran.get(doc).then((DocumentSnapshot snapshot) async {
-        print('ss') ;
         if(snapshot.exists) {
-          print('get') ;
           await tran.delete(doc) ;
         }
         else{
-          print('no') ;
 //          return ;
         }
       }) ;
@@ -213,16 +202,13 @@ class FirestoreProvider {
         if(snapshot.exists) {
           if(snapshot.data['roomLeaderUID'] == FireAuthProvider.user.uid){
             await tran.delete(doc) ;
-            print('uid same, room deleted') ;
             delete = true ;
           }
           else if(snapshot.data['currentNumber'] > 1){
             await tran.update(doc, { 'currentNumber' : snapshot.data['currentNumber'] - 1}).whenComplete((){});
-            print('add number') ;
             delete = false ;
           }
           else {
-            print('room deleted') ;
             delete = true ;
             await tran.delete(doc) ;
           }

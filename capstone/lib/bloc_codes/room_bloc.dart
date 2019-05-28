@@ -53,10 +53,8 @@ class RoomBloc extends Object{
   RoomBloc(){
 
     roomEntering.listen((RoomInfo roomInfo){
-      print('here is enterRoom.listen ${roomInfo.roomName}') ;
       chatRoomInfo = roomInfo ;
     },onError: (error) {
-      print("enter Room error occured");
       Scaffold.of(_context).showSnackBar(new SnackBar(
         content: new Text("Error!"),
       )
@@ -69,9 +67,7 @@ class RoomBloc extends Object{
       Navigator.push(context, MaterialPageRoute(
         builder: (context) => ChatRoom(chatRoomInfo)
       )) ;
-      print('here is isRoomEntered.listen') ;
     },onError: (error) {
-      print("enter Room error occured");
       Scaffold.of(_context).showSnackBar(new SnackBar(
         content: new Text("Error!"),
       )
@@ -79,10 +75,8 @@ class RoomBloc extends Object{
     }) ;
 
     roomFinding.listen((RoomInfo roomInfo){
-      print('here is roomFinding.listen ${roomInfo.roomName}') ;
       feedPageRoomInfo = roomInfo;
     },onError: (error) {
-      print("room finding error occured");
       Scaffold.of(_context).showSnackBar(new SnackBar(
         content: new Text("Error!"),
       )

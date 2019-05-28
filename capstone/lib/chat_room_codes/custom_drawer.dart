@@ -211,21 +211,27 @@ class CustomDrawerState extends State<CustomDrawer> with TickerProviderStateMixi
                                  subtitle: Text(_roomInfo.meetingLocation, style: TextStyle(fontSize: 15, color: Colors.black),),
                                ),
                                ListTile(
-                                 title: Text('주소',style: TextStyle(fontSize: 12, color: Colors.grey),),
-                                 subtitle: Text(_roomInfo.vicinity, style: TextStyle(fontSize: 15, color: Colors.black),),
-                               ),
-                               Container(
-                                 height: 100,
-                                 child : ChatRoomMapApi(LatLng(_roomInfo.location.lat, _roomInfo.location.lng)),
+                                 title: Text('일시',style: TextStyle(fontSize: 12, color: Colors.grey),),
+                                 subtitle: Text('${_roomInfo.meetingDateTime.toDate().year}년 ${_roomInfo.meetingDateTime.toDate().month}월 ${_roomInfo.meetingDateTime.toDate().day}일'
+                                     ' ${_roomInfo.meetingDateTime.toDate().hour}시 ${_roomInfo.meetingDateTime.toDate().minute}분',
+                                   style: TextStyle(fontSize: 15, color: Colors.black),),
                                ),
                                ListTile(
                                  title: Text('목적',style: TextStyle(fontSize: 12, color: Colors.grey),),
                                  subtitle: Text(_roomInfo.roomPurpose, style: TextStyle(fontSize: 15, color: Colors.black),),
                                ),
                                ListTile(
-                                 title: Text('내용',style: TextStyle(fontSize: 12, color: Colors.grey),),
-                                 subtitle: Text(_roomInfo.contents, style: TextStyle(fontSize: 15, color: Colors.black),),
+                                 title: Text('위치',style: TextStyle(fontSize: 12, color: Colors.grey),),
+                                 subtitle: Text(_roomInfo.vicinity, style: TextStyle(fontSize: 15, color: Colors.black),),
                                ),
+                               Container(
+                                 height: 100,
+                                 child : ChatRoomMapApi(LatLng(_roomInfo.location.lat, _roomInfo.location.lng)),
+                               ),
+//                               ListTile(
+//                                 title: Text('내용',style: TextStyle(fontSize: 12, color: Colors.grey),),
+//                                 subtitle: Text(_roomInfo.contents, style: TextStyle(fontSize: 15, color: Colors.black),),
+//                               ),
                              ],
                            ),
                          ),
@@ -233,24 +239,34 @@ class CustomDrawerState extends State<CustomDrawer> with TickerProviderStateMixi
                      ],
                    ),
                )
-
-
              ),
              Expanded(
                  flex: 1,
-                 child: Row(
+                 child: Column(
                    children: <Widget>[
                      Expanded(
                        flex: 1,
-                       child: IconButton(
-                           icon: Icon(Icons.exit_to_app),
-                           onPressed: _showExitDialog,
-                       ),
+                       child: Divider(),
                      ),
                      Expanded(
-                         flex: 4,
-                         child: Container()
-                     ),
+                       flex: 15,
+                       child: Row(
+                         children: <Widget>[
+                           Expanded(
+                             flex: 1,
+                             child: IconButton(
+                               icon: Icon(Icons.exit_to_app),
+                               onPressed: _showExitDialog,
+                             ),
+                           ),
+                           Expanded(
+                               flex: 4,
+                               child: Container()
+                           ),
+                         ],
+                       )
+                     )
+
                    ],
                  )
              )

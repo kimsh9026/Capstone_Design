@@ -65,18 +65,6 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
   Widget build(BuildContext context){
    return Scaffold(
      backgroundColor: Color.fromRGBO(215, 238, 247, 0.9),
-//     appBar: AppBar(
-//         toolbarOpacity: 1,
-//         elevation: 0.1,
-//         bottomOpacity: 1,
-//         title: Text(
-//           '트레버딩',
-//           textAlign: TextAlign.center,
-//           style: Theme.of(context).textTheme.title,
-//         ),
-//         centerTitle: true,
-//         backgroundColor: Colors.white,
-//     ),
      body: _matchingBody(context),
    )  ;
   }

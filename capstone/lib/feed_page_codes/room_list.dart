@@ -378,7 +378,7 @@ class RoomList extends StatelessWidget {
                           return Text('위치 정보를 가져오는 중입니다.', style: TextStyle(color: Colors.grey), overflow: TextOverflow.fade,) ;
                         }
                         else{
-                          print(snapshot.data['country']) ;
+                          print('hey: ${snapshot.data['country']}') ;
                           country = snapshot.data['country'] ;
                           vicinity = snapshot.data['vicinity'] ;
                           locationName = snapshot.data['name'] ;

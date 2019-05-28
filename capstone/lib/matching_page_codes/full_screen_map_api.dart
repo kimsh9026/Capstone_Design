@@ -13,8 +13,9 @@ class FullScreenMapApi extends StatefulWidget{
   Set<Marker> _markers = Set<Marker>() ;
   LatLng _center = LatLng(0,0) ;
   PlacesSearchResult _placeMark ;
+  String _country ;
 
-  FullScreenMapApi(this._markers, this._center, this._placeMark) ;
+  FullScreenMapApi(this._markers, this._center, this._placeMark, this._country) ;
 
   @override
   State<FullScreenMapApi> createState() => FullScreenMapApiState();
@@ -41,13 +42,14 @@ class FullScreenMapApiState extends State<FullScreenMapApi>{
     super.initState();
     _markers = widget._markers ;
     _center = widget._center ;
-    _country = '' ;
+    _country = widget._country ;
     _cameraZoom = 16 ;
     _info = Map<String, dynamic>() ;
     _textEditingController = TextEditingController() ;
     _info['marker'] = _markers ;
     _info['center'] = _center ;
     _info['country'] = _country ;
+    print('init country : ${_country}') ;
     _info['vicinity'] = widget._placeMark.vicinity;
     _info['name'] = widget._placeMark.name ;
   }
@@ -153,10 +155,9 @@ class FullScreenMapApiState extends State<FullScreenMapApi>{
     Geolocator().placemarkFromCoordinates(result.geometry.location.lat, result.geometry.location.lng)
         .then((result) {
       _country = result[0].country ;
+      _info['country'] = _country ;
     });
     _textEditingController.text = result.name ;
-//    _matchingInfo.placesSearchResult = result ;
-//    BlocProvider.of(_context).mapBloc.setLocation(result.vicinity) ;
     _center = LatLng(result.geometry.location.lat, result.geometry.location.lng) ;
     _mapNavigate(_center.latitude, _center.longitude) ;
     _info['marker'] = _markers ;
@@ -167,7 +168,6 @@ class FullScreenMapApiState extends State<FullScreenMapApi>{
     setState(() {
       isSearching = false ;
       _searchingListHeight = 0 ;
-      print('setState') ;
     });
   }
 

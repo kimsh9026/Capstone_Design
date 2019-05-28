@@ -124,7 +124,7 @@ class RoomAddMapApiState extends State<RoomAddMapApi> {
               print('tap') ;
               Navigator.push(context, MaterialPageRoute(
                   builder: (context){
-                    return FullScreenMapApi(_markers, _center, _placeMark) ;
+                    return FullScreenMapApi(_markers, _center, _placeMark, _country) ;
                   }
               ));
             }

@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:capstone/fire_base_codes/fire_store_provider.dart';
-import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
-import 'package:capstone/chat_room_codes/users_Info_communicator.dart';
-import 'package:capstone/profile_edit_page.dart';
 
 
 class FriendProfilePage extends StatefulWidget {
@@ -285,10 +281,9 @@ class _FriendProfilePageState extends State<FriendProfilePage>{
             );
           }
           else{
-            print("ERROR!");
             return Scaffold(
                 appBar:AppBar(
-                  title : Text("Fail"),
+                  title : Text(""),
                 )
             );
           }

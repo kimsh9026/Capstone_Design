@@ -17,7 +17,6 @@ class BottomBarBloc extends Object{
 
   BottomBarBloc(){
     bottomBarPressed.listen((int index) {
-      print('here is bottomBarPressed.listen') ;
       MyApp.botNavBar.animate(index) ;
       }
     ,onError: (error) {
@@ -27,7 +26,6 @@ class BottomBarBloc extends Object{
     });
     matchingStart.listen((bool value) {
       if(value){
-        print('value changed') ;
         isMatching = true ;
         MyApp.isMatching = true ;
         setBottomBarPressed(1) ;
