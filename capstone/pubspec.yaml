@@ -57,6 +57,7 @@ flutter:
     - Images/logo image.png
     - Images/sample.png
     - Images/gps_icon.jpg
+    - Images/gps_circle.jpg
     - Images/category_ui/
   fonts:
     - family: NotoSans

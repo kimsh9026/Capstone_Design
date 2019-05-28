@@ -110,8 +110,10 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
           ),
           Expanded(
             flex: 1,
-            child: Center(
-              child: Icon(Icons.location_on,color: Colors.orange,),
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: Image.asset('Images/gps_circle.jpg',)
+//              Icon(Icons.location_on,color: Colors.orange,),
             )
           )
         ],

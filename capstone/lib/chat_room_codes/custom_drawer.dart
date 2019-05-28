@@ -2,8 +2,10 @@ import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/chat_room_codes/chat_room_map_api.dart';
 import 'package:capstone/chat_room_codes/users_Info_communicator.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
+import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
 import 'package:capstone/fire_base_codes/fire_store_provider.dart';
 import 'package:capstone/friend_profile_page.dart';
+import 'package:capstone/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -116,13 +118,25 @@ class CustomDrawerState extends State<CustomDrawer> with TickerProviderStateMixi
         if(userNumber == _roomInfo.currentNumber){
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => FriendProfilePage(_leaderUID)),
+            MaterialPageRoute(builder: (context){
+              if(_leaderUID == FireAuthProvider.user.uid)
+                return ProfilePage() ;
+              else
+                return FriendProfilePage(_leaderUID) ;
+            }),
           );
         }
         else{
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => FriendProfilePage(_uids.elementAt(userNumber))),
+            MaterialPageRoute(builder: (context){
+              {
+                if(_uids.elementAt(userNumber) == FireAuthProvider.user.uid)
+                  return ProfilePage() ;
+                else
+                  return FriendProfilePage(_uids.elementAt(userNumber)) ;
+              }
+            }),
           );
         }
       },
