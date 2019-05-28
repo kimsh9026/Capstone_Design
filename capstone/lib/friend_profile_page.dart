@@ -1,3 +1,4 @@
+import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:capstone/fire_base_codes/fire_store_provider.dart';
 
@@ -24,6 +25,31 @@ class _FriendProfilePageState extends State<FriendProfilePage>{
     _uid = widget.uid ;
   }
 
+  void eraseFriend(BuildContext context){
+    showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return AlertDialog(
+              content: Text(
+                '정말 삭제하시겠습니까?',
+              ),
+              actions: <Widget>[
+                FlatButton(
+                    child: const Text('삭제', style: TextStyle(color: Colors.blue),),
+                    onPressed: () { Navigator.pop(context, 'agree'); }
+                )
+              ]
+          ) ;
+        }
+    )
+        .then((value){
+      if(value != null){
+        FirestoreProvider().eraseFriend(_uid) ;
+        Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName)) ;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context){
     return StreamBuilder(
@@ -32,6 +58,9 @@ class _FriendProfilePageState extends State<FriendProfilePage>{
           if(snapshot.hasData){
             return Scaffold(
                 appBar: AppBar(
+                  iconTheme: IconThemeData(
+                    color: Color.fromRGBO(47, 146, 217, 0.9),
+                  ),
                   leading: IconButton(
                     icon: Icon(Icons.arrow_back),
                     color:Color.fromRGBO(61, 174, 218, 1),
@@ -41,6 +70,17 @@ class _FriendProfilePageState extends State<FriendProfilePage>{
                   title: Text("프로필", textAlign : TextAlign.center, style : TextStyle(color: Color.fromRGBO(61, 174, 218, 1))),
                   centerTitle: true,
                   elevation: 0.0,
+                  actions: <Widget>[
+                    IconButton(
+                      icon:Icon(
+                        Icons.delete_forever,
+                        color: Color.fromRGBO(47, 146, 217, 0.9),
+                      ),
+                      onPressed: (){
+                        eraseFriend(context) ;
+                      },
+                    ),
+                  ],
                 ),
                 body: Column(
                     children: <Widget>[
@@ -277,7 +317,7 @@ class _FriendProfilePageState extends State<FriendProfilePage>{
                         ),
                       )
                     ]
-                )
+                ),
             );
           }
           else{

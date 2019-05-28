@@ -118,6 +118,13 @@ class FirestoreProvider {
     }) ;
   }
 
+  Future<void> eraseFriend(String uid){
+    return _firestore.collection('userInfo').document(FireAuthProvider.user.uid)
+        .updateData({
+      'friend' : FieldValue.arrayRemove([uid])
+    }).whenComplete((){}) ;
+  }
+
   Future<bool> addUserInRoom(RoomInfo roomInfo) async {
 
     var doc = _firestore.collection('roomInfo').document(roomInfo.documentID);

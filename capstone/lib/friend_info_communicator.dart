@@ -25,6 +25,13 @@ class FriendInfoCommunicator {
       if(data.exists){
         friendsUID = List.from(data.data['friend']) ;
         getFriendsInfo(context) ;
+        if(friendsUID.length == 0)
+          BlocProvider.of(context).roomBloc.setDidGetFriendsSnapshot(false) ;
+      }
+      else{
+        friendsDisplayName.clear() ;
+        friendsImageURL.clear() ;
+        friendsStatus.clear() ;
       }
     }) ;
   }
