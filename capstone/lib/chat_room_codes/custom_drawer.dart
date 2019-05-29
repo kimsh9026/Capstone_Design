@@ -76,10 +76,32 @@ class CustomDrawerState extends State<CustomDrawer> with TickerProviderStateMixi
     _uids.clear() ;
     _userInfoCommunicator.usersImageURL.forEach((key, value) {
       if (key != _roomInfo.roomLeaderUID) {
-        _image.add(Image.network(value));
+        _image.add(CircleAvatar(
+            child: Container(
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.grey,
+                  image: DecorationImage(
+                      fit:BoxFit.fill,
+                      image: NetworkImage(value)
+                  )
+              ),
+            )
+        ));
       }
       else{
-        _leaderImage = Image.network(value) ;
+        _leaderImage = CircleAvatar(
+            child: Container(
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.grey,
+                  image: DecorationImage(
+                      fit:BoxFit.fill,
+                      image: NetworkImage(value)
+                  )
+              ),
+            )
+        ) ;
       }
     }) ;
       _userInfoCommunicator.usersDisplayName.forEach((key, value){
@@ -196,9 +218,7 @@ class CustomDrawerState extends State<CustomDrawer> with TickerProviderStateMixi
            },
            accountName: Text(_roomInfo.roomName, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 17),),
            accountEmail: Text(_roomInfo.meetingLocation, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 14),),
-           currentAccountPicture: CircleAvatar(
-               child: Image.network(_userInfoCommunicator.usersImageURL[_roomInfo.roomLeaderUID])
-           ),
+           currentAccountPicture: _leaderImage,
            otherAccountsPictures: _image,
          ) ;
          final items = Column(

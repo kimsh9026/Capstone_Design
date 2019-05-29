@@ -203,8 +203,13 @@ class FriendListPageState extends State<FriendListPage>{
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.grey,
+                          image: DecorationImage(
+                              fit:BoxFit.fill,
+                              image: NetworkImage(
+                                snapshot.data['photoUrl'],
+                              )
+                          )
                       ),
-                      child: Image.network(snapshot.data['photoUrl']),
                   )
               ),
               title: Text(snapshot.data['nickname']),
@@ -229,8 +234,12 @@ class FriendListPageState extends State<FriendListPage>{
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Colors.grey,
+                    image: DecorationImage(
+                        fit:BoxFit.fill,
+                        image: NetworkImage(_communicator.friendsImageURL[uid])
+                    )
                 ),
-              child: Image.network(_communicator.friendsImageURL[uid]),
+//              child: Image.network(_communicator.friendsImageURL[uid]),
             )
         ),
         title: Text(_communicator.friendsDisplayName[uid]),
