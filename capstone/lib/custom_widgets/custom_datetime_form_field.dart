@@ -19,7 +19,7 @@ class CustomDateTimeFormField extends FormField<DateTime>{
           children: <Widget>[
             Container(
               alignment: Alignment(-1,0),
-              child: isDate? CustomDatePicker(state: state) : CustomTimePicker(state: state),
+              child: isDate? CustomDatePicker(state: state) : CustomTimePicker(formState: state),
             ),
             Container(
               alignment: Alignment(-1,0),

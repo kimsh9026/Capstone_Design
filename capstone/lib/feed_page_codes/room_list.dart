@@ -118,7 +118,7 @@ class RoomList extends StatelessWidget {
             Expanded(
                 flex: 1,
                 child: Container(
-                    padding: EdgeInsets.only(top: 2),
+                    padding: EdgeInsets.only(top: 5),
                     alignment: Alignment.topCenter,
                     child: Text(
                       '날짜',
@@ -143,13 +143,13 @@ class RoomList extends StatelessWidget {
 
   Widget _createRoomTimeContainer(BuildContext context){
     return Container(
-        height: 40,
+        height: 50,
         child: Row(
           children: <Widget>[
             Expanded(
               flex: 1,
               child: Container(
-                  padding: EdgeInsets.only(top: 2),
+                  padding: EdgeInsets.only(top: 5),
                   alignment: Alignment.topCenter,
                   child: Text(
                     '시간',
@@ -378,7 +378,6 @@ class RoomList extends StatelessWidget {
                           return Text('위치 정보를 가져오는 중입니다.', style: TextStyle(color: Colors.grey), overflow: TextOverflow.fade,) ;
                         }
                         else{
-                          print('hey: ${snapshot.data['country']}') ;
                           country = snapshot.data['country'] ;
                           vicinity = snapshot.data['vicinity'] ;
                           locationName = snapshot.data['name'] ;
@@ -410,11 +409,11 @@ class RoomList extends StatelessWidget {
               children: <Widget>[
                 _createRoomTitleContainer(context),
                 Padding(
-                  padding: EdgeInsets.only(top:15),
+                  padding: EdgeInsets.only(top:25),
                 ),
                 _createRoomDateContainer(context),
                 Padding(
-                  padding: EdgeInsets.only(top:5),
+                  padding: EdgeInsets.only(top:10),
                 ),
                 _createRoomTimeContainer(context),
                 Padding(

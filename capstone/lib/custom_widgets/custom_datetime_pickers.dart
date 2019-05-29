@@ -6,6 +6,7 @@ const double _kPickerSheetHeight = 216.0;
 
 class CustomDatePicker extends StatefulWidget{
   FormFieldState<DateTime> state ;
+  static DateTime date = DateTime.now() ;
   CustomDatePicker({this.state}) ;
   @override
   _CustomDatePickerState createState() => _CustomDatePickerState();
@@ -51,7 +52,9 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                   onDateTimeChanged: (DateTime newDateTime) {
                     setState(() {
                       date = newDateTime ;
-                      widget.state.didChange(newDateTime) ;
+                      CustomDatePicker.date = DateTime(date.year, date.month, date.day, CustomDatePicker.date.hour, CustomDatePicker.date.minute, CustomDatePicker.date.second) ;
+                      CustomTimePicker.staticState.didChange(CustomDatePicker.date) ;
+                      widget.state.didChange(CustomDatePicker.date) ;
                     });
                   },
                 ),
@@ -79,8 +82,12 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
 }
 
 class CustomTimePicker extends StatefulWidget{
+  static FormFieldState<DateTime> staticState ;
   FormFieldState<DateTime> state ;
-  CustomTimePicker({this.state}) ;
+  CustomTimePicker({FormFieldState<DateTime> formState}){
+    state = formState ;
+    staticState = formState ;
+  }
   @override
   _CustomTimePickerState createState() => _CustomTimePickerState();
 
@@ -126,7 +133,8 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
                   onDateTimeChanged: (DateTime newDateTime){
                     setState(() {
                       time = newDateTime;
-                      widget.state.didChange(newDateTime);
+                      CustomDatePicker.date = DateTime(CustomDatePicker.date.year, CustomDatePicker.date.month, CustomDatePicker.date.day, time.hour, time.minute, time.second) ;
+                      widget.state.didChange(CustomDatePicker.date);
                     });
                   },
                 ),
