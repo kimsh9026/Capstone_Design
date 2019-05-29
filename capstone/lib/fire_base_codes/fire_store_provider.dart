@@ -34,6 +34,29 @@ class FirestoreProvider {
   }
 
   void sendMessagePersonal(String _opponentUID, String msg){
+
+    if(_opponentUID.compareTo(FireAuthProvider.user.uid) > 0)
+      _firestore.collection('personalChatInfo')
+          .document(FireAuthProvider.user.uid + _opponentUID)
+          .collection('Messages')
+          .document()
+          .setData({
+        'message' : msg,
+        'timestamp' : Timestamp.fromDate(DateTime.now()),
+        'uid' : FireAuthProvider.user.uid,
+      }) ;
+    else
+      _firestore.collection('personalChatInfo')
+          .document(_opponentUID + FireAuthProvider.user.uid)
+          .collection('Messages')
+          .document()
+          .setData({
+        'message' : msg,
+        'timestamp' : Timestamp.fromDate(DateTime.now()),
+        'uid' : FireAuthProvider.user.uid,
+      }) ;
+
+
     _firestore.collection('personalChatInfo')
         .document(FireAuthProvider.user.uid)
         .collection(_opponentUID)
@@ -110,9 +133,17 @@ class FirestoreProvider {
   }
 
   Stream<QuerySnapshot> getPersonalRoomMessages(String opponentUID) {
+    if(opponentUID.compareTo(FireAuthProvider.user.uid) > 0)
       return _firestore.collection('personalChatInfo')
-          .document(FireAuthProvider.user.uid)
-          .collection(opponentUID)
+          .document(FireAuthProvider.user.uid + opponentUID)
+          .collection('Messages')
+          .orderBy('timestamp',descending: true)
+          .limit(20)
+          .snapshots() ;
+    else
+      return _firestore.collection('personalChatInfo')
+          .document(opponentUID + FireAuthProvider.user.uid)
+          .collection('Messages')
           .orderBy('timestamp',descending: true)
           .limit(20)
           .snapshots() ;
