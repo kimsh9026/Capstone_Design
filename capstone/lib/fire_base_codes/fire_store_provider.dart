@@ -1,8 +1,12 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
 import 'package:capstone/main.dart';
 import 'package:capstone/matching_page_codes/matching_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' ;
 import 'package:capstone/feed_page_codes/room_info.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class FirestoreProvider {
 
@@ -21,6 +25,18 @@ class FirestoreProvider {
     _firestore.collection('roomInfo')
         .document(roomInfo.documentID)
         .collection('Messages')
+        .document()
+        .setData({
+      'message' : msg,
+      'timestamp' : Timestamp.fromDate(DateTime.now()),
+      'uid' : FireAuthProvider.user.uid,
+    }) ;
+  }
+
+  void sendMessagePersonal(String _opponentUID, String msg){
+    _firestore.collection('personalChatInfo')
+        .document(FireAuthProvider.user.uid)
+        .collection(_opponentUID)
         .document()
         .setData({
       'message' : msg,
@@ -60,6 +76,15 @@ class FirestoreProvider {
 
   }
 
+  Future<void> uploadPicture(File image) async {
+    StorageUploadTask upload = FirebaseStorage.instance.ref().child(FireAuthProvider.user.uid).putFile(image) ;
+    StorageTaskSnapshot taskSnapshot = await upload.onComplete ;
+    String url = await taskSnapshot.ref.getDownloadURL() ;
+    await _firestore.collection('userInfo').document(FireAuthProvider.user.uid).updateData({
+      'photoUrl' : url,
+    }) ;
+  }
+
   Stream<QuerySnapshot> feedRoomList(RoomInfo roomInfo) {
 
     if(roomInfo == null || roomInfo.roomName == ''){
@@ -79,6 +104,15 @@ class FirestoreProvider {
       return _firestore.collection('roomInfo')
           .document(roomInfo.documentID)
           .collection('Messages')
+          .orderBy('timestamp',descending: true)
+          .limit(20)
+          .snapshots() ;
+  }
+
+  Stream<QuerySnapshot> getPersonalRoomMessages(String opponentUID) {
+      return _firestore.collection('personalChatInfo')
+          .document(FireAuthProvider.user.uid)
+          .collection(opponentUID)
           .orderBy('timestamp',descending: true)
           .limit(20)
           .snapshots() ;

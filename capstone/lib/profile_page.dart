@@ -104,22 +104,6 @@ class _ProfilePageState extends State<ProfilePage>{
                                   ),
                                   */
                                   //사용자에게 메세지 보내기
-                                  Container(
-                                    alignment: Alignment.bottomRight,
-                                    child: Container(
-                                      width: 40,
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Color.fromRGBO(61, 174, 218, 1),
-                                      ),
-                                      child: IconButton(
-                                        icon:Icon(Icons.message),
-                                        color: Colors.white,
-                                        onPressed: ()=> print('hello!')
-                                      )
-                                    ),
-                                  ),
                                 ]
                               ),
                             ),

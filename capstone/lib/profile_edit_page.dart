@@ -1,10 +1,9 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:capstone/fire_base_codes/fire_store_provider.dart';
 import 'package:capstone/fire_base_codes/fire_auth_provider.dart';
-//import 'package:image_picker_modern/image_picker_modern.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileEditPage extends StatefulWidget {
 
@@ -45,9 +44,11 @@ class _ProfileEditPageState extends State<ProfileEditPage>{
   }
 
   void _choosePhoto() async {
-//    _galleryFile = await ImagePicker.pickImage(
-//        source: ImageSource.gallery,
-//    ) ;
+    _galleryFile = await ImagePicker.pickImage(
+        source: ImageSource.gallery,
+    ).then((file){
+      FirestoreProvider().uploadPicture(file) ;
+    }) ;
   }
 
 

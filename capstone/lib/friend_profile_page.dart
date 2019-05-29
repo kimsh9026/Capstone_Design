@@ -195,7 +195,12 @@ class _FriendProfilePageState extends State<FriendProfilePage>{
                                                     child: IconButton(
                                                         icon:Icon(Icons.message),
                                                         color: Colors.white,
-                                                        onPressed: ()=> print('hello!')
+                                                        onPressed: (){
+                                                          List<dynamic> list = List<dynamic>() ;
+                                                          list.add(context) ;
+                                                          list.add(_uid) ;
+                                                          BlocProvider.of(context).roomBloc.personalChat(list) ;
+                                                        }
                                                     )
                                                 ),
                                               ),

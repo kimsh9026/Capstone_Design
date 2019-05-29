@@ -2,20 +2,19 @@ import 'package:capstone/bloc_codes/bloc_provider.dart';
 import 'package:capstone/chat_room_codes/custom_drawer.dart';
 import 'package:capstone/feed_page_codes/room_info.dart';
 import 'package:capstone/chat_room_codes/users_Info_communicator.dart';
+import 'package:capstone/fire_base_codes/fire_store_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class ChatRoom extends StatelessWidget{
+class PersonalChatRoom extends StatelessWidget{
 
-  RoomInfo _roomInfo ;
+  String _opponentUid ;
   TextEditingController _textEditingController = TextEditingController() ;
 
-  ChatRoom(RoomInfo roomInfo){
-    _roomInfo = roomInfo ;
-  }
+  PersonalChatRoom(this._opponentUid) ;
 
   void _sendMessage(BuildContext context, String msg){
-    BlocProvider.of(context).roomBloc.sendMessage(_roomInfo, msg) ;
+    BlocProvider.of(context).roomBloc.sendMessagePersonal(_opponentUid, msg) ;
   }
 
   Widget _messageBox(BuildContext context){
@@ -58,7 +57,7 @@ class ChatRoom extends StatelessWidget{
           child: Column(
             children: <Widget>[
               Expanded(
-                  child: ChatBody(_roomInfo,context),
+                child: ChatBody(_opponentUid),
               ),
               new Divider(
                 color: Colors.black,
@@ -74,7 +73,7 @@ class ChatRoom extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return StreamBuilder(
-      stream: BlocProvider.of(context).roomBloc.getRoomSnapshot,
+      stream: FirestoreProvider().getUserStream(_opponentUid),
       builder: (context, snapshot){
         return Scaffold(
           appBar: PreferredSize(
@@ -87,8 +86,8 @@ class ChatRoom extends StatelessWidget{
               centerTitle: true,
               backgroundColor: Colors.white,
               title: Text(
-                snapshot.hasData ? snapshot.data['roomName']
-                : _roomInfo.roomName,
+                snapshot.hasData ? snapshot.data['nickname']
+                    : ' ',
                 style: Theme.of(context).textTheme.title,
               ),
               iconTheme: IconThemeData(
@@ -98,7 +97,6 @@ class ChatRoom extends StatelessWidget{
           ),
           backgroundColor: Colors.white,
           body: _chatRoomBody(context),
-          endDrawer: CustomDrawer(_roomInfo, context),
         );
       },
     ) ;
@@ -107,10 +105,8 @@ class ChatRoom extends StatelessWidget{
 
 class ChatBody extends StatefulWidget {
 
-  RoomInfo _roomInfo ;
-  BuildContext _context ;
-
-  ChatBody(this._roomInfo,this._context) ;
+  String _opponentUID ;
+  ChatBody(this._opponentUID) ;
 
   @override
   _ChatBodyState createState() => _ChatBodyState() ;
@@ -119,13 +115,18 @@ class ChatBody extends StatefulWidget {
 
 class _ChatBodyState extends State<ChatBody> {
 
-
-  UsersInfoCommunicator _userInfoCommunicator ;
+  DocumentSnapshot opponentSnapshot ;
+  DocumentSnapshot mySnapshot ;
 
   @override
   void initState() {
     super.initState() ;
-    _userInfoCommunicator = UsersInfoCommunicator(widget._context) ;
+    FirestoreProvider().getUserStream(widget._opponentUID).listen((snapshot){
+      opponentSnapshot = snapshot ;
+    }) ;
+    FirestoreProvider().getCurrentUserInfo().listen((snapshot){
+      mySnapshot = snapshot ;
+    }) ;
   }
 
 
@@ -135,7 +136,6 @@ class _ChatBodyState extends State<ChatBody> {
         child: new Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            _userInfoCommunicator.usersImageURL.length == 0 ? Container(color: Colors.white30) :
             CircleAvatar(
                 child: Container(
                   decoration: BoxDecoration(
@@ -144,7 +144,7 @@ class _ChatBodyState extends State<ChatBody> {
                       image: DecorationImage(
                           fit:BoxFit.fill,
                           image: NetworkImage(
-                            _userInfoCommunicator.usersImageURL[document['uid']],
+                            opponentSnapshot.data['photoUrl']
                           )
                       )
                   ),
@@ -156,7 +156,7 @@ class _ChatBodyState extends State<ChatBody> {
                 children: <Widget>[
                   Container(
                     padding: EdgeInsets.only(left:10),
-                    child: new Text(_userInfoCommunicator.usersDisplayName[document['uid']], style: TextStyle(fontSize:13)),
+                    child: new Text(opponentSnapshot.data['nickname'], style: TextStyle(fontSize:13)),
                   ),
                   Container(
                     constraints: BoxConstraints(
@@ -201,17 +201,16 @@ class _ChatBodyState extends State<ChatBody> {
                       margin: const EdgeInsets.only(left: 10, right:10),
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(10,6,6,6),
-                      child: Text(
-                        document['message'],
-                        style:TextStyle(fontSize:15),
-                        softWrap: true,
-                        maxLines: 10,
-                      ),)
+                        child: Text(
+                          document['message'],
+                          style:TextStyle(fontSize:15),
+                          softWrap: true,
+                          maxLines: 10,
+                        ),)
                   ),
                 )
             ),
-            _userInfoCommunicator.usersImageURL.length == 0 ? Container(color: Colors.white30) :
-            CircleAvatar(
+           CircleAvatar(
                 child: Container(
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
@@ -219,7 +218,7 @@ class _ChatBodyState extends State<ChatBody> {
                       image: DecorationImage(
                           fit:BoxFit.fill,
                           image: NetworkImage(
-                            _userInfoCommunicator.usersImageURL[document['uid']],
+                            mySnapshot.data['photoUrl']
                           )
                       )
                   ),
@@ -231,7 +230,7 @@ class _ChatBodyState extends State<ChatBody> {
   }
 
   Widget _chatMessage(BuildContext context, DocumentSnapshot document){
-    return document['uid'] == _userInfoCommunicator.currentUserUID ? _myMessage(document)
+    return document['uid'] == mySnapshot.data['id'] ? _myMessage(document)
         : _othersMessage(document) ;
   }
 
@@ -239,53 +238,40 @@ class _ChatBodyState extends State<ChatBody> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: BlocProvider.of(context).roomBloc.didGetUserSnapshot,
-      builder: (context, snapshot){
-        if(!snapshot.hasData || !snapshot.data){
-          return Center(
-              child: CircularProgressIndicator());
+        stream: BlocProvider.of(context).roomBloc.personalRoomMessages,
+        builder: (context, snapshot){
+          if (!snapshot.hasData) {
+            return Container();
+          } else {
+            return Container(
+                color: Color.fromRGBO(61, 174, 218, 200),
+                child: ListView.builder(
+                  reverse: true,
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.only(
+                    top: 8.0,
+                    bottom: 8.0,
+                  ),
+                  itemCount: snapshot.data.documents.length,
+                  itemBuilder: (context, int,
+                      {
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.only(
+                          top: 30.0,
+                          bottom: 30.0,
+                        ),
+                      }) {
+                    return _chatMessage(context, snapshot.data.documents[int]);
+                  },
+                )
+            ) ;
+          }
         }
-        else{
-          return StreamBuilder(
-              stream: BlocProvider.of(context).roomBloc.roomMessages,
-              builder: (context, snapshot){
-                if (!snapshot.hasData) {
-                  return Center(
-                      child: CircularProgressIndicator());
-                } else {
-                  return Container(
-                      color: Color.fromRGBO(61, 174, 218, 200),
-                      child: ListView.builder(
-                            reverse: true,
-                            shrinkWrap: true,
-                            padding: const EdgeInsets.only(
-                              top: 8.0,
-                              bottom: 8.0,
-                            ),
-                            itemCount: snapshot.data.documents.length,
-                            itemBuilder: (context, int,
-                                {
-                                  shrinkWrap: true,
-                                  padding: const EdgeInsets.only(
-                                    top: 30.0,
-                                    bottom: 30.0,
-                                  ),
-                                }) {
-                              return _chatMessage(context, snapshot.data.documents[int]);
-                            },
-                          )
-                  ) ;
-                }
-              }
-          );
-        }
-      },
     );
   }
 
   @override
   void dispose() {
-    _userInfoCommunicator.close() ;
     super.dispose();
   }
 
