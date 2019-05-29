@@ -37,7 +37,18 @@ class ProfileDrawerState extends State<ProfileDrawer> with TickerProviderStateMi
             accountName: Text(snapshot.data['nickname'], overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 17),),
             accountEmail: Text(snapshot.data['email'], overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 14),),
             currentAccountPicture: CircleAvatar(
-                child: Image.network(snapshot.data['photoUrl'])
+                child: Container(
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.grey,
+                      image: DecorationImage(
+                          fit:BoxFit.fill,
+                          image: NetworkImage(
+                            snapshot.data['photoUrl'],
+                          )
+                      )
+                  ),
+                )
             ),
           ) ;
           final items = Column(
