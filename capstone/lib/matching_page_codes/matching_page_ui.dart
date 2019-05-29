@@ -40,6 +40,7 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
   String _pressedButtonName = '식사' ;
   int _numberOfPeople = 4;
   MatchingInfo _matchingInfo ;
+  double beginOffset = 4.9;
 
   @override
   initState(){
@@ -56,10 +57,10 @@ class _MatchingPageUIState extends State<MatchingPageUI> with TickerProviderStat
     step2 = AnimationController(vsync: this, duration: Duration(milliseconds: 200)) ;
     step3 = AnimationController(vsync: this, duration: Duration(milliseconds: 200)) ;
     step4 = AnimationController(vsync: this, duration: Duration(milliseconds: 200)) ;
-    offset1 = Tween<Offset> (begin: Offset(0.0, 4.9), end: Offset(0.0, 0.5)).animate(step1) ;
-    offset2 = Tween<Offset> (begin: Offset(0.0, 4.9), end: Offset(0.0, 2.4)).animate(step2) ;
-    offset3 = Tween<Offset> (begin: Offset(0.0, 4.9), end: Offset(0.0, 3.5)).animate(step3) ;
-    offset4 = Tween<Offset> (begin: Offset(0.0, 4.9), end: Offset(0.0, 4.6)).animate(step4) ;
+    offset1 = Tween<Offset> (begin: Offset(0.0, beginOffset), end: Offset(0.0, 0.5)).animate(step1) ;
+    offset2 = Tween<Offset> (begin: Offset(0.0, beginOffset), end: Offset(0.0, 2.4)).animate(step2) ;
+    offset3 = Tween<Offset> (begin: Offset(0.0, beginOffset), end: Offset(0.0, 3.5)).animate(step3) ;
+    offset4 = Tween<Offset> (begin: Offset(0.0, beginOffset), end: Offset(0.0, 4.6)).animate(step4) ;
   }
 
   Widget build(BuildContext context){

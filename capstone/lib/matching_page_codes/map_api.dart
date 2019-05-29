@@ -240,15 +240,18 @@ class MapApiState extends State<MapApi> {
 
   getUserLocation() async {
     _currentLocation = await locateUser();
-    _places.searchNearbyWithRadius(Location(_currentLocation.latitude, _currentLocation.longitude), 2500)
+    _places.searchNearbyWithRadius(Location(_currentLocation.latitude, _currentLocation.longitude), 100)
         .then((value){
-      Geolocator().placemarkFromCoordinates(value.results[0].geometry.location.lat, value.results[0].geometry.location.lng)
+          value.results.forEach((result){
+            print(result.name) ;
+          });
+      Geolocator().placemarkFromCoordinates(value.results[1].geometry.location.lat, value.results[1].geometry.location.lng)
           .then((result) {
         _matchingInfo.country = result[0].country ;
       });
-      _matchingInfo.placesSearchResult = value.results[0] ;
+      _matchingInfo.placesSearchResult = value.results[1] ;
       BlocProvider.of(_context).mapBloc.setSearchResponse(_matchingInfo);
-      BlocProvider.of(_context).mapBloc.setDetailAddress(value.results[0].vicinity) ;
+      BlocProvider.of(_context).mapBloc.setDetailAddress(value.results[1].vicinity) ;
     });
     setState(() {
       _center = LatLng(_currentLocation.latitude, _currentLocation.longitude);

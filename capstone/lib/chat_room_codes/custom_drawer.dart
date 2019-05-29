@@ -284,7 +284,7 @@ class CustomDrawerState extends State<CustomDrawer> with TickerProviderStateMixi
                                  subtitle: Text(_roomInfo.vicinity, style: TextStyle(fontSize: 15, color: Colors.black),),
                                ),
                                Container(
-                                 height: 100,
+                                 height: 150,
                                  child : ChatRoomMapApi(LatLng(_roomInfo.location.lat, _roomInfo.location.lng)),
                                ),
 //                               ListTile(
