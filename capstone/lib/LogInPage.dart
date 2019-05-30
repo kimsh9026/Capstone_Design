@@ -10,7 +10,7 @@ class LogInPage extends StatelessWidget {
         decoration: BoxDecoration(
           image: new DecorationImage(
             image: new AssetImage("Images/LoginUI/background.png"),
-            fit: BoxFit.fill,
+            fit: BoxFit.fitWidth,
           ),
         ),
         child: Column(
@@ -27,7 +27,7 @@ class LogInPage extends StatelessWidget {
                   decoration: BoxDecoration(
                     image: new DecorationImage(
                       image: new AssetImage("Images/LoginUI/trabuddyIcon.png"),
-                      fit: BoxFit.fill,
+                      fit: BoxFit.contain,
                     ),
                   ),
                 ),
